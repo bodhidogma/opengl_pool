@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  1999/10/29 07:12:22  paulmcav
+ * added some more documentation to the class
+ *
  * Revision 1.1  1999/10/29 04:31:21  paulmcav
  * added viewport class to manage glviewports in a window.
  * Also enabled texture mapping class!
@@ -20,6 +23,8 @@
 #include "glpng.h"
 #include "cTexMaps.h"
 
+#include "glUtil.h"
+
 extern cTexMaps *texList;		// external texturemaps list
 
 // ------------------------------------------------------------------
@@ -30,7 +35,9 @@ extern cTexMaps *texList;		// external texturemaps list
 // ------------------------------------------------------------------
 
 cVmain::cVmain( int x, int y, int w, int h ) :
-	glcViewport( x, y, w, h )
+	glcViewport( x, y, w, h ),
+	iIntroWin(1),
+	iHelpWin(0)
 {
 }
 
@@ -43,6 +50,22 @@ cVmain::cVmain( int x, int y, int w, int h ) :
 
 cVmain::~cVmain()
 {
+}
+
+// ------------------------------------------------------------------
+//  Func: setstatus( cVstatus *stat )
+//  Desc: get a ptr to the status window
+//
+//  Ret:  n/a
+// ------------------------------------------------------------------
+
+int
+cVmain::setstatus( cVstatus *stat )
+{
+    if ( stat )
+	Vstat = stat;
+	
+    return 0;
 }
 
 // ------------------------------------------------------------------
@@ -65,11 +88,16 @@ cVmain::Display( void )
     glDisable( GL_CULL_FACE );		// for texmaps
     glShadeModel( GL_FLAT );
 
-    Intro();
-    
-    glTranslatef( 100, 100, 0.0 );
-    glColor3ub( 153, 184, 166 );
-    glutWireSphere( 40.1, 20, 16 );
+    if ( iIntroWin )
+	DoIntro();
+//    else
+	if ( iHelpWin )
+	DoHelp();
+    else {
+    	glTranslatef( 100, 100, 0.0 );
+    	glColor3ub( 153, 184, 166 );
+    	glutWireSphere( 40.1, 20, 16 );
+    }
     
     return 0;
 }
@@ -116,14 +144,14 @@ cVmain::SetView( void )
 }
 
 // ------------------------------------------------------------------
-//  Func: Intro()
+//  Func: DoIntro()
 //  Desc: Display our into texture map image scaled to fit viewable area
 //
 //  Ret:  0
 // ------------------------------------------------------------------
 
 int
-cVmain::Intro( void )
+cVmain::DoIntro( void )
 {
     GLfloat pos[4];
 
@@ -161,3 +189,45 @@ cVmain::Intro( void )
     return 0;
 }
  
+// ------------------------------------------------------------------
+//  Func: DoHelp()
+//  Desc: Display our help window
+//
+//  Ret:  0
+// ------------------------------------------------------------------
+
+int
+cVmain::DoHelp( void )
+{
+    GLfloat x,y,w,h;
+
+    x = y = 50.0;
+    w = vW -50.0;
+    h = vH -50.0;
+    
+    glColor4f( BLACK, 0.65 );
+    glEnable( GL_BLEND );
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+    glRectf( 0.0, 0.0, vW, vH );
+    
+    glColor4f( GRAY, 0.20 );
+    glRectf( x, y, w, h );
+    
+    glDisable( GL_BLEND );
+
+    help_message( x,y, w,h );
+    
+    return 0;
+}
+ 
+int
+cVmain::help_message( float x, float y, float w, float h )
+{
+    x += 8;
+    h -= 16;
+    
+    glputs( x, h, "Hi, this is some test message!" ); h -= 16;
+    glputs( x, h, "This is a second line..." ); h -= 16;
+
+    return 0;
+}

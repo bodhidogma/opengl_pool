@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  1999/10/29 06:50:49  paulmcav
+ * added class documentation
+ *
  * Revision 1.1  1999/10/29 04:31:21  paulmcav
  * added viewport class to manage glviewports in a window.
  * Also enabled texture mapping class!
@@ -39,7 +42,7 @@ glcWindow *glWinList[ MAX_WINDOWS ];
 // ------------------------------------------------------------------
 
 glcWindow::glcWindow( glcWindow *parent, float x, float y, float w, float h,
-	int pct=0, int cb=0) :
+	int pct, int cb) :
 	iNumChildren(0),
 	iPctg( pct ),
 	wsWidth(w),
@@ -74,14 +77,7 @@ glcWindow::glcWindow( glcWindow *parent, float x, float y, float w, float h,
     glutReshapeFunc( cbResize );
     
     // do we want any extra call backs?
-    if ( cb & WCB_KEYS )
-	glutKeyboardFunc( cbKeys );
-    if ( cb & WCB_SKEYS )
-	glutSpecialFunc( cbSKeys );
-    if ( cb & WCB_MOUSECLK )
-	glutMouseFunc( cbMouseClk );
-    if ( cb & WCB_MOUSEENTER )
-	glutEntryFunc( cbMouseEnter );
+    UseCallBack( cb );
     
     // store self into window list.
     glWinList[ iMyNum ] = this;
@@ -102,7 +98,7 @@ glcWindow::glcWindow( glcWindow *parent, float x, float y, float w, float h,
 //  Ret:  n/a
 // ------------------------------------------------------------------
 
-glcWindow::glcWindow( char *title, int w, int h, unsigned int mode, int cb=0 ) :
+glcWindow::glcWindow( char *title, int w, int h, unsigned int mode, int cb ) :
 	iNumChildren(0),
 	iPctg(0),
 	wsWidth(w),
@@ -118,30 +114,15 @@ glcWindow::glcWindow( char *title, int w, int h, unsigned int mode, int cb=0 ) :
     glutInitDisplayMode( mode );
     glutInitWindowSize( w, h );
     
-/*    wsWidth = wWidth = w;
-    wsHeight = wHeight = h;
-    wsXpos = wXpos = 0;
-    wsYpos = wYpos = 0;
-    iPctg = 0;
-    iMyParent = 0;
-    iNumChildren = 0;
-*/
     memset( wChildList, 0, sizeof(int)*MAX_WINDOWS );
     
     iMyNum = glutCreateWindow( title );
     
     glutDisplayFunc( cbDisplay );
     glutReshapeFunc( cbResize );
-    
+
     // do we want any extra call backs?
-    if ( cb & WCB_KEYS )
-	glutKeyboardFunc( cbKeys );
-    if ( cb & WCB_SKEYS )
-	glutSpecialFunc( cbSKeys );
-    if ( cb & WCB_MOUSECLK )
-	glutMouseFunc( cbMouseClk );
-    if ( cb & WCB_MOUSEENTER )
-	glutEntryFunc( cbMouseEnter );
+    UseCallBack( cb );
     
     icWindow = iMyNum;
 
@@ -259,6 +240,22 @@ glcWindow::cbMouseEnter( int s )
 }
 
 // ------------------------------------------------------------------
+
+void 
+glcWindow::cbMenu( int v )
+{
+    glWinList[ glutGetWindow() ]->Menu( v );
+}
+
+// ------------------------------------------------------------------
+
+void 
+glcWindow::cbIdle( void )
+{
+    glWinList[ glutGetWindow() ]->Idle( );
+}
+
+// ------------------------------------------------------------------
 //  Func: rescale()
 //  Desc: resize window appropriately if scaling info is used
 //        NOTE: really only called for child windows
@@ -322,3 +319,41 @@ glcWindow::newchild( int winnum )
     
     return  iNumChildren;
 }
+
+int
+glcWindow::UseCallBack( int cb, int use, int opt )
+{
+    int r = 0; 
+
+    if ( use ) {
+	if ( cb & WCB_KEYS )
+	    glutKeyboardFunc( cbKeys );
+	if ( cb & WCB_SKEYS )
+	    glutSpecialFunc( cbSKeys );
+	if ( cb & WCB_MOUSECLK )
+	    glutMouseFunc( cbMouseClk );
+	if ( cb & WCB_MOUSEENTER )
+	    glutEntryFunc( cbMouseEnter );
+	if ( cb & WCB_MENU )
+	    r = glutCreateMenu( cbMenu );
+	if ( cb & WCB_IDLE )
+	    glutIdleFunc( cbIdle );
+    }
+    else {
+	if ( cb & WCB_KEYS )
+	    glutKeyboardFunc( NULL );
+	if ( cb & WCB_SKEYS )
+	    glutSpecialFunc( NULL );
+	if ( cb & WCB_MOUSECLK )
+	    glutMouseFunc( NULL );
+	if ( cb & WCB_MOUSEENTER )
+	    glutEntryFunc( NULL );
+	if ( cb & WCB_MENU )
+	    glutDestroyMenu( opt );
+	if ( cb & WCB_IDLE )
+	    glutIdleFunc( NULL );
+    }
+    
+    return r;
+}
+    

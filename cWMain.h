@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  1999/10/29 07:12:22  paulmcav
+ * added some more documentation to the class
+ *
  * Revision 1.2  1999/10/29 04:31:21  paulmcav
  * added viewport class to manage glviewports in a window.
  * Also enabled texture mapping class!
@@ -28,6 +31,16 @@ enum mw_views {
     mw_count
 };
 
+// Enumerate our Main Menu options
+enum main_menu_options {
+    mM_New,
+    mM_Practice,
+    mM_TwoPlayer,
+    mM_Help,
+    mM_Quit
+};
+
+
 #include "glcWindow.h"
 #include "glcViewport.h"
 
@@ -47,19 +60,21 @@ class cWMain : public glcWindow
 {
 private:
     glcViewport **views;
+    int iTmp;
 
 protected:
     
 public:
-    cWMain( char *title, int w, int h, unsigned int mode );
+    cWMain( char *title, int w, int h, unsigned int mode, int cb=0 );
     ~cWMain();
 
     int Display( void );
     int Resize( int w, int h );
     
     int Keys( unsigned char key, int mx, int my );
+    int Menu( int opt );
 
-    int Intro( void );
+    int Init( void );
 };
 	
 

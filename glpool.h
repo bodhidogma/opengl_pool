@@ -4,10 +4,14 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  1999/10/25 06:33:22  paulmcav
+ * working project with fancy windowing class for GL.
+ * Tex maps sorta working, looks sharp though!
+ *
  * Revision 1.1  1999/10/19 04:19:37  paulmcav
  * start
  *
@@ -22,12 +26,6 @@
 /*
  * misc functions for support of glpool game
 */
-
-void init ( void );
-void idle ( void );
-void keypress ( unsigned char key, int x, int y );
-void specialkeys ( int key, int x, int y );
-void mouseclick ( int b, int s, int mx, int my );
 
 void quit_game( void );
     

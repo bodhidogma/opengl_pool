@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  1999/10/29 07:12:22  paulmcav
+ * added some more documentation to the class
+ *
  * Revision 1.2  1999/10/29 04:31:21  paulmcav
  * added viewport class to manage glviewports in a window.
  * Also enabled texture mapping class!
@@ -35,8 +38,8 @@
 //  Ret:  n/a
 // ------------------------------------------------------------------
 
-cWMain::cWMain( char *title, int w, int h, unsigned int mode ) :
-	glcWindow( title, w, h, mode ),
+cWMain::cWMain( char *title, int w, int h, unsigned int mode, int cb ) :
+	glcWindow( title, w, h, mode, cb ),
 	views(0)
 {
     views = new glcViewport *[ mw_count ];
@@ -52,6 +55,8 @@ cWMain::cWMain( char *title, int w, int h, unsigned int mode ) :
     views[ mw_count ] = NULL;
     
     ((cVstatus*)views[ mw_status ])->Message( "Welcome .. " );
+    
+    ((cVmain*)views[ mw_main ])->setstatus( (cVstatus*)views[ mw_status ] );
     
     glClearColor( BLACK, 1.0 );
 }
@@ -143,11 +148,77 @@ cWMain::Resize( int w, int h )
 int
 cWMain::Keys( unsigned char key, int mx, int my )
 {
+    switch( key ){
+	case 27:
+	case 'q':
+	    quit_game();
+	    break;
+
+	case 'i':
+ 	    ((cVmain*)views[ mw_main ])->Intro();
+	    Display();
+	    break;
+	    
+	case 'h':
+    	    ((cVmain*)views[ mw_main ])->Help();
+	    Display();
+	    break;
+    }
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: Menu( int opt )
+//  Desc: 
+//
+//  Ret:  0
+// ------------------------------------------------------------------
+
 int
-cWMain::Intro( void )
+cWMain::Menu( int opt )
 {
+    switch( opt ){
+	case mM_New:
+	break;
+	
+	case mM_Practice:
+	break;
+
+	case mM_TwoPlayer:
+	break;
+
+	case mM_Help:
+    	    ((cVmain*)views[ mw_main ])->Help();
+	    Display();
+	    break;
+
+	case mM_Quit:
+	    quit_game();
+	    break;
+    }
+
+    return 0;
+}
+    
+// ------------------------------------------------------------------
+//  Func: Init( )
+//  Desc:
+//
+//  Ret:  0
+// ------------------------------------------------------------------
+
+int
+cWMain::Init( void )
+{
+    int m;
+
+    m = UseCallBack( WCB_MENU );
+    glutAddMenuEntry( "New Game", mM_New );
+    glutAddMenuEntry( "Practice", mM_Practice);
+    glutAddMenuEntry( "2-Player", mM_TwoPlayer );
+    glutAddMenuEntry( "Help", mM_Help );
+    glutAddMenuEntry( "Quit", mM_Quit );
+    glutAttachMenu( GLUT_RIGHT_BUTTON );
+    
     return 0;
 }

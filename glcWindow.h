@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  1999/10/29 06:50:49  paulmcav
+ * added class documentation
+ *
  * Revision 1.1  1999/10/29 04:31:21  paulmcav
  * added viewport class to manage glviewports in a window.
  * Also enabled texture mapping class!
@@ -30,6 +33,8 @@
 #define WCB_SKEYS	0x02
 #define WCB_MOUSECLK	0x04
 #define WCB_MOUSEENTER	0x08
+#define WCB_MENU	0x10
+#define WCB_IDLE	0x20
 
 #include <GL/glut.h>
 
@@ -92,6 +97,8 @@ static    void cbKeys( unsigned char key, int x, int y );
 static    void cbSKeys( int key, int x, int y );
 static    void cbMouseClk( int b, int s, int x, int y );
 static    void cbMouseEnter( int s );
+static    void cbMenu( int v );
+static    void cbIdle( void );
 
     // derived class implementations of call backs.  A per window basis.
     virtual int Display( void ) { return 0; }
@@ -100,12 +107,17 @@ static    void cbMouseEnter( int s );
     virtual int SKeys( int key, int mx, int my ) { return 0; }
     virtual int MouseClk( int b, int s, int x, int y ) { return 0; }
     virtual int MouseEnter( int s ) { return 0; }
+    virtual int Menu( int v ) { return 0; }
+    virtual int Idle( void ) { return 0; }
 
     // return window information
     int iHeight(void) { return (int)wHeight; }
     int iWidth(void) { return (int)wWidth; }
     int iXpos(void) { return (int)wXpos; }
     int iYpos(void) { return (int)wYpos; }
+    
+    // use callbacks
+    int UseCallBack( int cb, int use=1, int opt=0 );
     
     // get / set window visibility
     int Visible( int vis );

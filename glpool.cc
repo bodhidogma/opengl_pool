@@ -3,9 +3,13 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  1999/10/29 04:31:21  paulmcav
+ * added viewport class to manage glviewports in a window.
+ * Also enabled texture mapping class!
+ *
  * Revision 1.5  1999/10/25 06:33:22  paulmcav
  * working project with fancy windowing class for GL.
  * Tex maps sorta working, looks sharp though!
@@ -33,13 +37,13 @@
 
 #include "common.h"
 
-#include "glUtil.h"
 #include "cWMain.h"
-
 #include "cTexMaps.h"
 
 
 // ------------------------------------------------------------------
+
+void init ( void );
 
 // ------------------------------------------------------------------
 //  Func: main( argc, argv )
@@ -48,7 +52,7 @@
 //  Ret:  0
 // ------------------------------------------------------------------
 
-cWMain	*wMain;
+cWMain	 *wMain;
 cTexMaps *texList;
     
 int
@@ -60,14 +64,15 @@ main( int argc, char *argv[] )
     // configure GL callabcks for win0
     wMain = new cWMain( "MESH - GLPool v.01",
 	    600, 512,
-	    GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH
+	    GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH,
+	    WCB_KEYS
 	    );
     assert( wMain );
 
-    glutKeyboardFunc( keypress );
-    
     texList = new cTexMaps;
     assert( texList );
+    
+    wMain->Init();
     
     glutIdleFunc( init );
 
@@ -91,12 +96,6 @@ init ( void )
 {
     // we want to draw the window before running init sequence
     if (count) {
-//    	wStatus->Message( "Loading please wait ... " );
-    
-//	sleep(2);
-    
-//   	wStatus->Message( "" );
-    
     	glutIdleFunc( NULL );
     }
     else {
@@ -106,73 +105,18 @@ init ( void )
 }
 
 // ------------------------------------------------------------------
-//  Func: idle()
-//  Desc: idle gl function loop
-//
-//  Ret:  -
-// ------------------------------------------------------------------
-
-void
-idle ( void )
-{
-    glutIdleFunc( NULL );
-}
-
-// ------------------------------------------------------------------
-//  Func: keypress( key, x,y )
-//  Desc: handle normal ascii keypress'
-//
-//  Ret:  -
-// ------------------------------------------------------------------
-
-void
-keypress ( unsigned char cKey, int ikX, int ikY )
-{
-    switch( cKey ){
-	case 27:
-	case 'q':
-	    exit(0);
-	    break;
-
-	case 'h':
-	    break;
-    }
-
-}
-
-// ------------------------------------------------------------------
-//  Func: specialkeys( key, x,y )
-//  Desc: handle extended type keypresses
-//
-//  Ret:  -
-// ------------------------------------------------------------------
-
-void
-specialkeys ( int cKep, int ikX, int ikY )
-{
-}
-
-// ------------------------------------------------------------------
-//  Func: mouseclick( button, state, x, y )
-//  Desc: handle a mous button click
-//
-//  Ret:  -
-// ------------------------------------------------------------------
-
-void
-mouseclick ( int b, int s, int imX, int imY )
-{
-}
-
-// ------------------------------------------------------------------
 //  Func: quit()
 //  Desc: exit application cleanly
 //
 //  Ret:  -
 // ------------------------------------------------------------------
 
-void
-quit_game( void )
+void quit_game( void )
 {
+    if ( texList )
+	delete texList;
+    if ( wMain )
+	delete wMain;
+
     exit(1);
 }
