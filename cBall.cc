@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  1999/11/24 18:58:48  paulmcav
+ * more manipulations for ball movement.
+ *
  * Revision 1.9  1999/11/22 22:17:08  paulmcav
  * enabled ball bouncing
  *
@@ -124,34 +127,35 @@ cBall::MoveWall( int x, int y )
 	    vel[bN][bX] *= -1;			// reflection
 	    
 	    d_pos = pos[bN][bX] - x;		// dx past edge of table
-	    pos[bN][bX] -= d_pos;
+	    pos[bN][bX] = x-d_pos;
 	    bump = 1;
-	audio->PlayFile( "data/bumper.au" );
+audio->PlayFile( "data/bumper.au" );
 	}
-	if ( pos[bN][bX] <= mx ) {
+	else if ( pos[bN][bX] <= mx ) {
 	    vel[bN][bX] *= -1;			// reflection
 	    
 	    d_pos = mx-pos[bN][bX];		// dx past edge of table
-	    pos[bN][bX] += d_pos;
+	    pos[bN][bX] = mx + d_pos;
 	    bump = 1;
-	audio->PlayFile( "data/bumper.au" );
+audio->PlayFile( "data/bumper.au" );
 	}
+	
 	pos[bN][bY] += vel[bN][bY];
 	if ( pos[bN][bY] >= y ) {
 	    vel[bN][bY] *= -1;			// reflection
 	    
 	    d_pos = pos[bN][bY] - y;		// dx past edge of table
-	    pos[bN][bY] -= d_pos;
+	    pos[bN][bY] = y-d_pos;
 	    bump = 1;
-	audio->PlayFile( "data/bumper.au" );
+audio->PlayFile( "data/bumper.au" );
 	}
-	if ( pos[bN][bY] <= my ) {
+	else if ( pos[bN][bY] <= my ) {
 	    vel[bN][bY] *= -1;			// reflection
 	    
 	    d_pos = my-pos[bN][bY];		// dx past edge of table
-	    pos[bN][bY] += d_pos;
+	    pos[bN][bY] = mx+d_pos;
 	    bump = 1;
-	audio->PlayFile( "data/bumper.au" );
+audio->PlayFile( "data/bumper.au" );
 	}
 	    
     }

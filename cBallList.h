@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  1999/11/24 18:58:48  paulmcav
+ * more manipulations for ball movement.
+ *
  * Revision 1.7  1999/11/22 22:17:08  paulmcav
  * enabled ball bouncing
  *
@@ -42,7 +45,7 @@ enum bl_balls {
     b_yellow,
     b_blue,
     b_red,
-    b_purple,
+/*    b_purple,
     b_orange,
     b_green,
     b_magenta,
@@ -54,7 +57,7 @@ enum bl_balls {
     b_sorange,
     b_sgreen,
     b_smagenta,
-    b_count
+*/    b_count
 };
 
 /*

@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.14 1999-11-24 18:58:48 paulmcav Exp $
+# $Id: Makefile,v 1.15 1999-11-24 19:32:06 paulmcav Exp $
 #
 ##### MACROS #####
 
@@ -19,7 +19,7 @@ GL_LIBS	= $(LIBDIR) -lglut -lGLU -l$(GL) -lm $(XLIBS)
 #debugging!
 #MALLOC	= -static -lefence
 #PROF = -pg
-OPTIMIZE = -O3 -funroll-loops
+#OPTIMIZE = -O3 -funroll-loops
 
 CC	= g++
 CFLAGS	= $(INCDIR) -Wall -g $(PROF) $(OPTIMIZE)
