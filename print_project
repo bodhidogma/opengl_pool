@@ -1,0 +1,33 @@
+#! /bin/sh
+
+# ls *.h *.cc | sort -r >> print_project
+
+mpage -2 -Pps -H \
+TODO NOTES \
+glpool.h
+glpool.cc
+glpng.h
+glcWindow.h
+glcWindow.cc
+glcViewport.h
+glcViewport.cc
+glUtil.h
+glUtil.cc
+common.h
+colors.h
+cWMain.h
+cWMain.cc
+cVstatus.h
+cVstatus.cc
+cVmain.h
+cVmain.cc
+cTexMaps.h
+cTexMaps.cc
+cTable.h
+cTable.cc
+cBallList.h
+cBallList.cc
+cBall.h
+cBall.cc
+cAudio.h
+cAudio.cc
