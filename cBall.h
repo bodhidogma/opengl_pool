@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  1999/12/08 01:08:16  paulmcav
+ * added more stuff!
+ *
  * Revision 1.11  1999/12/06 21:19:46  paulmcav
  * updated game to allow collisions between balls
  *
@@ -97,7 +100,7 @@ public:
 //    GLfloat torque;
 //    GLfloat friction[2];	// static, kinetic
 
-    int   rotation;
+    int   rotation[2];
 //    GLfloat normal[3];
 
     int   ballnum;	// ball number (>= 0 ok, <0 = off)

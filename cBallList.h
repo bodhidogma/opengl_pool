@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  1999/12/08 01:08:16  paulmcav
+ * added more stuff!
+ *
  * Revision 1.13  1999/12/06 21:19:46  paulmcav
  * updated game to allow collisions between balls
  *
@@ -65,7 +68,6 @@ enum bl_balls {
     b_blue,
     b_red,
     b_purple,
-#if 0 
     b_orange,
     b_green,
     b_magenta,
@@ -77,6 +79,7 @@ enum bl_balls {
     b_sorange,
     b_sgreen,
     b_smagenta,
+#if 0 
 #endif
     b_count
 };

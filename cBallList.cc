@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.15 $
+// $Revision: 1.16 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.15  1999/12/08 01:08:16  paulmcav
+ * added more stuff!
+ *
  * Revision 1.14  1999/12/06 21:19:46  paulmcav
  * updated game to allow collisions between balls
  *
@@ -177,7 +180,8 @@ cBallList::Draw( void )
 		balls[bc].pos[bN][bX],
 		balls[bc].pos[bN][bY],
 		balls[bc].pos[bN][bZ] );
-	glRotatef( balls[bc].rotation, BALL_NORMAL );
+	glRotatef( balls[bc].rotation[0], 1,0,0 );
+	glRotatef( balls[bc].rotation[1], 0,1,0 );
 	
 	if ( balls[bc].flg_Texture && bc ) {		// use texture map
 	    glEnable( GL_TEXTURE_2D );
@@ -222,8 +226,10 @@ cBallList::Move( void )
 	    if ( !sunk ) {
 	    	anim |= balls[ bc ].MoveBall( balls, b_count );
 	    }
-	    else {
+	    else if ( bc ) {
 		balls[ bc ].SetNumber( -1 );
+		status->ToggleBall( bc );
+	        status->DrawBallQ();
 	    }
 	}
     }

@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.15 $
+// $Revision: 1.16 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.15  1999/12/08 01:08:16  paulmcav
+ * added more stuff!
+ *
  * Revision 1.14  1999/12/06 21:19:46  paulmcav
  * updated game to allow collisions between balls
  *
@@ -94,7 +97,8 @@ cBall::init(int num, int wire, int tex )
     enabled = 1;	// ball is available
     SetColor( BALL0 );
     
-    rotation = 0;
+    rotation[0] = 0;	// initial rotation
+    rotation[1] = 0;
 
     memset( pos, 0, sizeof(GLfloat)*2*3 );
     memset( vel, 0, sizeof(GLfloat)*2*3 );
@@ -129,7 +133,8 @@ cBall::Draw( void )
     
     // move ball into correct position
     glTranslatef( pos[bN][bX], pos[bN][bY], pos[bN][bZ] );
-    glRotatef( rotation, BALL_NORMAL );
+    glRotatef( rotation[0], 1,0,0 );
+    glRotatef( rotation[1], 0,1,0 );
     
     if ( flg_Texture && ballnum ) {		// use texture map
 	glEnable( GL_TEXTURE_2D );
@@ -171,6 +176,11 @@ cBall::MoveWall( int x, int y )
     
     pos[bN][bX] += vel[bN][bX];
     
+    // calculate rotation based on Dx traveled
+    rotation[0] += (int)((vel[bN][bX]/2*M_PI*BALL_R)*360);
+//    rotation[0] += (int)(.2*360);
+    rotation[0] %= 360;
+    
     if ( pos[bN][bX] > x/2 ) {		// right pockets?
 	if ( pos[bN][bX] >= x ) {	// went in (close!)
 	   in_pocket = MovePocket( y ); 
@@ -201,6 +211,12 @@ cBall::MoveWall( int x, int y )
     }
     
     pos[bN][bY] += vel[bN][bY];
+    
+    // calculate rotation based on Dx traveled
+    rotation[1] += (int)((vel[bN][bY]/2*M_PI*BALL_R)*360);
+//    rotation[1] -= (int)(.2*360);
+    rotation[1] %= 360;
+    
     if ( pos[bN][bY] >= y ) {		// top
 	vel[bN][bY] *= -1;			// reflection
 	
@@ -221,7 +237,8 @@ cBall::MoveWall( int x, int y )
 
 // ------------------------------------------------------------------
 //  Func: MovePocket( y )
-//  Desc: 
+//  Desc: Look to see if ball went into any three side pockets
+//  TODO  fix the problem with not going into enough corner pocket (y)
 //
 //  Ret:  
 // ------------------------------------------------------------------
@@ -229,7 +246,19 @@ cBall::MoveWall( int x, int y )
 int
 cBall::MovePocket( int y )
 {
-    int in = 1;
+    int in = 0;
+    
+    if ( pos[bN][bY] < 4*BALL_R			// corner pockets
+         || pos[bN][bY] > y-4*BALL_R ) {
+	in = 1;
+    }
+    else {					// center pocket
+	y /= 2;
+	if ( pos[bN][bY] < y+4*BALL_R && 
+	     pos[bN][bY] > y-4*BALL_R ) {
+	    in = 1;
+	}
+    }
     
     if ( in ) {
 	audio->PlayFile( SUNK_AUDIO );
