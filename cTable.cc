@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  1999/12/08 01:08:16  paulmcav
+ * added more stuff!
+ *
  * Revision 1.9  1999/12/06 21:19:46  paulmcav
  * updated game to allow collisions between balls
  *
@@ -43,6 +46,7 @@
 #include <iostream.h>
 #include <assert.h>
 #include <math.h>
+#include <string.h>
 
 #include "cTable.h"
 #include "colors.h"

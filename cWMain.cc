@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.19 $
+// $Revision: 1.20 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.19  1999/12/17 19:36:39  paulmcav
+ * added glXWaitGlx command to sync with display under linux
+ *
  * Revision 1.18  1999/12/08 07:05:25  paulmcav
  * added sound / timing support for windos version
  *
@@ -75,6 +78,7 @@
 #include "cVmain.h"
 #include "cVstatus.h"
 
+#include <math.h>
 #include <iostream.h>
 #ifdef _WIN32
 #  include <windows.h>

@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.16 1999-12-06 04:49:24 paulmcav Exp $
+# $Id: Makefile,v 1.17 2002-02-18 22:05:31 paulmcav Exp $
 #
 ##### MACROS #####
 
@@ -107,7 +107,7 @@ dep	: ${addprefix $(OBJ),$(sources:.cc=.d)}
 	@echo "include ${addprefix $(OBJ), $(sources:.cc=.d)}" > .depend
 
 tags	:
-	@ctags *.cc *.c *.h
+	@ctags -f .tags *.cc *.c *.h
 
 cleanbak:
 	find . -name "*~" -exec rm -f '{}' ';'
@@ -123,6 +123,6 @@ realclean: semiclean
 	rm -f $(TARGETS)
 
 archive	: semiclean
-	strip $(TARGETS)
+	-strip $(TARGETS)
 	tar -cvf - * | gzip -c > ../glpool.tar.gz
 	
