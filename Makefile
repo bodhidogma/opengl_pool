@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.1 1999-10-10 22:37:42 paulmcav Exp $
+# $Id: Makefile,v 1.2 1999-10-13 05:22:43 paulmcav Exp $
 #
 ##### MACROS #####
 
@@ -12,8 +12,8 @@ LIBDIR	= -L/usr/X11R6/lib
 XLIBS	= -lX11 -lXext -lXi -lXmu
 
 # glx / mesagl
-GL	= GL
-#GL	= MesaGL
+#GL	= GL
+GL	= MesaGL
 
 GL_LIBS	= $(LIBDIR) -lglut -lMesaGLU -l$(GL) -lm $(XLIBS)
 
@@ -58,12 +58,14 @@ endif
 
 sources	=$(wildcard *.cc)
 
-GLPOOL	= glpool.o
+GLPOOL	= glpool.o readtex.o
 
 TEST	= test.o
 
 glpool	: ${addprefix $(OBJ),$(GLPOOL)}
-	echo $^
+	$(LD) $(LDFLAGS) $^ $(LIBS) -o $@
+
+test	: ${addprefix $(OBJ),$(TEST)}
 	$(LD) $(LDFLAGS) $^ $(LIBS) -o $@
 	
 dep	: ${addprefix $(OBJ),$(sources:.cc=.d)}
