@@ -1,3 +1,51 @@
-some kind of a readme about what the project will be / do.
 
+Notes:
+ glc = open(gl) (c)lass
+
+ .---------------------------.
+ |=|      Window Title     |X|
+ +---------------------------+
+ |.-------------------------.|
+ ||        Viewport         ||
+ |`_________________________'|
+ |.-------------------------.|
+ ||                         ||
+ ||                         ||
+ ||        Viewport         ||
+ ||                         ||
+ ||                         ||
+ ||                         ||
+ |`-------------------------'|
+ `---------------------------'
+
+ The window is exactly that; A GUI application window.  Viewports are
+ drawable regions within the window.
+
+-----------------
+Class Information:
+ glcWindow:	Base class for creating windows
+ glcViewport:	Base class for creating viewport in a window
+
+Information:
+* glcWindow
+
+ Used as a base class for handling glut call backs, and general UI management.
+ Requires implementation of a Display() and Resize() method. 
+ Optionally can implement keyboard handling, etc.
+
+* glcViewport
+
+ Used as a base class for handling viewport regions within a window.
+ Reqires implementation of a Display() and Resize() method.
+ Derived classes can implement whatever functionality necessary to manage
+ the drawing of a selected viewport.
+
+--------------
+Project uses a central window instance: cWMain
+
+  Organization:
+
+  cWMain : glcWindow
+   +cVmain : glcViewport
+   +cStatus : glcViewport
 
