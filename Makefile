@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.12 1999-11-22 17:15:46 paulmcav Exp $
+# $Id: Makefile,v 1.13 1999-11-22 22:17:08 paulmcav Exp $
 #
 ##### MACROS #####
 
@@ -20,7 +20,7 @@ GL_LIBS	= $(LIBDIR) -lglut -lGLU -l$(GL) -lm $(XLIBS)
 #MALLOC	= -static -lefence
 
 CC	= g++
-CFLAGS	= $(INCDIR) -Wall -g
+CFLAGS	= $(INCDIR) -Wall -g -O3 -funroll-loops
 LD	= $(CC)
 LDFLAGS	= -lpng
 LIBS	= $(GL_LIBS) $(MALLOC)

@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  1999/11/20 07:53:56  paulmcav
+ * added texmap support, some more menu options, lighting, cleanup, etc.
+ *
  * Revision 1.7  1999/11/19 22:36:57  paulmcav
  * Balls displaying on the table, and more!
  *
@@ -31,6 +34,7 @@
 #include <GL/glut.h>
 #include <iostream.h>
 #include <assert.h>
+#include <string.h>
 
 // ------------------------------------------------------------------
 //  Func: 
@@ -53,10 +57,11 @@ cBall::cBall( int num, int wire, int tex )
     SetColor( BALL0 );
     
     rotation = 0;
-    normal[0] = 0.0;	// normal is Y vector
-    normal[1] = 1.0;
-    normal[2] = 0.0;
 
+    memset( pos, 0, sizeof(float)*2*3 );
+    memset( vel, 0, sizeof(float)*2*3 );
+    memset( accel, 0, sizeof(float)*2*3 );
+    
 }
 
 cBall::~cBall()
@@ -66,18 +71,21 @@ cBall::~cBall()
 int
 cBall::Draw()
 {
-    glColor4fv( color );
 
 //    glPushMatrix();		// save current position info
     
-    glTranslatef( pos[0], pos[1], pos[3] );
-    glRotatef( rotation, normal[0], normal[1], normal[2] );
+    // move ball into correct position
+    glTranslatef( pos[bN][bX], pos[bN][bY], pos[bN][bZ] );
+    glRotatef( rotation, BALL_NORMAL );
     
-    if ( flg_Texture && ballnum ) {
+    if ( flg_Texture && ballnum ) {		// use texture map
 	glEnable( GL_TEXTURE_2D );
 	texList->Bind( GL_TEXTURE_2D, (tex_list)(ballnum) );
     }
-    
+    else {
+        glColor4fv( color );			// else use ball color
+    }
+   
     if ( flg_Wire ){		// wire frame
 	glutWireSphere( BALL_R, 20, 16 );
     }
@@ -87,16 +95,58 @@ cBall::Draw()
     
     glDisable( GL_TEXTURE_2D );
     
+    
+//    then2now();		// copy all then values to now values
 //    glPopMatrix();
     return 0;
 }
 
 int
-cBall::Move()
+cBall::MoveWall( int x, int y )
 {
-    rotation += 5;
-    rotation %= 360;
+    float d_pos;	// delta position
+    float mx = 0+BALL_R, my = 0+BALL_R;
+    
+    if ( ballnum ) { 
+	rotation += 20;
+	rotation %= 360;
+    }
+    else {
+	pos[bN][bX] += vel[bN][bX];
+	if ( pos[bN][bX] >= x ) {
+	    vel[bN][bX] *= -1;			// reflection
+	    
+	    d_pos = pos[bN][bX] - x;		// dx past edge of table
+	    pos[bN][bX] -= d_pos;
+	}
+	if ( pos[bN][bX] <= mx ) {
+	    vel[bN][bX] *= -1;			// reflection
+	    
+	    d_pos = mx-pos[bN][bX];		// dx past edge of table
+	    pos[bN][bX] += d_pos;
+	}
+	pos[bN][bY] += vel[bN][bY];
+	if ( pos[bN][bY] >= y ) {
+	    vel[bN][bY] *= -1;			// reflection
+	    
+	    d_pos = pos[bN][bY] - y;		// dx past edge of table
+	    pos[bN][bY] -= d_pos;
+	}
+	if ( pos[bN][bY] <= my ) {
+	    vel[bN][bY] *= -1;			// reflection
+	    
+	    d_pos = my-pos[bN][bY];		// dx past edge of table
+	    pos[bN][bY] += d_pos;
+	}
+	    
+    }
 
+    return 0;
+}
+
+int
+cBall::MoveBall( void )
+{
     return 0;
 }
 
@@ -133,10 +183,10 @@ cBall::SetFlags( int wire, int texture )
 int
 cBall::SetColor( float r, float g, float b, float a )
 {
-    color[0] = r;		// (R)ed
-    color[1] = g;		// (G)reen
-    color[2] = b;		// (B)lue
-    color[3] = a;		// (A)lpha (channel)
+    color[bR] = r;		// (R)ed
+    color[bG] = g;		// (G)reen
+    color[bB] = b;		// (B)lue
+    color[bA] = a;		// (A)lpha (channel)
     
     return 0;
 }
@@ -144,9 +194,9 @@ cBall::SetColor( float r, float g, float b, float a )
 int
 cBall::SetColor( float c[3] )
 {
-    color[0] = c[0];		// (R)ed
-    color[1] = c[1];		// (G)reen
-    color[2] = c[2];		// (B)lue
+    color[bR] = c[bR];		// (R)ed
+    color[bG] = c[bG];		// (G)reen
+    color[bB] = c[bB];		// (B)lue
     
     return 0;
 }
@@ -155,15 +205,38 @@ cBall::SetColor( float c[3] )
 int
 cBall::SetPosition( float x, float y )
 {
-    pos[0] = x;
-    pos[1] = y;
-    pos[2] = 0;
+    pos[bN][bX] = x;
+    pos[bN][bY] = y;
+    pos[bN][bZ] = 0;
 
+/*    pos[bT][bX] = x;
+    pos[bT][bY] = y;
+    pos[bT][bZ] = 0;
+*/
     return 0;
 }
 
 int
 cBall::SetNumber( int num )
 {
+    if ( !num ){
+	vel[bN][bX] = 1;	// cue ball y velocity now
+	vel[bN][bY] = 3;	// cue ball y velocity now
+    }
+
     return (ballnum = num);
+}
+
+int
+cBall::then2now( void )
+{
+    int c;
+    
+    for( c=0; c<3; c++ ){		// now values = then values
+	pos[bN][c] = pos[bT][c];
+	vel[bN][c] = pos[bT][c];
+	accel[bN][c] = pos[bT][c];
+    }
+    
+    return 0;
 }

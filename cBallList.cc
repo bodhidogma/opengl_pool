@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  1999/11/20 07:53:56  paulmcav
+ * added texmap support, some more menu options, lighting, cleanup, etc.
+ *
  * Revision 1.7  1999/11/19 22:36:57  paulmcav
  * Balls displaying on the table, and more!
  *
@@ -47,10 +50,10 @@
 
 cBallList::cBallList( float x, float y, float w, float h ) :
     balls(NULL),
-    xMin(x),
-    xMax(x + w),
-    yMin(y),
-    yMax(y + h),
+    xMin(x+BALL_R),
+    xMax(x + w-BALL_R),
+    yMin(y+BALL_R),
+    yMax(y + h-BALL_R),
     hDiv(yMax/8),
     wDiv(xMax/4),
     iWire(DEF_WIRE),
@@ -122,12 +125,13 @@ cBallList::Move()
     int bc;
 
     for ( bc=0; bc< b_count; bc++ ) {
-	balls[ bc ].Move();
+	balls[ bc ].MoveWall( xMax, yMax );
+	balls[ bc ].MoveBall();
     }
     
 //    cout << "tick: " << tick << endl;
     
-    if ( tick++ > 4 )
+    if ( tick++ > 125 )
 	tick = 0;
 	
     return !tick;

@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  1999/11/20 07:53:57  paulmcav
+ * added texmap support, some more menu options, lighting, cleanup, etc.
+ *
  * Revision 1.8  1999/11/17 21:05:56  paulmcav
  * added mouse movement support
  *
@@ -50,6 +53,7 @@
 // ------------------------------------------------------------------
 
 void init ( void );
+void real_exit( int , void * );
 
 // ------------------------------------------------------------------
 //  Func: main( argc, argv )
@@ -64,6 +68,8 @@ cTexMaps *texList;
 int
 main( int argc, char *argv[] )
 {
+    on_exit( real_exit, NULL );
+    
     // init GL stuff
     glutInit( &argc, argv );
     
@@ -123,10 +129,14 @@ init ( void )
 
 void quit_game( void )
 {
+    exit(1);
+}
+
+void real_exit( int i, void *ptr )
+{
     if ( texList )
 	delete texList;
     if ( wMain )
 	delete wMain;
 
-    exit(1);
 }

@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1999/11/20 21:41:30  paulmcav
+ * added audio playback support.
+ *
  */
 
 #include "cAudio.h"
@@ -41,7 +44,7 @@ cAudio::cAudio()
     int f1;
 
     iAudCpid = 0;
-    if ( (f1 = open( AUDIO_FILE, O_RDONLY )) == -1 )
+    if ( (f1 = open( AUDIO_FILE, O_WRONLY )) == -1 )
 	iAudioOk = 0;
     else {
 	iAudioOk = 1;

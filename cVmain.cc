@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.19 $
+// $Revision: 1.20 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.19  1999/11/20 21:41:30  paulmcav
+ * added audio playback support.
+ *
  * Revision 1.18  1999/11/20 07:53:57  paulmcav
  * added texmap support, some more menu options, lighting, cleanup, etc.
  *
@@ -93,23 +96,21 @@ cVmain::cVmain( int x, int y, int w, int h ) :
 	iHelpWin(0),
 	Xdeg(15), Ydeg(0)
 {
-    GLfloat shiny[] = { 5.0 };
-    GLfloat spec[] = { 1, 1, 1, 1 };
+    GLfloat shiny[] = { 5.0 };			// some light stuff
     
-    table = new cTable( 0,0, 48,96 );
+    table = new cTable( 0,0, 48,96 );		// our table (size)
     assert( table );
     
-    audio = new cAudio();
+    audio = new cAudio();			// audio server
     assert( audio );
     
     tmp = 0;
-    flg_wire = DEF_WIRE;
+    flg_wire = DEF_WIRE;			// default flags
     flg_tex = DEF_TEX;
     
     fH = VMAIN_HEIGHT;		// viewport height
     
-    glMaterialfv( GL_FRONT, GL_SHININESS, shiny );
-//    glLightfv(GL_LIGHT0, GL_SPECULAR, spec );
+    glMaterialfv( GL_FRONT, GL_SHININESS, shiny );	// light settings
 }
 
 // ------------------------------------------------------------------
@@ -121,7 +122,7 @@ cVmain::cVmain( int x, int y, int w, int h ) :
 
 cVmain::~cVmain()
 {
-    if ( audio )
+    if ( audio )		// clean up when destroying class
 	delete audio;
     if ( table )
 	delete table; 
@@ -137,7 +138,7 @@ cVmain::~cVmain()
 int
 cVmain::setstatus( cVstatus *stat )
 {
-    if ( stat )
+    if ( stat )			// get handle to status window
 	Vstat = stat;
 	
     return 0;
@@ -169,11 +170,11 @@ cVmain::Display( void )
 
 //    glRotatef(tmp, 0, 1.0, 0 );
 
-    if ( iIntroWin ){
+    if ( iIntroWin ){			// draw the intro screen?
 	DoIntro();
     }
     else {
-	glPushMatrix();
+	glPushMatrix();			// save model_view matrix
 	
 	glEnable( GL_LIGHTING );
 	glEnable( GL_LIGHT0 );
@@ -185,18 +186,18 @@ cVmain::Display( void )
 	glutWireSphere(5, 20,16 );
 	glPopMatrix();
 */
-	glTranslatef( 0,0, (85-abs(Xdeg)) * 3.5);
-	glRotatef( Xdeg, 1, 0, 0 );
-	glRotatef( Ydeg, 0, 1, 0 );
+	glTranslatef( 0,0, (85-abs(Xdeg)) * 3.5);	// zoom with height
+	glRotatef( Xdeg, 1, 0, 0 );			// rotate around X
+	glRotatef( Ydeg, 0, 1, 0 );			// rotate around Y
 	
-        table->Draw();
+        table->Draw();				// draw our table .. etc.
 	
 	glDisable( GL_LIGHT0 );
 	glDisable( GL_LIGHTING );
 	
 	glPopMatrix();
     }
-    if ( iHelpWin ) {
+    if ( iHelpWin ) {				// draw the help window?
         glDisable( GL_DEPTH_TEST );
 	DoHelp();
     }
@@ -278,6 +279,7 @@ cVmain::DoIntro( void )
     w = fW / 2;
     h = fH / 2;
     
+    // 
     if ( (w * .7) < h ) {
     	pos[2] = w-5;			// W			(x2)
     	pos[3] = (w-5) * .7;		// H : aspect ratio	(y2)

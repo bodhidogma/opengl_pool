@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  1999/11/20 07:53:56  paulmcav
+ * added texmap support, some more menu options, lighting, cleanup, etc.
+ *
  * Revision 1.5  1999/11/19 22:36:57  paulmcav
  * Balls displaying on the table, and more!
  *
@@ -29,26 +32,45 @@
 #ifndef _CBALL_H_
 #define _CBALL_H_
 
-#define BALL_R	1.125
+#define BALL_R		1.125
+#define BALL_NORMAL	1,0,0		// normal vector
 
 #include <GL/glut.h>
 
 /*
 */
 
+enum ball_state {	// (N)ow (T)hen
+    bN,
+    bT
+};
+    
+enum ball_axis {	// X,Y,Z
+    bX,
+    bY,
+    bZ
+};
+
+enum ball_color {	// R,G,B,A
+    bR,
+    bG,
+    bB,
+    bA
+};
+
 class cBall
 {
 private:
-    float pos[3];		// x,y,z
-    float vel[3];
-    float accel[3];
-    float momentum;
-    float mass;
-    float torque;
-    float friction[2];	// static, kinetic
+    float pos[2][3];		// x,y,z
+    float vel[2][3];
+    float accel[2][3];
+//    float momentum;
+//    float mass;
+//    float torque;
+//    float friction[2];	// static, kinetic
 
     int   rotation;
-    float normal[3];
+//    float normal[3];
 
     int   ballnum;	// ball number
     int   dlist;	// display list
@@ -59,12 +81,15 @@ private:
     
     
 protected:
+    int then2now( void );
+
 public:
     cBall( int num, int wire, int tex=0 );
     ~cBall();
     
     int Draw(void);
-    int Move(void);
+    int MoveWall( int x, int y );
+    int MoveBall(void);
     int Resize(void);
 
     int SetFlags( int wire, int texture );
