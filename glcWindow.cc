@@ -3,9 +3,13 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1999/10/29 04:31:21  paulmcav
+ * added viewport class to manage glviewports in a window.
+ * Also enabled texture mapping class!
+ *
  * Revision 1.1  1999/10/25 06:33:21  paulmcav
  * working project with fancy windowing class for GL.
  * Tex maps sorta working, looks sharp though!
@@ -18,18 +22,21 @@
 #include <iostream.h>
 #include <assert.h>
 
+// number of windows that have been created ( <= MAX_WINDOWS )
 int glcWindow::glWinNum = 0;
 
+// static list of windows that have been created.  Used for call back's
 glcWindow *glWinList[ MAX_WINDOWS ];
 
 // ------------------------------------------------------------------
-//  Func: 
-//  Desc: 
+//  Func: glcWindow( parent, x,y, w,h, %, callbacks )
+//  Desc: create a child window from a given 'parent'.
+//	  set the size info to given values, and look for scaling if '%' flag
+//	  is set.
+//	  'callbacks' contains WCB_ flags for implementing handlers
 //
-//  Ret:  
+//  Ret:  n/a
 // ------------------------------------------------------------------
-
-// create a child window from a given parent
 
 glcWindow::glcWindow( glcWindow *parent, float x, float y, float w, float h,
 	int pct=0, int cb=0) :
@@ -44,6 +51,7 @@ glcWindow::glcWindow( glcWindow *parent, float x, float y, float w, float h,
 	wXpos(0),
 	wYpos(0)
 {
+    // parent does exist?
     assert( parent );
     
     iMyParent = parent->iMyNum;
@@ -57,9 +65,11 @@ glcWindow::glcWindow( glcWindow *parent, float x, float y, float w, float h,
 */    
     rescale();
     
+    // create a glut window context
     iMyNum = glutCreateSubWindow( iMyParent,
 	    (int)wXpos, (int)wYpos, (int)wWidth, (int)wHeight );
 
+    // attach needed callbacks for window
     glutDisplayFunc( cbDisplay );
     glutReshapeFunc( cbResize );
     
@@ -73,14 +83,24 @@ glcWindow::glcWindow( glcWindow *parent, float x, float y, float w, float h,
     if ( cb & WCB_MOUSEENTER )
 	glutEntryFunc( cbMouseEnter );
     
+    // store self into window list.
     glWinList[ iMyNum ] = this;
 	
     glWinNum++;
     
+    // associate self with parent
     parent->newchild( iMyNum );
 }
 
-// create a new top level window with a title bar
+// ------------------------------------------------------------------
+//  Func: glcWindow( title, w,h, mode, cb )
+//  Desc: create a new decorated window contect
+//	  title = window title string
+//	  w,h = window width / height
+//	  cb = WCB_ flags for attaching desired callbacks
+//
+//  Ret:  n/a
+// ------------------------------------------------------------------
 
 glcWindow::glcWindow( char *title, int w, int h, unsigned int mode, int cb=0 ) :
 	iNumChildren(0),
@@ -134,6 +154,14 @@ glcWindow::glcWindow( char *title, int w, int h, unsigned int mode, int cb=0 ) :
     glWinNum++;
 }
 
+// ------------------------------------------------------------------
+//  Func: ~glcWindow() 
+//  Desc: generic destructor
+//  TODO: check for and destroy child windows
+//  
+//  Ret:  n/a
+// ------------------------------------------------------------------
+
 glcWindow::~glcWindow()
 {
     glWinList[ iMyNum ] = NULL;
@@ -142,19 +170,32 @@ glcWindow::~glcWindow()
     glutDestroyWindow( iMyNum );
 }
 
+// ------------------------------------------------------------------
+//  Func: cbDisplay()
+//  Desc: find window instance, and call implemented callback
+//
+//  Ret:  n/a
+// ------------------------------------------------------------------
+
 void 
 glcWindow::cbDisplay( void )
 {
     glWinList[ glutGetWindow() ]->Display();
 }
 
+// ------------------------------------------------------------------
+//  Func: cbResize( w,h )
+//  Desc: find window instance, and call implemented callback
+// 	  iterate through children, and call their resize also
+//
+//  Ret:  n/a
+// ------------------------------------------------------------------
+
 void
 glcWindow::cbResize( int w, int h )
 {
     glcWindow *win = glWinList[ glutGetWindow() ];
 
-//    cout << "cbResize: " << glutGetcWindow() << endl;
-    
     // set new window size 
     win->wWidth = (float)w;
     win->wHeight = (float)h;
@@ -171,7 +212,7 @@ glcWindow::cbResize( int w, int h )
 	for ( cnt = 0; cnt < win->iNumChildren; cnt++ ){
     	    child = glWinList[ win->wChildList[cnt] ];
 	    
-	    child->rescale();
+	    child->rescale();		// for child scaling factors
 	    
     	    glutSetWindow( child->iMyNum );
 	    glutReshapeWindow( (int)child->wWidth, (int)child->wHeight );
@@ -180,11 +221,20 @@ glcWindow::cbResize( int w, int h )
     }
 }
 
+// ------------------------------------------------------------------
+//  Func: cb<function>( .. )
+//  Desc: associated glut callback functions
+//
+//  Ret:  n/a
+// ------------------------------------------------------------------
+
 void 
 glcWindow::cbKeys( unsigned char key, int mx, int my )
 {
     glWinList[ glutGetWindow() ]->Keys( key, mx, my );
 }
+
+// ------------------------------------------------------------------
 
 void 
 glcWindow::cbSKeys( int key, int mx, int my )
@@ -192,11 +242,15 @@ glcWindow::cbSKeys( int key, int mx, int my )
     glWinList[ glutGetWindow() ]->SKeys( key, mx, my );
 }
 
+// ------------------------------------------------------------------
+
 void 
 glcWindow::cbMouseClk( int b, int s, int x, int y )
 {
     glWinList[ glutGetWindow() ]->MouseClk( b, s, x, y );
 }
+
+// ------------------------------------------------------------------
 
 void 
 glcWindow::cbMouseEnter( int s )
@@ -204,16 +258,24 @@ glcWindow::cbMouseEnter( int s )
     glWinList[ glutGetWindow() ]->MouseEnter( s );
 }
 
-// should be called as an individual window (ie: it knows about itself)
+// ------------------------------------------------------------------
+//  Func: rescale()
+//  Desc: resize window appropriately if scaling info is used
+//        NOTE: really only called for child windows
+//
+//  Ret:  0
+// ------------------------------------------------------------------
 
 int
 glcWindow::rescale( void )
 {
-//    cout << "rescale: " << iMyNum << " pct: " << iPctg << endl;
+    // if % is used, and window has a parent
+    if ( iPctg && iMyParent ) {
 
-    if ( iPctg && iMyParent ) {		// window sizes are some pcg of parent
+	// find parent window (for size info)
     	glcWindow *p = glWinList[ iMyParent ];
 	
+	// scale appropriately
 	if ( wsXpos <= 1 )
 	    wXpos = wsXpos * p->wXpos;
 	    
@@ -230,16 +292,30 @@ glcWindow::rescale( void )
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: Visible( vis )
+//  Desc: get / set window visibility
+//
+//  Ret:  0
+// ------------------------------------------------------------------
+
 int
 glcWindow::Visible( int iVis )
 {
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: newchild( winnum )
+//  Desc: associate winnum as a child of this window
+//
+//  Ret:  # children attached
+// ------------------------------------------------------------------
 
 int
 glcWindow::newchild( int winnum )
 {
+    // only attach limited # of child windows
     if ( iNumChildren < MAX_WINDOWS ) {
 	wChildList[ iNumChildren++ ] = winnum;
     }

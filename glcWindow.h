@@ -4,10 +4,14 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1999/10/29 04:31:21  paulmcav
+ * added viewport class to manage glviewports in a window.
+ * Also enabled texture mapping class!
+ *
  * Revision 1.1  1999/10/25 06:33:21  paulmcav
  * working project with fancy windowing class for GL.
  * Tex maps sorta working, looks sharp though!
@@ -18,6 +22,7 @@
 #ifndef _GLCWINDOW_H_
 #define _GLCWINDOW_H_
 
+// maximum number of staticly available window instances. (Plenty!)
 #define MAX_WINDOWS 32
 
 // call back usage flags
@@ -29,18 +34,34 @@
 #include <GL/glut.h>
 
 /*
+ * glcWindow: generic base class for managing a GL window context.
+ * 
+ * Requires the implementation of a Display() and Resize() function for the
+ * window.  Optional call back methods which can be used are given by the WCB_
+ * flags as defined at the top of this file.
+ *
+ * Vars:
+ * glWinNum		number of windows that have been created
+ * wChildList		list of child windows this window is parent of.
+ * iNumChildren		number of children this window has.
+ * iPctg		use the scaling factors when re-sizing window
+ * ws<sizes>		scaling sizes (0 >= val) is a % of parent window
+ * w<sizes>		actual window sizes
+ * icWindow		decorated (parent) window number (maximum size info)
+ * iMyNum		instance window number
+ * iMyParent		instance parent window number
 */
 
 class glcWindow
 {
 private:
-static int glWinNum;
+static int glWinNum;				// number of windows created
     
-    int wChildList[ MAX_WINDOWS ];
+    int wChildList[ MAX_WINDOWS ];		// list of child wins
     int iNumChildren;
-    int iPctg;
+    int iPctg;					// sizes are a pctg of parent
     
-    float wsWidth,
+    float wsWidth,				// window scaling size info
     	  wsHeight,
           wsXpos,
 	  wsYpos;
@@ -49,14 +70,14 @@ static int glWinNum;
     int newchild( int num );
     
 protected:
-    float wWidth,
+    float wWidth,				// actual window sizes
     	  wHeight,
           wXpos,
 	  wYpos;
 
     int icWindow;
-    int iMyNum;
-    int iMyParent;
+    int iMyNum;					// my instance's window #
+    int iMyParent;				// my instance's parent #
     
 public:
     glcWindow( glcWindow *, float x, float y, float w, float h, int pct=0,
@@ -64,6 +85,7 @@ public:
     glcWindow( char *title, int w, int h, unsigned int mode, int cb=0 );
     virtual ~glcWindow();
 
+    // necessary callback's for interfacing with GLUT
 static    void cbDisplay( void );
 static    void cbResize( int w, int h );
 static    void cbKeys( unsigned char key, int x, int y );
@@ -71,6 +93,7 @@ static    void cbSKeys( int key, int x, int y );
 static    void cbMouseClk( int b, int s, int x, int y );
 static    void cbMouseEnter( int s );
 
+    // derived class implementations of call backs.  A per window basis.
     virtual int Display( void ) { return 0; }
     virtual int Resize( int w, int h ) { return 0; }
     virtual int Keys( unsigned char key, int mx, int my ) { return 0; }
@@ -78,11 +101,13 @@ static    void cbMouseEnter( int s );
     virtual int MouseClk( int b, int s, int x, int y ) { return 0; }
     virtual int MouseEnter( int s ) { return 0; }
 
+    // return window information
     int iHeight(void) { return (int)wHeight; }
     int iWidth(void) { return (int)wWidth; }
     int iXpos(void) { return (int)wXpos; }
     int iYpos(void) { return (int)wYpos; }
     
+    // get / set window visibility
     int Visible( int vis );
 };
 
