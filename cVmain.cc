@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  1999/11/11 20:38:31  paulmcav
+ * working on perspective use
+ *
  * Revision 1.9  1999/11/10 20:04:49  paulmcav
  * updated project for use with animation
  *
@@ -67,7 +70,7 @@ cVmain::cVmain( int x, int y, int w, int h ) :
     table = new cTable( 100,100, 20,20 );
     assert( table );
     
-    tmp = -50;
+    tmp = -2;
     flg_wire = 1;
 }
 
@@ -119,36 +122,44 @@ cVmain::Display( void )
     SetView();
     
     // --- draw our stuff --- 
-    glDisable( GL_DEPTH_TEST );
-    glDisable( GL_CULL_FACE );		// for texmaps
+//    glDisable( GL_DEPTH_TEST );
+//    glDisable( GL_CULL_FACE );		// for texmaps
     glShadeModel( GL_SMOOTH );
 
+    glTranslatef( 0.0, 0.0, -2 );
+
     if ( iIntroWin ){
-//	DoIntro();
+	DoIntro();
     }
     else {
 //        table->Draw();
     }
 //    if ( iHelpWin )
 //	DoHelp();
+    
+/*    glBegin( GL_QUADS );
+    {
+	glVertex3f( 0, 0, 0.0 );
+	glVertex3f( 1, 0, 0.0 );
+	glVertex3f( 1, 1, 0.0 );
+	glVertex3f( 0, 1, 0.0 );
+    }
+    glEnd();
+*/
 	glEnable( GL_COLOR_MATERIAL );
 	glEnable( GL_LIGHTING );
 	glEnable( GL_LIGHT0 );
 	glMaterialfv( GL_FRONT, GL_SHININESS, mat );
 	glLightfv( GL_LIGHT0, GL_POSITION, pos );
     
-//    glTranslatef( 50.0, 50.0, 0.0 );
-    
-    glTranslatef( 0.0, 0.0, tmp );
-    
-    tmp ++;
-    
+//    tmp ++;
     glColor3f( ORANGE );
-    if ( flg_wire )
-    	glutWireSphere( 20 , 10,8 );
-    else 
-	glutSolidSphere( 20, 10,8 );
     
+    if ( flg_wire )
+    	glutWireSphere( .5 , 20,16 );
+    else 
+	glutSolidSphere( .5, 20,16 );
+  
 	glDisable( GL_COLOR_MATERIAL );
 	glDisable( GL_LIGHTING );
 	glDisable( GL_LIGHT0 );
@@ -171,6 +182,9 @@ cVmain::Resize( int x, int y, int w, int h )
 //    if ( y >= 0 ) vY = y;
     if ( w >= 0 ) vW = w;
     if ( h >= 0 ) vH = h;
+
+    vW = w;
+    vH = h;
     
     return 0;
 }
@@ -185,29 +199,29 @@ cVmain::Resize( int x, int y, int w, int h )
 int
 cVmain::SetView( void )
 {
-    float fovy;
+    float w,h;
     
     glViewport( vX,vY, vW,vH );
     glScissor( vX,vY, vW,vH );
 
-    fovy = calcangle( vH, 100 );
+    w = vW;
+    h = vH;
     
-    cout << "fovy: " << fovy << " tmp: " << tmp << endl;
+//    fovy = calcangle( vH, 100 );
+    
+//    cout << "vW/vH: " << (float)(w/h) << " tmp: " << tmp << endl;
     
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
-//    glOrtho( 0, vW*1.0, 0, vH*1.0, 1,100 );
-//    glFrustum( -vW/2.0, vW/2.0, -vH/2.0, vH/2.0, 1,500 ); 
-//    glFrustum( -5, 5, -5, 5, 1,10 ); 
-    gluPerspective( fovy, vW/vH, 3, 500 );
-    
+//    glOrtho( -1, 1, -1, 1, 1,100 );
+    gluPerspective( 60, w/h, 1, 10 );
     
 //    cout << "vW: " << vW/2.0 << " vH: " << vH/2.0 << endl;
     
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
     
-//    glTranslatef( vW/2.0, vH/2.0, -1.0 );
+//    glTranslatef( vW/2.0, vH/2.0, -*1.01.0 );
     
     return 0;
 }
@@ -227,8 +241,8 @@ cVmain::DoIntro( void )
     glPushMatrix();
     
     glLoadIdentity();
-    glTranslatef( -vW/2.0, -vH/2.0, -1.0 );
-    
+//    glTranslatef( -vW/2.0, -vH/2.0, -1.0 );
+/*    
     if ( (vW * .7) < vH ) {
     	pos[2] = vW - 10;		// W
     	pos[3] = (vW-20) * .7;		// H : aspect ratio
@@ -241,6 +255,12 @@ cVmain::DoIntro( void )
     }
     pos[0] = (vW-pos[2]);		// X
     pos[1] = (vH-pos[3]);		// Y
+*/
+
+    pos[0] = -1.4;
+    pos[1] = -1.1;
+    pos[2] = 1.4;
+    pos[3] = 1.1;
     
     glEnable( GL_TEXTURE_2D );
     glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
@@ -250,12 +270,12 @@ cVmain::DoIntro( void )
     {
 	glTexCoord2f( 0.0, 1.0 );
 	glVertex3f( pos[0], pos[1], 0.0 );
-	glTexCoord2f( 0.0, 0.0 );
-	glVertex3f( pos[0], pos[3], 0.0 );
-	glTexCoord2f( 1.0, 0.0 );
-	glVertex3f( pos[2], pos[3], 0.0 );
 	glTexCoord2f( 1.0, 1.0 );
 	glVertex3f( pos[2], pos[1], 0.0 );
+	glTexCoord2f( 1.0, 0.0 );
+	glVertex3f( pos[2], pos[3], 0.0 );
+	glTexCoord2f( 0.0, 0.0 );
+	glVertex3f( pos[0], pos[3], 0.0 );
     }
     glEnd();
     glDisable( GL_TEXTURE_2D );
