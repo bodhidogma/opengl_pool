@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  1999/11/10 20:04:49  paulmcav
+ * updated project for use with animation
+ *
  * Revision 1.4  1999/11/02 08:47:04  paulmcav
  * added menu / kb callback support; & help window
  *
@@ -64,6 +67,8 @@ class cWMain : public glcWindow
 private:
     glcViewport **views;
     int iAnim;			// idle loop animation working.
+    int pX, pY;
+    int MMove; 			// mouse move
     int iTmp;
 
 protected:
@@ -78,6 +83,9 @@ public:
     int Keys( unsigned char key, int mx, int my );
     int Menu( int opt );
 
+    int MouseClk( int b, int s, int x, int y );
+    int MouseMove( int x, int y );
+    
     int Init( void );
     int Idle( void );
 };

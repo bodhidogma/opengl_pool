@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  1999/11/02 08:47:04  paulmcav
+ * added menu / kb callback support; & help window
+ *
  * Revision 1.2  1999/10/29 06:50:49  paulmcav
  * added class documentation
  *
@@ -33,8 +36,9 @@
 #define WCB_SKEYS	0x02
 #define WCB_MOUSECLK	0x04
 #define WCB_MOUSEENTER	0x08
-#define WCB_MENU	0x10
-#define WCB_IDLE	0x20
+#define WCB_MOUSEMOVE	0x10
+#define WCB_MENU	0x20
+#define WCB_IDLE	0x40
 
 #include <GL/glut.h>
 
@@ -97,6 +101,7 @@ static    void cbKeys( unsigned char key, int x, int y );
 static    void cbSKeys( int key, int x, int y );
 static    void cbMouseClk( int b, int s, int x, int y );
 static    void cbMouseEnter( int s );
+static    void cbMouseMove( int x, int y );
 static    void cbMenu( int v );
 static    void cbIdle( void );
 
@@ -107,6 +112,7 @@ static    void cbIdle( void );
     virtual int SKeys( int key, int mx, int my ) { return 0; }
     virtual int MouseClk( int b, int s, int x, int y ) { return 0; }
     virtual int MouseEnter( int s ) { return 0; }
+    virtual int MouseMove( int x, int y ) { return 0; }
     virtual int Menu( int v ) { return 0; }
     virtual int Idle( void ) { return 0; }
 

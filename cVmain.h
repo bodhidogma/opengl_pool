@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  1999/11/11 20:38:31  paulmcav
+ * working on perspective use
+ *
  * Revision 1.6  1999/11/10 20:04:49  paulmcav
  * updated project for use with animation
  *
@@ -50,6 +53,7 @@ class cVmain : public glcViewport {
 private:
     int iIntroWin;
     int iHelpWin;
+    int Xdeg, Ydeg;
     
     cVstatus *Vstat;
     cTable *table;
@@ -80,6 +84,9 @@ public:
     
     int Animate( void );
     int Wire( int flag =-1 );
+    
+    int Xrot( int deg );
+    int Yrot( int deg );
 };
 
 #endif

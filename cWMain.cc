@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  1999/11/12 21:05:40  paulmcav
+ * more perspective work
+ *
  * Revision 1.7  1999/11/11 20:38:31  paulmcav
  * working on perspective use
  *
@@ -53,7 +56,9 @@
 cWMain::cWMain( char *title, int w, int h, unsigned int mode, int cb ) :
 	glcWindow( title, w, h, mode, cb ),
 	views(0),
-	iAnim(0)
+	iAnim(0),
+	pX(0), pY(0),
+	MMove(0)
 {
     views = new glcViewport *[ mw_count ];
     assert( views );
@@ -232,7 +237,40 @@ cWMain::Menu( int opt )
 
     return 0;
 }
-    
+
+int
+cWMain::MouseClk( int button, int state, int x, int y )
+{
+    if ( button == GLUT_LEFT_BUTTON ) {
+	if ( state == GLUT_DOWN ) {
+	    MMove = 1;
+	    pX = x;
+	    pY = y;
+    	}
+	else {				// GLUT_UP 
+	    MMove = 0;
+	}
+    }
+    return 0;
+}
+
+int
+cWMain::MouseMove( int x, int y )
+{
+    if ( MMove ) {
+	if ( y-pY )
+	   ((cVmain*)views[ mw_main ])->Xrot( -(y-pY) );
+	if ( x-pX )
+	   ((cVmain*)views[ mw_main ])->Yrot( (x-pX) );
+	
+	pX = x;
+	pY = y;
+	
+	glutPostRedisplay();
+    }
+    return 0;
+}
+
 // ------------------------------------------------------------------
 //  Func: Init( )
 //  Desc:

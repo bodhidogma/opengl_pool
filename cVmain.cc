@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  1999/11/12 21:05:40  paulmcav
+ * more perspective work
+ *
  * Revision 1.11  1999/11/12 08:56:35  paulmcav
  * more viewport work
  *
@@ -68,7 +71,8 @@ extern cTexMaps *texList;		// external texturemaps list
 cVmain::cVmain( int x, int y, int w, int h ) :
 	glcViewport( x, y, w, h ),
 	iIntroWin(1),
-	iHelpWin(0)
+	iHelpWin(0),
+	Xdeg(0), Ydeg(0)
 {
     table = new cTable( 100,100, 20,20 );
     assert( table );
@@ -132,9 +136,11 @@ cVmain::Display( void )
     glShadeModel( GL_SMOOTH );
 
     glTranslatef( 0.0, 0.0, -2 );
-    glRotatef(tmp, 0, 1.0, 0 );
+//    glRotatef(tmp, 0, 1.0, 0 );
 
-
+    glRotatef( Xdeg, 1, 0, 0 );
+    glRotatef( Ydeg, 0, 1, 0 );
+    
     if ( iIntroWin ){
 	DoIntro();
     }
@@ -152,7 +158,7 @@ cVmain::Display( void )
 	glMaterialfv( GL_FRONT, GL_SHININESS, mat );
 	glLightfv( GL_LIGHT0, GL_POSITION, pos );
     
-    tmp ++;
+//    tmp ++;
     
     if ( flg_wire )
     	glutWireSphere( 1 , 20,16 );
@@ -349,3 +355,22 @@ cVmain::Wire( int flag )
     return flg_wire;
 }
 
+int
+cVmain::Xrot( int deg )
+{
+    Xdeg += deg;
+
+    if ( Xdeg < -15 )
+        Xdeg = -15;
+    if ( Xdeg > 90 )
+        Xdeg = 90;
+    
+    return 0;
+}
+
+int
+cVmain::Yrot( int deg )
+{
+    Ydeg += deg;
+    return 0;
+}

@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  1999/11/02 08:47:04  paulmcav
+ * added menu / kb callback support; & help window
+ *
  * Revision 1.2  1999/10/29 06:50:49  paulmcav
  * added class documentation
  *
@@ -242,6 +245,14 @@ glcWindow::cbMouseEnter( int s )
 // ------------------------------------------------------------------
 
 void 
+glcWindow::cbMouseMove( int x, int y )
+{
+    glWinList[ glutGetWindow() ]->MouseMove( x, y );
+}
+
+// ------------------------------------------------------------------
+
+void 
 glcWindow::cbMenu( int v )
 {
     glWinList[ glutGetWindow() ]->Menu( v );
@@ -334,6 +345,8 @@ glcWindow::UseCallBack( int cb, int use, int opt )
 	    glutMouseFunc( cbMouseClk );
 	if ( cb & WCB_MOUSEENTER )
 	    glutEntryFunc( cbMouseEnter );
+	if ( cb & WCB_MOUSEMOVE )
+	    glutMotionFunc( cbMouseMove );
 	if ( cb & WCB_MENU )
 	    r = glutCreateMenu( cbMenu );
 	if ( cb & WCB_IDLE )

@@ -10,6 +10,9 @@
 #include "pooltable.h"
 //#include "box_obj.h"
 
+int spin =0, move=0;
+int beginx, beginy;
+int dx = 0, dy = 0;
 
 void init(void)
 {   
@@ -32,7 +35,7 @@ void init(void)
     glLightfv( GL_LIGHT0, GL_SPECULAR, white_light );
 	   
     glEnable( GL_LIGHTING );
-    glEnable( GL_LIGHT0 );
+//    glEnable( GL_LIGHT0 );
 
 }
 
@@ -74,12 +77,15 @@ void display(void)
 	6, 7, 8,
 	9, 10, 11 };
     
-       	
     glColor3ub( 100,40,180 );
-	    
-    glScalef( .002, .002, .002 );
-    glRotatef(-45, 1, 0, 0 );
-    glTranslatef( -75, 0, 0 );
+    
+    
+    glPushMatrix();
+       	
+    glRotatef( dx, 1, 0, 0 );
+    glRotatef( dy, 0, 1, 0 );
+    
+//    glRotatef(-45, 1, 0, 0 );
     
 //    glInterleavedArrays( GL_V3F, 0, verticies );
 //    glDrawArrays( GL_QUADS, 0, 4 );
@@ -95,8 +101,11 @@ void display(void)
     glEnable( GL_DEPTH_TEST );
     glEnable( GL_CULL_FACE );
     
-//    glutSolidSphere( 1.0, 20, 16 );
+//    glutWireSphere( 400, 20, 16 );
     
+    glRotatef( -90, 1, 0, 0 );
+    glTranslatef( -225, 0, 0 );
+
     draw_raw();
 
 /*    glDrawElements( GL_LINE_STRIP,
@@ -126,7 +135,10 @@ void display(void)
    glEnd();
 */
  
-   glFlush();
+    glPopMatrix();
+
+//   glFlush();
+   glutSwapBuffers();
 }
 
 void reshape(int w, int h)
@@ -138,6 +150,8 @@ void reshape(int w, int h)
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
    glTranslatef(0.0, 0.0, -3.0);
+   
+   glScalef( .002, .002, .002 );
 }
 
 /* ARGSUSED1 */
@@ -148,21 +162,80 @@ void keyboard (unsigned char key, int x, int y)
       case 'q':
          exit(0);
          break;
+	 
+      case ' ':
+	 glutPostRedisplay();
+	 break;
+	
       default:
          break;
    }
 }
 
+
+
+void mouse( int button, int state, int x, int y )
+{
+    if ( button == GLUT_LEFT_BUTTON ) {
+	if ( state == GLUT_DOWN ) {
+	    glutIdleFunc( NULL );
+	    spin = 0;
+	    move = 1;
+	    beginx = x;
+	    beginy = y;
+    	}
+	else {	// GLUT_UP 
+	    move = 0;
+	}
+    }
+}
+
+void mousemove( int x, int y )
+{
+    if ( move ) {
+	if ( y-beginy )
+	    dx -= (y-beginy);
+	
+	if ( x-beginx )
+	    dy += (x-beginx);
+	
+	if ( dx < -15 )
+	    dx = -15;
+	if ( dx > 90 )
+	    dx = 90;
+	
+	
+	cout << "dx: " << dx << " dy: " << dy << endl;
+	
+	
+	beginx = x;
+	beginy = y;
+	
+	glutPostRedisplay();
+
+//	glutIdleFunc( idle );
+    }
+}
+
+void idle( void )
+{
+}
+
 int main(int argc, char** argv)
 {
    glutInit(&argc, argv);
-   glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
    glutInitWindowSize(512, 512);
    glutCreateWindow(argv[0]);
    init();
    glutDisplayFunc(display);
    glutReshapeFunc(reshape);
    glutKeyboardFunc(keyboard);
+   
+   glutMouseFunc( mouse );
+   glutMotionFunc( mousemove );
+   
    glutMainLoop();
+
    return 0; 
 }

@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  1999/11/02 08:47:04  paulmcav
+ * added menu / kb callback support; & help window
+ *
  * Revision 1.6  1999/10/29 04:31:21  paulmcav
  * added viewport class to manage glviewports in a window.
  * Also enabled texture mapping class!
@@ -65,7 +68,7 @@ main( int argc, char *argv[] )
     wMain = new cWMain( "MESH - GLPool v.01",
 	    600, 512,
 	    GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH,
-	    WCB_KEYS
+	    WCB_KEYS | WCB_MOUSECLK | WCB_MOUSEMOVE
 	    );
     assert( wMain );
 
