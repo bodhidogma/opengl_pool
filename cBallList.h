@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  1999/12/06 09:21:17  paulmcav
+ * added windos portability code/utils
+ *
  * Revision 1.11  1999/12/06 04:49:24  paulmcav
  * added pooltable model loading / rendering.
  * Cue stick hit now works.  Timing is a bit better
@@ -56,7 +59,8 @@ enum bl_balls {
     b_yellow,
     b_blue,
     b_red,
-/*    b_purple,
+    b_purple,
+#if 0 
     b_orange,
     b_green,
     b_magenta,
@@ -68,7 +72,8 @@ enum bl_balls {
     b_sorange,
     b_sgreen,
     b_smagenta,
-*/    b_count
+#endif
+    b_count
 };
 
 /*

@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  1999/12/06 09:21:17  paulmcav
+ * added windos portability code/utils
+ *
  * Revision 1.9  1999/12/06 04:49:24  paulmcav
  * added pooltable model loading / rendering.
  * Cue stick hit now works.  Timing is a bit better
@@ -109,7 +112,7 @@ public:
     
     int Draw(void);
     int MoveWall( int x, int y );
-    int MoveBall(void);
+    int MoveBall( cBall *balls, int numballs );
     int Resize(void);
 
     int SetFlags( int wire, int texture );
@@ -121,6 +124,12 @@ public:
     int SetNumber( int ballnum );
 
     int then2now( void );
+    
+    GLfloat distance( cBall &to, GLfloat &x, GLfloat &y );
+    GLfloat mag( void );
+    int HitBall( GLfloat x, GLfloat y );
+    
+    
 };
 
 

@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  1999/12/06 09:21:17  paulmcav
+ * added windos portability code/utils
+ *
  * Revision 1.12  1999/12/06 04:49:24  paulmcav
  * added pooltable model loading / rendering.
  * Cue stick hit now works.  Timing is a bit better
@@ -98,7 +101,6 @@ cBallList::cBallList( GLfloat x, GLfloat y, GLfloat w, GLfloat h ) :
 	if ( !bc ) {	// cue ball .. no texmap
 	    balls[bc].SetPosition( wDiv*2,hDiv*2);
 	    balls[bc].SetFlags( 0,iTex );
-	    balls[bc].move = 1;
 	}
 	else { 		// other balls
 	    RackPosition( bc, rp );
@@ -191,13 +193,13 @@ cBallList::Move( void )
     int anim = 0;
 
     for ( bc=0; bc< b_count; bc++ ) {
-	if ( balls[ bc ].move ) {
-	    balls[ bc ].MoveWall( xMax, yMax );
-	    anim |= balls[ bc ].MoveBall();
+	if ( balls[ bc ].move ) {		// if a ball is 'move'ing
+	    balls[ bc ].MoveWall( xMax, yMax );	// move ball and bounce-wall
+	    anim |= balls[ bc ].MoveBall( balls, b_count );
 	}
     }
     
-    return !anim;
+    return !anim;		// look to see if any balls are moving
 }
 
 // ------------------------------------------------------------------
@@ -228,9 +230,7 @@ cBallList::MoveToBall( int num )
 int
 cBallList::HitBall( int num, GLfloat x, GLfloat y )
 {
-    balls[num].vel[bN][bX] = x;
-    balls[num].vel[bN][bY] = y;
-    
+    balls[num].HitBall( x,y );
     return 0;
 }
 

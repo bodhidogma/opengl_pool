@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  1999/12/06 09:21:18  paulmcav
+ * added windos portability code/utils
+ *
  * Revision 1.7  1999/12/06 04:49:24  paulmcav
  * added pooltable model loading / rendering.
  * Cue stick hit now works.  Timing is a bit better
@@ -51,8 +54,6 @@
 #define STICK_DEF_POS	-.5
 
 extern cAudio *audio;
-
-#define CUE_AUDIO	"data/hit_cue.au"
 
 // ------------------------------------------------------------------
 //  Func: cTable( x,y, w,h )

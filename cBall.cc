@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  1999/12/06 09:21:17  paulmcav
+ * added windos portability code/utils
+ *
  * Revision 1.12  1999/12/06 04:49:24  paulmcav
  * added pooltable model loading / rendering.
  * Cue stick hit now works.  Timing is a bit better
@@ -52,7 +55,7 @@
 #include <string.h>
 #include <math.h>
 
-#define BUMPER_AUDIO	"data/bumper.au"
+#define MIN_BALL_MOVE	.5
 
 extern cTexMaps *texList;
 extern cAudio *audio;
@@ -159,53 +162,39 @@ cBall::MoveWall( int x, int y )
 {
     GLfloat d_pos;	// delta position
     GLfloat mx = 0+BALL_R, my = 0+BALL_R;
-    int   bump = 0;
     
-    if ( ballnum ) { 
-	rotation += 20;
-	rotation %= 360;
-    }
-    else {
-	pos[bN][bX] += vel[bN][bX];
-	if ( pos[bN][bX] >= x ) {
-	    vel[bN][bX] *= -1;			// reflection
-	    
-	    d_pos = pos[bN][bX] - x;		// dx past edge of table
-	    pos[bN][bX] = x-d_pos;
-	    bump = 1;
-audio->PlayFile( "data/bumper.au" );
-	}
-	else if ( pos[bN][bX] <= mx ) {
-	    vel[bN][bX] *= -1;			// reflection
-	    
-	    d_pos = mx-pos[bN][bX];		// dx past edge of table
-	    pos[bN][bX] = mx + d_pos;
-	    bump = 1;
-audio->PlayFile( "data/bumper.au" );
-	}
+    pos[bN][bX] += vel[bN][bX];
+    if ( pos[bN][bX] >= x ) {		// right wall
+	vel[bN][bX] *= -1;			// reflection
 	
-	pos[bN][bY] += vel[bN][bY];
-	if ( pos[bN][bY] >= y ) {
-	    vel[bN][bY] *= -1;			// reflection
-	    
-	    d_pos = pos[bN][bY] - y;		// dx past edge of table
-	    pos[bN][bY] = y-d_pos;
-	    bump = 1;
-audio->PlayFile( "data/bumper.au" );
-	}
-	else if ( pos[bN][bY] <= my ) {
-	    vel[bN][bY] *= -1;			// reflection
-	    
-	    d_pos = my-pos[bN][bY];		// dx past edge of table
-	    pos[bN][bY] = mx+d_pos;
-	    bump = 1;
-audio->PlayFile( "data/bumper.au" );
-	}
-	    
+	d_pos = pos[bN][bX] - x;		// dx past edge of table
+	pos[bN][bX] = x-d_pos;
+	audio->PlayFile( BUMPER_AUDIO );
+    }
+    else if ( pos[bN][bX] <= mx ) {		// left wall
+	vel[bN][bX] *= -1;			// reflection
+	
+	d_pos = mx-pos[bN][bX];		// dx past edge of table
+	pos[bN][bX] = mx + d_pos;
+	audio->PlayFile( BUMPER_AUDIO );
+    }
+    
+    pos[bN][bY] += vel[bN][bY];
+    if ( pos[bN][bY] >= y ) {		// top
+	vel[bN][bY] *= -1;			// reflection
+	
+	d_pos = pos[bN][bY] - y;		// dx past edge of table
+	pos[bN][bY] = y-d_pos;
+	audio->PlayFile( BUMPER_AUDIO );
+    }
+    else if ( pos[bN][bY] <= my ) {		// bottom
+	vel[bN][bY] *= -1;			// reflection
+	
+	d_pos = my-pos[bN][bY];		// dx past edge of table
+	pos[bN][bY] = mx+d_pos;
+	audio->PlayFile( BUMPER_AUDIO );
     }
 
-    if ( bump ) {
-    }
     return 0;
 }
 
@@ -217,14 +206,30 @@ audio->PlayFile( "data/bumper.au" );
 // ------------------------------------------------------------------
 
 int
-cBall::MoveBall( void )
+cBall::MoveBall( cBall *balls, int numballs )
 {
+    int i;
+    GLfloat dx, x,y;
+    
     vel[bN][bX] -= (K_FRICTION*vel[bN][bX]);
     vel[bN][bY] -= (K_FRICTION*vel[bN][bY]);
     
+    for ( i=0; i < numballs; i++ ) {	// look at all balls
+	if ( i != ballnum ) {		// dont want to check against self
+	    dx = distance( balls[ i ], x,y );
+	    
+	    if ( dx <= 2*BALL_R ) {	// collision with a ball
+		balls[i].HitBall( vel[bN][bX], vel[bN][bY] );
+		vel[bN][bX] = 0;
+		vel[bN][bY] = 0;
+	    }
+	}
+    }
 //    cout << "x: " << vel[bN][bX] << " y: " << vel[bN][bY] << endl;
     
-    return (fabs(vel[bN][bX])+fabs(vel[bN][bY]) > .5);
+    move = (fabs(vel[bN][bX])+fabs(vel[bN][bY]) > MIN_BALL_MOVE );
+    
+    return move;
 }
 
 // ------------------------------------------------------------------
@@ -355,5 +360,42 @@ cBall::then2now( void )
     }
     
     return 0;
+}
+
+GLfloat
+cBall::distance( cBall &to, GLfloat &dx, GLfloat &dy )
+{
+    GLfloat H;
+    
+    dx = to.pos[bN][bX] - pos[bN][bX];
+    dy = to.pos[bN][bY] - pos[bN][bY];
+    
+    H = sqrt( dx*dx + dy*dy );
+    
+    dx /= H;		// unitize the vector
+    dy /= H;
+    
+//    cout << "H(" << to.ballnum << "): " <<  H << endl;
+    
+    return H;
+}
+
+GLfloat
+cBall::mag( void )
+{
+    return sqrt( pos[bN][bX]*pos[bN][bX] + pos[bN][bY]*pos[bN][bY] );
+}
+
+int
+cBall::HitBall( GLfloat x, GLfloat y )
+{
+    vel[bN][bX] = x;
+    vel[bN][bY] = y;
+    
+    move = (fabs(x)+fabs(y) > MIN_BALL_MOVE );
+    
+//    cout <<"Hit("<< ballnum <<","<< move <<") X:"<< x <<" Y:"<< y << endl;
+    
+    return move;
 }
 

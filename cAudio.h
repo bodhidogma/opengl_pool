@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1999/11/20 21:41:30  paulmcav
+ * added audio playback support.
+ *
  * 
 */
 
@@ -16,6 +19,14 @@
 
 /*
 */
+
+#ifdef _WIN32
+#  define BUMPER_AUDIO	"data/bumper.wav"
+#  define CUE_AUDIO	"data/hit_cue.wav"
+#else
+#  define BUMPER_AUDIO	"data/bumper.au"
+#  define CUE_AUDIO	"data/hit_cue.au"
+#endif
 
 class cAudio
 {
