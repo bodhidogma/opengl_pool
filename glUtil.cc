@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  1999/11/02 09:03:53  paulmcav
+ * added a box around help menu
+ *
  * Revision 1.2  1999/10/29 04:31:21  paulmcav
  * added viewport class to manage glviewports in a window.
  * Also enabled texture mapping class!
@@ -51,7 +54,7 @@ glputs( GLfloat x, GLfloat y, char *buff )
 	glutBitmapCharacter( GLUT_BITMAP_9_BY_15, *ptr );
     }
 
-    glPopMatrix();
+//    glPopMatrix();
     return (ptr-buff);
 }
 

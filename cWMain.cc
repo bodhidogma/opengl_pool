@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  1999/11/02 08:47:04  paulmcav
+ * added menu / kb callback support; & help window
+ *
  * Revision 1.3  1999/10/29 07:12:22  paulmcav
  * added some more documentation to the class
  *
@@ -48,8 +51,7 @@ cWMain::cWMain( char *title, int w, int h, unsigned int mode, int cb ) :
     views[ mw_main ] = new cVmain( 0, 0, w, h-V_STATUS_HEIGHT );
     assert( views[ mw_main ] );
     
-    views[ mw_status ] = new cVstatus( 0,
-	    h-V_STATUS_HEIGHT, w );
+    views[ mw_status ] = new cVstatus( 0, h-V_STATUS_HEIGHT, w );
     assert( views[ mw_status ] );
     
     views[ mw_count ] = NULL;

@@ -1,9 +1,41 @@
-** $Revision: 1.5 $
+** $Revision: 1.6 $
 ** Misc Notes **
 
+Required Libraries:
+
+   * libpng	- Portable Network Graphics library
+   * glpng	- Used to import png files as texmaps
+   * GL		- Mesa seems to work fine!
+   
+Memebers:
+   Paul McAvoy <paulmcav@auctomation.com>
+   Soubabeh Maher <ssmaher@sfsu.edu>
+   Sachiko Halper <sachi361@pop3.concentric.net>
+   Scott Emery <scottle8@aol.com>
+
+Source Availability:
+   CVS:
+   	cvs -d ':pserver:anonymous@auctomation.com:/home/cvs' login
+   	cvs -d ':pserver:anonymous@auctomation.com:/home/cvs' -z3 co school
+
+        For updates, go into the any subdirectory: school, school/glpool
+	and enter:
+	
+	cvs update
+
+  Non anonymous CVS access:
+
+  To add files:
+	cvs add <file names>
+
+  To commit files:
+	cvs -z3 ci [file(s)]
+
+-----------------
 Scott's Notes:
  Hey, Paul helped get my modem configured!
 
+-----------------
 Paul's Notes:
  found out that much of what I was playing with was not working due to
  'cull_face' option
@@ -12,6 +44,7 @@ Paul's Notes:
  2d texmaps working okay!
  Got a windowing class working well, title bars, and intro texmap.
 
+-----------------
 Soudi's Notes:
  * copy the temp/soudi.* files into the glpool dir and then run 'make soudi'
 

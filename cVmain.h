@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  1999/11/02 08:47:04  paulmcav
+ * added menu / kb callback support; & help window
+ *
  * Revision 1.2  1999/10/29 07:12:22  paulmcav
  * added some more documentation to the class
  *
@@ -26,6 +29,8 @@
 #include "glcViewport.h"
 #include "cVstatus.h"
 
+#include "cBallList.h"
+
 /*
  * Main view implementation. Base class is glcViewport
  *
@@ -38,6 +43,7 @@ private:
     int iHelpWin;
     
     cVstatus *Vstat;
+    cBallList *lBalls;
     
 protected:
     

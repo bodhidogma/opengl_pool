@@ -42,7 +42,7 @@ void draw_raw( void )
     
     for ( cnt=0, pos=0; cnt< rawobj[3]; cnt++ ){
 //    for ( cnt=0, pos=0; cnt< 3; cnt++ ){
-    	glDrawElements( GL_LINE_STRIP,
+    	glDrawElements( GL_TRIANGLE_STRIP,
 	    rawobj__iii[pos]*3,
 	    GL_UNSIGNED_INT, &rawobj__iii[pos+2] );
 	

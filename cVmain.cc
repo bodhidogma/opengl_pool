@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  1999/11/04 02:21:43  paulmcav
+ * fixed texmap problem, added colors to out of play balls.
+ *
  * Revision 1.5  1999/11/03 17:28:55  paulmcav
  * added some colors for balls
  *
@@ -34,6 +37,8 @@
 
 #include "glUtil.h"
 
+#include <assert.h>
+
 //#include "pooltable.h"
 
 extern cTexMaps *texList;		// external texturemaps list
@@ -50,6 +55,8 @@ cVmain::cVmain( int x, int y, int w, int h ) :
 	iIntroWin(1),
 	iHelpWin(0)
 {
+    lBalls = new cBallList( 100,100, 20,20 );
+    assert( lBalls );
 }
 
 // ------------------------------------------------------------------
@@ -61,6 +68,8 @@ cVmain::cVmain( int x, int y, int w, int h ) :
 
 cVmain::~cVmain()
 {
+    if ( lBalls )
+	delete lBalls; 
 }
 
 // ------------------------------------------------------------------
@@ -105,9 +114,7 @@ cVmain::Display( void )
 	if ( iHelpWin )
 	DoHelp();
     else {
-    	glTranslatef( 100, 100, 0.0 );
-    	glColor3ub( 153, 184, 166 );
-    	glutWireSphere( 40.1, 20, 16 );
+	lBalls->Draw();
     }
     
     return 0;
@@ -228,7 +235,7 @@ cVmain::DoHelp( void )
 
     glshadebox( (int)x,(int)y, (int)w,(int)h+1, 1 );
 //    glshadebox( (int)x+1,(int)y+1, (int)w-1,(int)h-0, 0 );
-    
+
     glColor3f( WHITE );
 
     help_message( x,y, w,h );

@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.7 1999-10-29 04:31:21 paulmcav Exp $
+# $Id: Makefile,v 1.8 1999-11-10 00:21:04 paulmcav Exp $
 #
 ##### MACROS #####
 
@@ -76,11 +76,15 @@ GLPOOL	= glpool.o \
 	  cTexMaps.o \
 	  cWMain.o \
 	  cVmain.o \
-	  cVstatus.o
+	  cVstatus.o \
+	  cBall.o \
+	  cBallList.o
 
 SOUDI	= soudi.o
 
 TEST	= test.o
+
+SCOTT	= scott.o readtex.o
 
 glpool	: ${addprefix $(OBJ),$(GLPOOL)}
 	$(LD) $(LDFLAGS) $^ $(LIBS) -o $@
@@ -89,6 +93,9 @@ test	: ${addprefix $(OBJ),$(TEST)}
 	$(LD) $(LDFLAGS) $^ $(LIBS) -o $@
 	
 soudi	: ${addprefix $(OBJ),$(SOUDI)}
+	$(LD) $(LDFLAGS) $^ $(LIBS) -o $@
+	
+scott	: ${addprefix $(OBJ),$(SCOTT)}
 	$(LD) $(LDFLAGS) $^ $(LIBS) -o $@
 	
 dep	: ${addprefix $(OBJ),$(sources:.cc=.d)}

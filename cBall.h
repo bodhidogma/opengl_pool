@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1999/11/08 20:21:40  paulmcav
+ * added new ball management classes.
+ *
  * 
 */
 
@@ -20,21 +23,21 @@
 class cBall
 {
 private:
-    GLfloat pos[3];		// x,y,z
-    GLfloat vel[3];
-    GLfloat accel[3];
-    GLfloat momentum;
-    GLfloat mass;
-    GLfloat torque;
-    GLfloat friction[2];	// static, kinetic
+    float pos[3];		// x,y,z
+    float vel[3];
+    float accel[3];
+    float momentum;
+    float mass;
+    float torque;
+    float friction[2];	// static, kinetic
     
 protected:
 public:
     cBall();
     ~cBall();
     
-    Draw();
-    Move();
+    int Draw();
+    int Move();
 
 };
 
