@@ -3,9 +3,13 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1999/10/29 04:31:21  paulmcav
+ * added viewport class to manage glviewports in a window.
+ * Also enabled texture mapping class!
+ *
  */
 
 #include <iostream.h>
@@ -16,16 +20,13 @@
 #include "glpng.h"
 #include "cTexMaps.h"
 
-//extern cTexMaps *texList;
-//extern GLuint texName[ tex_cnt+1 ];
-
-extern cTexMaps *texList;
+extern cTexMaps *texList;		// external texturemaps list
 
 // ------------------------------------------------------------------
-//  Func: 
-//  Desc: 
+//  Func: cVmain( x,y, w,h )
+//  Desc: create our main viewport
 //
-//  Ret:  
+//  Ret:  n/a
 // ------------------------------------------------------------------
 
 cVmain::cVmain( int x, int y, int w, int h ) :
@@ -33,9 +34,23 @@ cVmain::cVmain( int x, int y, int w, int h ) :
 {
 }
 
+// ------------------------------------------------------------------
+//  Func: ~cVmain()
+//  Desc: generic desctructor
+//
+//  Ret:  n/a
+// ------------------------------------------------------------------
+
 cVmain::~cVmain()
 {
 }
+
+// ------------------------------------------------------------------
+//  Func: Display()
+//  Desc: Manage the display of the main window
+//
+//  Ret:  0
+// ------------------------------------------------------------------
 
 int
 cVmain::Display( void )
@@ -59,6 +74,13 @@ cVmain::Display( void )
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: Resize( x,y, w,h )
+//  Desc: Take care of stuff that is window size dependent
+//
+//  Ret:  0
+// ------------------------------------------------------------------
+
 int
 cVmain::Resize( int x, int y, int w, int h )
 {
@@ -69,6 +91,13 @@ cVmain::Resize( int x, int y, int w, int h )
     
     return 0;
 }
+
+// ------------------------------------------------------------------
+//  Func: SetView()
+//  Desc: Setup our viewport projection / size etc.
+//
+//  Ret:  0
+// ------------------------------------------------------------------
 
 int
 cVmain::SetView( void )
@@ -85,6 +114,13 @@ cVmain::SetView( void )
     
     return 0;
 }
+
+// ------------------------------------------------------------------
+//  Func: Intro()
+//  Desc: Display our into texture map image scaled to fit viewable area
+//
+//  Ret:  0
+// ------------------------------------------------------------------
 
 int
 cVmain::Intro( void )

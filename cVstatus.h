@@ -4,10 +4,14 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1999/10/29 04:31:21  paulmcav
+ * added viewport class to manage glviewports in a window.
+ * Also enabled texture mapping class!
+ *
  * Revision 1.1  1999/10/25 06:33:21  paulmcav
  * working project with fancy windowing class for GL.
  * Tex maps sorta working, looks sharp though!
@@ -26,6 +30,15 @@
 #define SC_BALL_W	22
 
 /*
+ * cVstatus: status viewport
+ *
+ * Simple viewport to display application status on the screen.
+ *
+ * Vars:
+ * myLists 	display lists to draw in status window
+ * cMessage	a simple text message to display (if !NULL)
+ * iBallList[]	list of billiard balls not on the table.  (to show as sunk)
+ * iBallCnt	# of listed billiard balls
 */
 
 class cVstatus : public glcViewport

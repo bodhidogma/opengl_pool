@@ -4,10 +4,14 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1999/10/29 04:31:21  paulmcav
+ * added viewport class to manage glviewports in a window.
+ * Also enabled texture mapping class!
+ *
  * 
 */
 
@@ -19,11 +23,13 @@
 #include "glcViewport.h"
 
 /*
+ * Main view implementation. Base class is glcViewport
+ *
+ * Manage and draw main application view
 */
 
 class cVmain : public glcViewport {
 private:
-    GLuint texIntro;
     
 protected:
     

@@ -4,10 +4,14 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  1999/10/29 04:31:21  paulmcav
+ * added viewport class to manage glviewports in a window.
+ * Also enabled texture mapping class!
+ *
  * Revision 1.1  1999/10/25 06:33:21  paulmcav
  * working project with fancy windowing class for GL.
  * Tex maps sorta working, looks sharp though!
@@ -28,7 +32,15 @@ enum mw_views {
 #include "glcViewport.h"
 
 /*
+ * cWMain: main window manager
  *
+ * Derived class from glcWindow for managing main display context.
+ * Uses Display, Resize, Keys callbacks.
+ * 
+ * wm_views: enum'd viewport's in main window
+ * 
+ * Vars:
+ * views	dynamic array of viewport pointers
 */
 
 class cWMain : public glcWindow

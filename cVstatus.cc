@@ -3,12 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 /*
  * $Log: not supported by cvs2svn $
- * Revision 1.1  1999/10/25 06:33:21  paulmcav
- * working project with fancy windowing class for GL.
- * Tex maps sorta working, looks sharp though!
+ * Revision 1.1  1999/10/29 04:31:21  paulmcav
+ * added viewport class to manage glviewports in a window.
+ * Also enabled texture mapping class!
  *
  */
 
@@ -27,10 +27,10 @@ enum ws_listobjs {
 };
 
 // ------------------------------------------------------------------
-//  Func: 
-//  Desc: 
+//  Func: cVstatus( x,y, w )
+//  Desc: status viewport constructor
 //
-//  Ret:  
+//  Ret:  n/a
 // ------------------------------------------------------------------
 
 cVstatus::cVstatus( int x, int y, int w ) :
@@ -42,12 +42,25 @@ cVstatus::cVstatus( int x, int y, int w ) :
     myLists = glGenLists( ws_objcnt+1 );
 
     ResetBalls();
-//    DrawBallQ();
 }
+
+// ------------------------------------------------------------------
+//  Func: ~cVstatus()
+//  Desc: status viewport destructor
+//
+//  Ret:  n/a
+// ------------------------------------------------------------------
 
 cVstatus::~cVstatus()
 {
 }
+
+// ------------------------------------------------------------------
+//  Func: Display()
+//  Desc: display status information
+//
+//  Ret:  0
+// ------------------------------------------------------------------
 
 int
 cVstatus::Display( void )
@@ -77,6 +90,13 @@ cVstatus::Display( void )
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: Resize( x,y, w,h )
+//  Desc: ajust display lists to fit into viewport
+//
+//  Ret:  0
+// ------------------------------------------------------------------
+
 int
 cVstatus::Resize( int x, int y, int w, int h )
 {
@@ -86,7 +106,7 @@ cVstatus::Resize( int x, int y, int w, int h )
 //    if ( h >= 0 ) vH = h;
     h = V_STATUS_HEIGHT;
     
-    // re-generate some lists
+    // (re)generate some lists
     glNewList( myLists + ws_outline, GL_COMPILE );
     {
 	glBegin( GL_QUADS );		// Background gray
@@ -110,6 +130,13 @@ cVstatus::Resize( int x, int y, int w, int h )
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: SetView()
+//  Desc: setup viewport correctly
+//
+//  Ret:  0
+// ------------------------------------------------------------------
+
 int
 cVstatus::SetView( void )
 {
@@ -126,6 +153,13 @@ cVstatus::SetView( void )
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: Message( msg )
+//  Desc: load / erase displayed message
+//
+//  Ret:  0
+// ------------------------------------------------------------------
+
 int
 cVstatus::Message( char *msg )
 {
@@ -141,6 +175,13 @@ cVstatus::Message( char *msg )
 
     return 0;
 }
+
+// ------------------------------------------------------------------
+//  Func: DrawBallQ()
+//  Desc: draw the sunk ball list
+//
+//  Ret:  0
+// ------------------------------------------------------------------
 
 int
 cVstatus::DrawBallQ( void )
@@ -167,7 +208,6 @@ cVstatus::DrawBallQ( void )
     		glColor3f( YELLOW );
 		gluQuadricNormals( q, GL_SMOOTH );
 		gluSphere( q, SC_BALL_W/2 , 10, 5 );
-//	    	glutWireSphere( 10, 10, 5 );
 	    }
     	    glTranslatef( SC_BALL_W, 0.0, 0.0 );
     	}
@@ -182,6 +222,12 @@ cVstatus::DrawBallQ( void )
     return 0;
 }
     
+// ------------------------------------------------------------------
+//  Func: ResetBalls()
+//  Desc: reset / init list of sunk balls
+//
+//  Ret:  0
+// ------------------------------------------------------------------
 
 int
 cVstatus::ResetBalls( void )
@@ -191,6 +237,13 @@ cVstatus::ResetBalls( void )
 
     return 0;
 }
+
+// ------------------------------------------------------------------
+//  Func: AddBalls( ballnum )
+//  Desc: add 'ballnum' to the queue of sunk balls
+//
+//  Ret:  
+// ------------------------------------------------------------------
 
 int
 cVstatus::AddBalls( int ballnum )

@@ -4,10 +4,14 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1999/10/29 04:31:21  paulmcav
+ * added viewport class to manage glviewports in a window.
+ * Also enabled texture mapping class!
+ *
  * 
 */
 
@@ -15,13 +19,19 @@
 #define _GLCVIEWPORT_H_
 
 /*
+ * Simple viewport management class.
+ * Typical use is with glcWindow implementation
+ *
+ * Vars:
+ * v<?>		viewport size information
+ * 
 */
 
 class glcViewport
 {
 private:
 protected:
-    int vW, vH,
+    int vW, vH,		// viewport size's
 	vX, vY;
 
 public:
@@ -33,7 +43,7 @@ public:
 
     virtual int SetView( void ){ return 0; }
 
-    void dump( void );
+    void dump( void );		// dump some viewport info
 };
 
 #endif
