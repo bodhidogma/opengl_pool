@@ -4,10 +4,15 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.15 $
+// $Revision: 1.16 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.15  1999/12/06 04:49:24  paulmcav
+ * added pooltable model loading / rendering.
+ * Cue stick hit now works.  Timing is a bit better
+ * Includes timing statistics
+ *
  * Revision 1.14  1999/12/03 21:57:34  paulmcav
  * Added que stick action to game
  *
@@ -82,12 +87,12 @@ private:
     int iHelpWin;
     int Xdeg, Ydeg;
     int StickRotZ, StickTrY;
-    float fovy;
+    GLfloat fovy;
     
     cVstatus *Vstat;
     cTable *table;
     
-    float tmp;
+    GLfloat tmp;
     int  flg_wire, flg_tex;
     
 protected:
@@ -106,7 +111,7 @@ public:
     int DoIntro( void );
     int DoHelp( void );
 
-    int help_message( float x, float y, float w, float h );
+    int help_message( GLfloat x, GLfloat y, GLfloat w, GLfloat h );
 
     int Help( int flag =-1 );
     int Intro( int flag =-1 );

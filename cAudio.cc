@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  1999/11/24 18:58:48  paulmcav
+ * more manipulations for ball movement.
+ *
  * Revision 1.2  1999/11/22 22:17:08  paulmcav
  * enabled ball bouncing
  *
@@ -17,7 +20,11 @@
 #include "cAudio.h"
 
 #include <stdlib.h>
-#include <unistd.h>
+#ifdef _WIN32
+#  include <io.h>
+#else
+#  include <unistd.h>
+#endif
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -44,12 +51,12 @@ void DevAudio( void );
 
 cAudio::cAudio()
 {
-    int f1;
+    int f1 = 0;
 
+    iAudioOk = 0;
     iAudCpid = 0;
-    if ( (f1 = open( AUDIO_FILE, O_WRONLY )) == -1 )
-	iAudioOk = 0;
-    else {
+#ifndef _WIN32
+    if ( (f1 = open( AUDIO_FILE, O_WRONLY )) != -1 ) {
 	iAudioOk = 1;
 
 	close( f1 );
@@ -60,12 +67,15 @@ cAudio::cAudio()
 	    exit(1);
 	}
     }
+#endif
 }
 
 cAudio::~cAudio()
 {
+#ifndef _WIN32
     if ( iAudCpid )
 	kill( iAudCpid, SIGINT );
+#endif
 }
 
 int

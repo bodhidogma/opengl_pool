@@ -4,10 +4,15 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  1999/12/06 04:49:24  paulmcav
+ * added pooltable model loading / rendering.
+ * Cue stick hit now works.  Timing is a bit better
+ * Includes timing statistics
+ *
  * Revision 1.5  1999/12/03 21:57:34  paulmcav
  * Added que stick action to game
  *
@@ -45,9 +50,9 @@ class cTable
 {
 private:
     cBallList *lBalls;				// table balls
-    float xMin, xMax, yMin, yMax;
+    GLfloat xMin, xMax, yMin, yMax;
     int   iWire, iTex;
-    float StickRotZ, StickTrY, StickDY;
+    GLfloat StickRotZ, StickTrY, StickDY;
     int   iStick;				// draw stick
     int   dlist;
     GLuint  plist;
@@ -58,13 +63,13 @@ protected:
     int  make_stick( int lnum );
 
 public:
-    cTable( float x, float y, float w, float h );
+    cTable( GLfloat x, GLfloat y, GLfloat w, GLfloat h );
     ~cTable();
 
     int Draw( void );
     int Move( void );
 
-    int Resize( float x, float y, float w, float h );
+    int Resize( GLfloat x, GLfloat y, GLfloat w, GLfloat h );
     int SetFlags( int wire, int tex );
     
     int StickRot( int deg );

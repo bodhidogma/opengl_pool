@@ -4,10 +4,15 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  1999/12/06 04:49:24  paulmcav
+ * added pooltable model loading / rendering.
+ * Cue stick hit now works.  Timing is a bit better
+ * Includes timing statistics
+ *
  * Revision 1.6  1999/11/20 07:53:57  paulmcav
  * added texmap support, some more menu options, lighting, cleanup, etc.
  *
@@ -37,7 +42,7 @@
 #define DEF_TEX  1
 
 /*
-	list of floating pt color values
+	list of GLfloating pt color values
 */
 
 // glColor?f( )

@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  1999/11/18 01:12:19  paulmcav
+ * added help menu again, intro win, got correct fovy
+ *
  * Revision 1.5  1999/11/11 20:38:31  paulmcav
  * working on perspective use
  *
@@ -69,7 +72,7 @@ glputs( GLfloat x, GLfloat y, char *buff )
 
 
 int
-glshadebox( int x, int y, int w, int h, int raised=1 )
+glshadebox( int x, int y, int w, int h, int raised )
 {
     glBegin( GL_LINES );
     {
@@ -99,7 +102,7 @@ glshadebox( int x, int y, int w, int h, int raised=1 )
 
 
 int
-glshadebox( float x, float y, float w, float h, int raised=1 )
+glshadebox( GLfloat x, GLfloat y, GLfloat w, GLfloat h, int raised )
 {
     glBegin( GL_LINE_LOOP );
     {
@@ -126,7 +129,7 @@ glshadebox( float x, float y, float w, float h, int raised=1 )
 
 
 int
-glshadebar( int x, int y, int w, int h, int raised=1 )
+glshadebar( int x, int y, int w, int h, int raised )
 {
     glBegin( GL_LINES );
     {
@@ -161,14 +164,28 @@ glshadebar( int x, int y, int w, int h, int raised=1 )
     return 0;
 }
 
-float
-calcangle( float size, float dist )
+GLfloat
+calcangle( GLfloat size, GLfloat dist )
 {
-    float radtheta, degtheta;
+    GLfloat radtheta, degtheta;
     
     radtheta = 2.0 * atan2( size/2.0, dist );
     degtheta = (180.0 * radtheta) / 3.1415926535;
     
     return degtheta;
+}
+
+int
+glScale( GLfloat scale, GLfloat *list, int start, int step, int num )
+{
+    int i;
+
+    for ( i = 0; i <= num; i++ ) {
+	list[ start + (i*step) +0 ] *= scale;
+	list[ start + (i*step) +1 ] *= scale;
+	list[ start + (i*step) +2 ] *= scale;
+    }
+
+    return 0;
 }
 

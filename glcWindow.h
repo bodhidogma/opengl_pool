@@ -4,10 +4,15 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  1999/12/06 04:49:24  paulmcav
+ * added pooltable model loading / rendering.
+ * Cue stick hit now works.  Timing is a bit better
+ * Includes timing statistics
+ *
  * Revision 1.4  1999/11/17 21:05:56  paulmcav
  * added mouse movement support
  *
@@ -74,7 +79,7 @@ static int glWinNum;				// number of windows created
     int iNumChildren;
     int iPctg;					// sizes are a pctg of parent
     
-    float wsWidth,				// window scaling size info
+    GLfloat wsWidth,				// window scaling size info
     	  wsHeight,
           wsXpos,
 	  wsYpos;
@@ -83,7 +88,7 @@ static int glWinNum;				// number of windows created
     int newchild( int num );
     
 protected:
-    float wWidth,				// actual window sizes
+    GLfloat wWidth,				// actual window sizes
     	  wHeight,
           wXpos,
 	  wYpos;
@@ -93,7 +98,7 @@ protected:
     int iMyParent;				// my instance's parent #
     
 public:
-    glcWindow( glcWindow *, float x, float y, float w, float h, int pct=0,
+    glcWindow( glcWindow *, GLfloat x, GLfloat y, GLfloat w, GLfloat h, int pct=0,
 	    int cb=0 );
     glcWindow( char *title, int w, int h, unsigned int mode, int cb=0 );
     virtual ~glcWindow();

@@ -4,10 +4,15 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  1999/12/06 04:49:24  paulmcav
+ * added pooltable model loading / rendering.
+ * Cue stick hit now works.  Timing is a bit better
+ * Includes timing statistics
+ *
  * Revision 1.8  1999/11/24 18:58:48  paulmcav
  * more manipulations for ball movement.
  *
@@ -49,6 +54,11 @@
 /*
 */
 
+#define BALL_AXIS_DATA( field, state, x,y,z )	\
+	field[state][bX] = x;			\
+	field[state][bY] = y;			\
+	field[state][bZ] = z
+
 enum ball_state {	// (N)ow (T)hen
     bN,
     bT
@@ -73,26 +83,29 @@ private:
 protected:
 public:
     int   move;
-    float pos[2][3];		// x,y,z
-    float vel[2][3];
-    float accel[2][3];
-//    float momentum;
-//    float mass;
-//    float torque;
-//    float friction[2];	// static, kinetic
+    GLfloat pos[2][3];		// x,y,z
+    GLfloat vel[2][3];
+    GLfloat accel[2][3];
+//    GLfloat momentum;
+//    GLfloat mass;
+//    GLfloat torque;
+//    GLfloat friction[2];	// static, kinetic
 
     int   rotation;
-//    float normal[3];
+//    GLfloat normal[3];
 
     int   ballnum;	// ball number
     int   dlist;	// display list
     
     int   flg_Wire;		// wireframe
     int   flg_Texture;		// texture mapped
-    float color[4];		// color
+    GLfloat color[4];		// color
     
+    cBall( void );
     cBall( int num, int wire, int tex=0 );
     ~cBall();
+    
+    int init( int num, int wire, int tex=0 );
     
     int Draw(void);
     int MoveWall( int x, int y );
@@ -100,11 +113,11 @@ public:
     int Resize(void);
 
     int SetFlags( int wire, int texture );
-    int SetColor( float r, float g, float b, float a=1.0 );
-    int SetColor( float c[3] );
-//    int SetColor( float c[4] );
+    int SetColor( GLfloat r, GLfloat g, GLfloat b, GLfloat a=1.0 );
+    int SetColor( GLfloat c[3] );
+//    int SetColor( GLfloat c[4] );
     
-    int SetPosition( float x, float y );
+    int SetPosition( GLfloat x, GLfloat y );
     int SetNumber( int ballnum );
 
     int then2now( void );

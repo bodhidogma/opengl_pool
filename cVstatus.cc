@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  1999/11/24 18:58:48  paulmcav
+ * more manipulations for ball movement.
+ *
  * Revision 1.3  1999/11/04 02:21:43  paulmcav
  * fixed texmap problem, added colors to out of play balls.
  *
@@ -148,7 +151,7 @@ cVstatus::SetView( void )
 {
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
-    glOrtho( 0.0, (float)vW, 0.0, (float)vH, -10.0, 20.0 );
+    glOrtho( 0.0, (GLfloat)vW, 0.0, (GLfloat)vH, -10.0, 20.0 );
 	
     glViewport( vX,vY, vW,vH );
     glScissor( vX,vY, vW,vH );
@@ -170,7 +173,7 @@ int
 cVstatus::Message( char *msg )
 {
     if ( cMessage )
-	delete cMessage;
+	delete[] cMessage;
 
     cMessage = new char[ strlen( msg ) ];
     assert( cMessage );

@@ -3,9 +3,14 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  1999/12/06 04:49:24  paulmcav
+ * added pooltable model loading / rendering.
+ * Cue stick hit now works.  Timing is a bit better
+ * Includes timing statistics
+ *
  * Revision 1.4  1999/11/17 21:05:56  paulmcav
  * added mouse movement support
  *
@@ -47,7 +52,7 @@ glcWindow *glWinList[ MAX_WINDOWS ];
 //  Ret:  n/a
 // ------------------------------------------------------------------
 
-glcWindow::glcWindow( glcWindow *parent, float x, float y, float w, float h,
+glcWindow::glcWindow( glcWindow *parent, GLfloat x, GLfloat y, GLfloat w, GLfloat h,
 	int pct, int cb) :
 	iNumChildren(0),
 	iPctg( pct ),
@@ -184,8 +189,8 @@ glcWindow::cbResize( int w, int h )
     glcWindow *win = glWinList[ glutGetWindow() ];
 
     // set new window size 
-    win->wWidth = (float)w;
-    win->wHeight = (float)h;
+    win->wWidth = (GLfloat)w;
+    win->wHeight = (GLfloat)h;
     
     // call virtual function for implementation specifics
     win->Resize( w, h );

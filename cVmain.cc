@@ -3,9 +3,14 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.24 $
+// $Revision: 1.25 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.24  1999/12/06 04:49:24  paulmcav
+ * added pooltable model loading / rendering.
+ * Cue stick hit now works.  Timing is a bit better
+ * Includes timing statistics
+ *
  * Revision 1.23  1999/12/03 21:57:34  paulmcav
  * Added que stick action to game
  *
@@ -231,7 +236,7 @@ cVmain::Resize( int x, int y, int w, int h )
     vW = w;	// real window coordinates
     vH = h;
 
-    fW = ( (float)w/(float)h ) * VMAIN_HEIGHT;	// (fake) used Width / height
+    fW = ( (GLfloat)w/(GLfloat)h ) * VMAIN_HEIGHT;	// (fake) used Width / height
     
     fovy = calcangle( VMAIN_HEIGHT, VMAIN_DXCNTR );
 
@@ -252,7 +257,7 @@ int
 cVmain::SetView( void )
 {
 //    cout << "fW: " << fW << endl;
-//    cout << "vW/vH: " << (float)(w/h) << " tmp: " << tmp << endl;
+//    cout << "vW/vH: " << (GLfloat)(w/h) << " tmp: " << tmp << endl;
     
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
@@ -371,14 +376,11 @@ cVmain::DoHelp( void )
 }
  
 int
-cVmain::help_message( float x, float y, float w, float h )
+cVmain::help_message( GLfloat x, GLfloat y, GLfloat w, GLfloat h )
 {
     x += .5;
     h -= 3.5;
 
-    // test audio file
-    audio->PlayFile( "data/ball_hit.au" );
-    
     glputs( x, h, "               GLPool v0.1 - MESH GAMING"); h -= 3;
     glputs( x, h, "                      Help Screen" ); h -= 3;
     glputs( x, h, " _____________________________________________________"); h-= 6;

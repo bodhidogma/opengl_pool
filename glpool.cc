@@ -3,9 +3,14 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  1999/12/06 04:49:24  paulmcav
+ * added pooltable model loading / rendering.
+ * Cue stick hit now works.  Timing is a bit better
+ * Includes timing statistics
+ *
  * Revision 1.11  1999/11/24 18:58:48  paulmcav
  * more manipulations for ball movement.
  *
@@ -48,7 +53,9 @@
 #include <stdlib.h>
 #include <iostream.h>
 #include <string.h>
-#include <unistd.h>
+#ifndef _WIN32
+#  include <unistd.h>
+#endif
 
 #include "common.h"
 
@@ -60,7 +67,7 @@
 // ------------------------------------------------------------------
 
 void init ( void );
-void real_exit( int , void * );
+void real_exit( void );
 
 // ------------------------------------------------------------------
 //  Func: main( argc, argv )
@@ -73,12 +80,12 @@ cWMain	 *wMain;
 cTexMaps *texList;
 cAudio	 *audio;
 
-float	fFrameRate = 15.0;
+GLfloat	fFrameRate = 15.0;
     
 int
 main( int argc, char *argv[] )
 {
-    on_exit( real_exit, NULL );
+    atexit( real_exit );
     
     // init GL stuff
     glutInit( &argc, argv );
@@ -145,7 +152,7 @@ void quit_game( void )
     exit(1);
 }
 
-void real_exit( int i, void *ptr )
+void real_exit( void )
 {
     if ( texList )
 	delete texList;

@@ -3,9 +3,14 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  1999/12/06 04:49:24  paulmcav
+ * added pooltable model loading / rendering.
+ * Cue stick hit now works.  Timing is a bit better
+ * Includes timing statistics
+ *
  * Revision 1.13  1999/12/03 21:57:34  paulmcav
  * Added que stick action to game
  *
@@ -59,10 +64,12 @@
 #include "cVstatus.h"
 
 #include <iostream.h>
-#include <sys/time.h>
-#include <unistd.h>
+#ifndef _WIN32
+#  include <sys/time.h>
+#  include <unistd.h>
+#endif
 
-extern float fFrameRate;
+extern GLfloat fFrameRate;
 
 #define TValDiff( f, t ) \
 	(t.tv_sec-f.tv_sec) + \
@@ -335,9 +342,9 @@ cWMain::MouseMove( int x, int y )
 		    Animate();
 	        }
 	    }
-/*	}
+	}
 	else if (StMove ) {
-*/	    
+	    
 	    if ( x-pX )
 	       ((cVmain*)views[ mw_main ])->StickRot( (x-pX) );
 	}
@@ -390,6 +397,7 @@ cWMain::Idle( void )
     if ( !iAnim ) {
 	UseCallBack( WCB_IDLE, 0 );	// turns off idle
     
+#ifndef _WIN32
 	gettimeofday( &tEnd, NULL );
 
 	elapsed += TValDiff( tStart, tEnd );
@@ -398,6 +406,7 @@ cWMain::Idle( void )
 	
 	cout << "F: " << frames << " T: " << elapsed
 	     << " fps: " << fFrameRate <<endl;
+#endif
     }
     
     return 0;
@@ -415,8 +424,9 @@ cWMain::Animate( void )
     dly = (long)( .444 * 1000 );
     
     UseCallBack( WCB_IDLE );
-    
+#ifndef _WIN32
     gettimeofday( &tStart, NULL );			    // start timer
+#endif
     do {
 // gettimeofday( &s, NULL );			    // start timer
 	ret = ((cVmain*)views[ mw_main ])->Animate();	// do animation
@@ -426,7 +436,7 @@ cWMain::Animate( void )
 	iAnim = 0;
 
 // cout << "+" << TValDiff( s, e );
-	usleep( 500 );
+//	usleep( 500 );
     }
     while ( !ret );
 

@@ -3,9 +3,14 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  1999/12/06 04:49:24  paulmcav
+ * added pooltable model loading / rendering.
+ * Cue stick hit now works.  Timing is a bit better
+ * Includes timing statistics
+ *
  * Revision 1.11  1999/11/24 19:32:06  paulmcav
  * adde profiling / drawing routines
  *
@@ -45,20 +50,32 @@
 #include <iostream.h>
 #include <assert.h>
 #include <string.h>
+#include <math.h>
 
 #define BUMPER_AUDIO	"data/bumper.au"
-
-// ------------------------------------------------------------------
-//  Func: 
-//  Desc: 
-//
-//  Ret:  
-// ------------------------------------------------------------------
 
 extern cTexMaps *texList;
 extern cAudio *audio;
 
+// ------------------------------------------------------------------
+//  Func: cBall( num, wire, tex )
+//  Desc: Create a ball, and set some state flags
+//
+//  Ret:  
+// ------------------------------------------------------------------
+
+cBall::cBall( void )
+{
+	init( 0, 0 );
+}
+
 cBall::cBall( int num, int wire, int tex )
+{
+    init( num, wire, tex );
+}
+
+int
+cBall::init(int num, int wire, int tex )
 {
     move = 0; 
     if ( num )
@@ -72,18 +89,33 @@ cBall::cBall( int num, int wire, int tex )
     
     rotation = 0;
 
-    memset( pos, 0, sizeof(float)*2*3 );
-    memset( vel, 0, sizeof(float)*2*3 );
-    memset( accel, 0, sizeof(float)*2*3 );
-    
+    memset( pos, 0, sizeof(GLfloat)*2*3 );
+    memset( vel, 0, sizeof(GLfloat)*2*3 );
+    memset( accel, 0, sizeof(GLfloat)*2*3 );
+
+	return 0;
 }
+
+// ------------------------------------------------------------------
+//  Func: ~cBall()
+//  Desc: ball destructor
+//
+//  Ret:  
+// ------------------------------------------------------------------
 
 cBall::~cBall()
 {
 }
 
+// ------------------------------------------------------------------
+//  Func: Draw()
+//  Desc: Draw the ball in all its glory
+//
+//  Ret:  
+// ------------------------------------------------------------------
+
 int
-cBall::Draw()
+cBall::Draw( void )
 {
 
 //    glPushMatrix();		// save current position info
@@ -115,11 +147,18 @@ cBall::Draw()
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: MoveWall( x,y )
+//  Desc: Move ball and check to see if ball hit a wall
+//
+//  Ret:  
+// ------------------------------------------------------------------
+
 int
 cBall::MoveWall( int x, int y )
 {
-    float d_pos;	// delta position
-    float mx = 0+BALL_R, my = 0+BALL_R;
+    GLfloat d_pos;	// delta position
+    GLfloat mx = 0+BALL_R, my = 0+BALL_R;
     int   bump = 0;
     
     if ( ballnum ) { 
@@ -170,6 +209,13 @@ audio->PlayFile( "data/bumper.au" );
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: MoveBall()
+//  Desc: move the ball and reduce it's velocity
+//
+//  Ret:  
+// ------------------------------------------------------------------
+
 int
 cBall::MoveBall( void )
 {
@@ -180,6 +226,13 @@ cBall::MoveBall( void )
     
     return (fabs(vel[bN][bX])+fabs(vel[bN][bY]) > .5);
 }
+
+// ------------------------------------------------------------------
+//  Func: Resize()
+//  Desc: Called once: setup the ball display lists
+//
+//  Ret:  
+// ------------------------------------------------------------------
 
 int
 cBall::Resize( void )
@@ -201,6 +254,13 @@ cBall::Resize( void )
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: SetFlags( wire, texture )
+//  Desc: Set wire/texture flags for the ball
+//
+//  Ret:  
+// ------------------------------------------------------------------
+
 int
 cBall::SetFlags( int wire, int texture )
 {
@@ -211,8 +271,15 @@ cBall::SetFlags( int wire, int texture )
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: SetColor( r,g,b, a )
+//  Desc: Set ball color attributes
+//
+//  Ret:  
+// ------------------------------------------------------------------
+
 int
-cBall::SetColor( float r, float g, float b, float a )
+cBall::SetColor( GLfloat r, GLfloat g, GLfloat b, GLfloat a )
 {
     color[bR] = r;		// (R)ed
     color[bG] = g;		// (G)reen
@@ -222,8 +289,15 @@ cBall::SetColor( float r, float g, float b, float a )
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: SetColor( c[3] )
+//  Desc: Set ball color attributes
+//
+//  Ret:  
+// ------------------------------------------------------------------
+
 int
-cBall::SetColor( float c[3] )
+cBall::SetColor( GLfloat c[3] )
 {
     color[bR] = c[bR];		// (R)ed
     color[bG] = c[bG];		// (G)reen
@@ -232,31 +306,42 @@ cBall::SetColor( float c[3] )
     return 0;
 }
     
+// ------------------------------------------------------------------
+//  Func: SetPosition( x,y )
+//  Desc: Set ball x,y position
+//
+//  Ret:  
+// ------------------------------------------------------------------
 
 int
-cBall::SetPosition( float x, float y )
+cBall::SetPosition( GLfloat x, GLfloat y )
 {
     pos[bN][bX] = x;
     pos[bN][bY] = y;
     pos[bN][bZ] = 0;
 
-/*    pos[bT][bX] = x;
-    pos[bT][bY] = y;
-    pos[bT][bZ] = 0;
-*/
     return 0;
 }
+
+// ------------------------------------------------------------------
+//  Func: SetNumber( num )
+//  Desc: tell a ball what number it is
+//
+//  Ret:  
+// ------------------------------------------------------------------
 
 int
 cBall::SetNumber( int num )
 {
-/*    if ( !num ){
-	vel[bN][bX] = 1;	// cue ball x velocity now
-	vel[bN][bY] = 2;	// cue ball y velocity now
-    }
-*/
     return (ballnum = num);
 }
+
+// ------------------------------------------------------------------
+//  Func: 
+//  Desc: 
+//
+//  Ret:  
+// ------------------------------------------------------------------
 
 int
 cBall::then2now( void )
@@ -271,3 +356,4 @@ cBall::then2now( void )
     
     return 0;
 }
+

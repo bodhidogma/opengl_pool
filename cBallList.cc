@@ -3,9 +3,14 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  1999/12/06 04:49:24  paulmcav
+ * added pooltable model loading / rendering.
+ * Cue stick hit now works.  Timing is a bit better
+ * Includes timing statistics
+ *
  * Revision 1.11  1999/12/03 21:57:34  paulmcav
  * Added que stick action to game
  *
@@ -56,23 +61,22 @@ extern cTexMaps *texList;
 extern cAudio *audio;
 
 // ------------------------------------------------------------------
-//  Func: 
-//  Desc: 
+//  Func: cBallList( x,y, w,h )
+//  Desc: create a list of balls on the table, and set 'em up!
 //
 //  Ret:  
 // ------------------------------------------------------------------
 
-cBallList::cBallList( float x, float y, float w, float h ) :
-    balls(NULL),
-    xMin(x+BALL_R),
-    xMax(x + w-BALL_R),
-    yMin(y+BALL_R),
-    yMax(y + h-BALL_R),
-    hDiv(yMax/8),
-    wDiv(xMax/4),
-    iWire(DEF_WIRE),
-    iTex(DEF_TEX),
-    tick(0)
+cBallList::cBallList( GLfloat x, GLfloat y, GLfloat w, GLfloat h ) :
+    balls(NULL)
+    ,xMin(x+BALL_R)
+    ,xMax(x + w-BALL_R)
+    ,yMin(y+BALL_R)
+    ,yMax(y + h-BALL_R)
+    ,hDiv(yMax/8)
+    ,wDiv(xMax/4)
+    ,iWire(DEF_WIRE)
+    ,iTex(DEF_TEX)
 {
     GLfloat BallClr[][3] = {
 	{ BALL0 },
@@ -80,9 +84,9 @@ cBallList::cBallList( float x, float y, float w, float h ) :
 	{ BALL6 }, { BALL7 }, { BALL8 }, { BALL9 }, { BALL10 },
 	{ BALL11 }, { BALL12 }, { BALL13 }, { BALL14 }, { BALL15 } };
     int bc;
-    float rp[3];	// rack position
+    GLfloat rp[3];	// rack position
 	
-    balls = new cBall[ b_count ](0,iWire,iTex);	// some balls
+    balls = new cBall[ b_count ];	// some balls
     assert( balls );
 
 //    for ( bc=b_count-1; bc; --bc ) {
@@ -107,9 +111,15 @@ cBallList::cBallList( float x, float y, float w, float h ) :
     for ( bc=0; bc< b_count; bc++ ) {
 	balls[ bc ].Resize();
     }
-    
-    tick = 0;
+
 }
+
+// ------------------------------------------------------------------
+//  Func: ~cBallList
+//  Desc: destroy all our balls
+//
+//  Ret:  
+// ------------------------------------------------------------------
 
 cBallList::~cBallList()
 {
@@ -117,8 +127,15 @@ cBallList::~cBallList()
 	delete[] balls;
 }
 
+// ------------------------------------------------------------------
+//  Func: Draw()
+//  Desc: draw all the balls on the table
+//
+//  Ret:  
+// ------------------------------------------------------------------
+
 int
-cBallList::Draw()
+cBallList::Draw( void )
 {
     int bc;
 
@@ -160,8 +177,15 @@ cBallList::Draw()
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: Move()
+//  Desc: Move the balls around, and check for collisions
+//
+//  Ret: 0 if all balls stopped moving 
+// ------------------------------------------------------------------
+
 int
-cBallList::Move()
+cBallList::Move( void )
 {
     int bc;
     int anim = 0;
@@ -173,15 +197,15 @@ cBallList::Move()
 	}
     }
     
-//    cout << "tick: " << tick << endl;
-    
-/*    if ( tick++ > 50 )
-	tick = 0;
-    anim = tick;
-*/
-    
     return !anim;
 }
+
+// ------------------------------------------------------------------
+//  Func: MoveToBall( num )
+//  Desc: Move to ballnum position on the table
+//
+//  Ret:  
+// ------------------------------------------------------------------
 
 int
 cBallList::MoveToBall( int num )
@@ -194,8 +218,15 @@ cBallList::MoveToBall( int num )
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: HitBall( num, x,y )
+//  Desc: Impart some velocity to ball 'num' in the x,y direction
+//
+//  Ret:  
+// ------------------------------------------------------------------
+
 int
-cBallList::HitBall( int num, float x, float y )
+cBallList::HitBall( int num, GLfloat x, GLfloat y )
 {
     balls[num].vel[bN][bX] = x;
     balls[num].vel[bN][bY] = y;
@@ -203,8 +234,15 @@ cBallList::HitBall( int num, float x, float y )
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: Resize( x,y, w,h )
+//  Desc: Called on 1st drawing. Setup balls
+//
+//  Ret:  
+// ------------------------------------------------------------------
+
 int
-cBallList::Resize( float x, float y, float w, float h )
+cBallList::Resize( GLfloat x, GLfloat y, GLfloat w, GLfloat h )
 {
     int bc;
 
@@ -215,14 +253,28 @@ cBallList::Resize( float x, float y, float w, float h )
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: EnableBall( num )
+//  Desc: 
+//
+//  Ret:  
+// ------------------------------------------------------------------
+
 int
 cBallList::EnableBall( int num )
 {
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: RackPosition( ball, pos[3] )
+//  Desc: Find racking position for ball. Return in pos[?]
+//
+//  Ret:  
+// ------------------------------------------------------------------
+
 int
-cBallList::RackPosition( int ball, float *pos )
+cBallList::RackPosition( int ball, GLfloat *pos )
 {
     int row;
     int col;
@@ -290,6 +342,12 @@ cBallList::RackPosition( int ball, float *pos )
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: SetFlags( wire, tex )
+//  Desc: Set wireframe / texture mapped flags for all balls
+//
+//  Ret:  
+// ------------------------------------------------------------------
 
 int
 cBallList::SetFlags( int wire, int tex )

@@ -4,10 +4,15 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  1999/12/06 04:49:24  paulmcav
+ * added pooltable model loading / rendering.
+ * Cue stick hit now works.  Timing is a bit better
+ * Includes timing statistics
+ *
  * Revision 1.9  1999/12/03 21:57:34  paulmcav
  * Added que stick action to game
  *
@@ -43,8 +48,10 @@
 #ifndef _CWMAIN_H_
 #define _CWMAIN_H_
 
-#include <sys/time.h>
-#include <unistd.h>
+#ifndef _WIN32
+#  include <sys/time.h>
+#  include <unistd.h>
+#endif
 
 enum mw_views {
     mw_main,
@@ -94,7 +101,9 @@ private:
     long frames;
     int iTmp;
 
+#ifndef _WIN32
     struct timeval tStart, tEnd;
+#endif
     
 protected:
     

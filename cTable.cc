@@ -3,9 +3,14 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  1999/12/06 04:49:24  paulmcav
+ * added pooltable model loading / rendering.
+ * Cue stick hit now works.  Timing is a bit better
+ * Includes timing statistics
+ *
  * Revision 1.6  1999/12/03 21:57:34  paulmcav
  * Added que stick action to game
  *
@@ -36,8 +41,11 @@
 #include "cTable.h"
 #include "colors.h"
 #include "cAudio.h"
+#include "glUtil.h"
 
 #include "glm.h"
+
+#include "cuestick.h"
 
 #define POOL_TABLE	"data/pooltable.obj"
 #define STICK_DEF_POS	-.5
@@ -46,7 +54,14 @@ extern cAudio *audio;
 
 #define CUE_AUDIO	"data/hit_cue.au"
 
-cTable::cTable( float x, float y, float w, float h ) :
+// ------------------------------------------------------------------
+//  Func: cTable( x,y, w,h )
+//  Desc: create a table at pos x,y, of w X h width / height
+//
+//  Ret:  
+// ------------------------------------------------------------------
+
+cTable::cTable( GLfloat x, GLfloat y, GLfloat w, GLfloat h ) :
     lBalls(NULL),
     xMin(x),
     xMax(w),
@@ -67,11 +82,25 @@ cTable::cTable( float x, float y, float w, float h ) :
     make_stick( dlist+2 );
 }
 
+// ------------------------------------------------------------------
+//  Func: ~cTable()
+//  Desc: Table destructor
+//
+//  Ret:  
+// ------------------------------------------------------------------
+
 cTable::~cTable()
 {
     if ( lBalls )
 	delete lBalls;
 }
+
+// ------------------------------------------------------------------
+//  Func: make_table( wire, lnum )
+//  Desc: create wirefram / modeled table display list
+//
+//  Ret:  
+// ------------------------------------------------------------------
 
 int
 cTable::make_table( int wire, int lnum )
@@ -80,7 +109,7 @@ cTable::make_table( int wire, int lnum )
     GLfloat	scale;
     GLfloat 	dims[3];
     int cnt;
-    float X,Y,W,H;
+    GLfloat X,Y,W,H;
 
     if ( !wire ) {
 	model = glmReadOBJ( POOL_TABLE );
@@ -163,30 +192,54 @@ cTable::make_table( int wire, int lnum )
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: make_stick( lnum )
+//  Desc: make cue stick display list lnum
+//
+//  Ret:  
+// ------------------------------------------------------------------
+
 int
 cTable::make_stick( int lnum )
 {
+    GLfloat u[3];
+    int cnt;
+    
+    glInterleavedArrays( CUEFORMAT, 0, (GLvoid*)&CUEMODEL );
+
+    glScale( 10, &CUEMODEL[0], 3, 6, CUEPOLYCNT *3 );
+    
     glNewList( lnum, GL_COMPILE );
     {
-	glRotatef( 268, 1, 0, 0 );
-	glutSolidSphere( .2, 20, 16 );
-	glTranslatef( 0,0, -50 );
-	glutSolidCone( .5, 50, 20, 16 );
+	glRotatef( 88, 1,0,0 );
+	
+	glBegin( GL_TRIANGLES );
+	for ( cnt=0; cnt < CUEPOLYCNT *3; cnt++ ){
+	    memcpy( &u[0], &CUEMODEL[ cnt ], sizeof(GLfloat)*3 );
+	    glNormal3fv( u );
+	    glArrayElement( cnt );
+	}
+	glEnd();
     }
     glEndList();
 
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: Draw()
+//  Desc: Draw table with balls and (possibly) cue stick
+//
+//  Ret:  
+// ------------------------------------------------------------------
+
 int
-cTable::Draw()
+cTable::Draw( void )
 {
     glPushMatrix();
     
     glRotatef( -90, 1, 0, 0 );
 
-//    cout << "Val: " << scale << endl;
-    
     if ( !iWire ) {
     	glEnable( GL_LIGHTING );
 	glPushMatrix();
@@ -197,7 +250,6 @@ cTable::Draw()
 	glPopMatrix();
 
 	glTranslatef( -xMax*.46, -yMax*.46, 0 ); 	// l,bottom 
-//glTranslatef( xMax*.5, yMax*.5, 5 ); 	// l,bottom 
     }
     else {
         glDisable( GL_LIGHTING );
@@ -215,6 +267,8 @@ cTable::Draw()
 	glRotatef( StickRotZ, 0,0,1 );
 	glTranslatef( 0, StickTrY-BALL_R, 0 );
 	
+	glEnable( GL_COLOR_MATERIAL );
+	
 	glCallList( dlist+tl_stick );
     }
     
@@ -223,17 +277,38 @@ cTable::Draw()
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: Move()
+//  Desc: Move things that move on the table (ie: balls)
+//
+//  Ret:  
+// ------------------------------------------------------------------
+
 int 
-cTable::Move()
+cTable::Move( void )
 {
     return (lBalls->Move());
 }
 
+// ------------------------------------------------------------------
+//  Func: Resize( x, y, w, h )
+//  Desc: 
+//
+//  Ret:  
+// ------------------------------------------------------------------
+
 int
-cTable::Resize( float x, float y, float w, float h )
+cTable::Resize( GLfloat x, GLfloat y, GLfloat w, GLfloat h )
 {
     return 0;
 }
+
+// ------------------------------------------------------------------
+//  Func: SetFlags( wire, tex )
+//  Desc: Set wireframe and texture mapped use flags
+//
+//  Ret:  
+// ------------------------------------------------------------------
 
 int
 cTable::SetFlags( int wire, int tex )
@@ -246,14 +321,12 @@ cTable::SetFlags( int wire, int tex )
     return 0;
 }
 
-
 // ------------------------------------------------------------------
-//  Func: 
-//  Desc: 
+//  Func: StickRot( deg )
+//  Desc: Rotate cue stick 'deg' degrees around cue ball
 //
 //  Ret:  
 // ------------------------------------------------------------------
-
 
 int
 cTable::StickRot( int deg )
@@ -262,11 +335,18 @@ cTable::StickRot( int deg )
     return 0;
 }
 
+// ------------------------------------------------------------------
+//  Func: StickTr( dx )
+//  Desc: Translate (pull back) stick dx distance.  Check for cue hit
+//
+//  Ret:  
+// ------------------------------------------------------------------
+
 int
 cTable::StickTr( int dx )
 {
     int iHit = 0;	// hit the ball
-    float x,y,r;
+    GLfloat x,y,r;
 
     StickDY = dx * .25;
     
@@ -290,6 +370,13 @@ cTable::StickTr( int dx )
 
     return iHit;
 }
+
+// ------------------------------------------------------------------
+//  Func: StickToggle( val )
+//  Desc: Toggle visibility flag of cue stick
+//
+//  Ret:  
+// ------------------------------------------------------------------
 
 int
 cTable::StickToggle( int val )
