@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1999/11/10 08:19:19  paulmcav
+ * added updates to ball management classes
+ *
  */
 
 #include "cTable.h"
@@ -35,8 +38,7 @@ cTable::Draw()
 int 
 cTable::Move()
 {
-    lBalls->Move();
-    return 0;
+    return (lBalls->Move());
 }
 
 int

@@ -8,7 +8,7 @@
 
 //#include "box.h"
 #include "pooltable.h"
-#include "box_obj.h"
+//#include "box_obj.h"
 
 
 void init(void)

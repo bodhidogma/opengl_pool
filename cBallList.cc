@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  1999/11/10 08:19:19  paulmcav
+ * added updates to ball management classes
+ *
  * Revision 1.2  1999/11/10 00:21:04  paulmcav
  * misc updates.  added ball(s) class to manage ball movement/ drawing.
  *
@@ -20,6 +23,7 @@
 
 #include <GL/glut.h>
 #include <assert.h>
+#include <iostream.h>
 
 // ------------------------------------------------------------------
 //  Func: 
@@ -48,6 +52,8 @@ cBallList::cBallList( float x, float y, float w, float h ) :
 
     for ( bc=0; bc< b_count; bc++ )
 	balls[ bc ].SetColor( BallClr[ bc ] );
+    
+    tick = 0;
 }
 
 cBallList::~cBallList()
@@ -80,7 +86,12 @@ cBallList::Move()
 	balls[ bc ].Move();
     }
     
-    return 0;
+    cout << "tick: " << tick << endl;
+    
+    if ( tick++ > 20 )
+	tick = 0;
+	
+    return !tick;
 }
     
 int

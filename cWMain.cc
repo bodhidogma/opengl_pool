@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  1999/11/10 00:21:04  paulmcav
+ * misc updates.  added ball(s) class to manage ball movement/ drawing.
+ *
  * Revision 1.4  1999/11/02 08:47:04  paulmcav
  * added menu / kb callback support; & help window
  *
@@ -43,7 +46,8 @@
 
 cWMain::cWMain( char *title, int w, int h, unsigned int mode, int cb ) :
 	glcWindow( title, w, h, mode, cb ),
-	views(0)
+	views(0),
+	iAnim(0)
 {
     views = new glcViewport *[ mw_count ];
     assert( views );
@@ -157,15 +161,27 @@ cWMain::Keys( unsigned char key, int mx, int my )
 	    break;
 
 	case 'i':
+	    iAnim = 0;
  	    ((cVmain*)views[ mw_main ])->Intro();
 	    Display();
 	    break;
 	    
 	case 'h':
+	    iAnim = 0;
     	    ((cVmain*)views[ mw_main ])->Help();
 	    Display();
 	    break;
+	    
+	case 'a':
+	    iAnim ^= 1;
+	    break;
     }
+    
+    if ( iAnim )
+	UseCallBack( WCB_IDLE );
+    else
+	UseCallBack( WCB_IDLE, 0 );	// turns off idle
+    
     return 0;
 }
 
@@ -224,3 +240,20 @@ cWMain::Init( void )
     
     return 0;
 }
+
+int
+cWMain::Idle( void )
+{
+    int ret;
+
+    ret = ((cVmain*)views[ mw_main ])->Animate();
+    Display();
+    
+    if ( ret ) {
+	UseCallBack( WCB_IDLE, 0 );	// turns off idle
+        iAnim = 0;
+    }
+    
+    return 0;
+}
+

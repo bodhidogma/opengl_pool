@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  1999/11/10 08:19:19  paulmcav
+ * added updates to ball management classes
+ *
  * Revision 1.7  1999/11/10 00:21:04  paulmcav
  * misc updates.  added ball(s) class to manage ball movement/ drawing.
  *
@@ -257,3 +260,13 @@ cVmain::help_message( float x, float y, float w, float h )
 
     return 0;
 }
+
+int
+cVmain::Animate( void )
+{
+    iHelpWin = 0;	// turns off these displays
+    iIntroWin = 0;
+    
+    return (table->Move()) ;
+}
+

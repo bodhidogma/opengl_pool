@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  1999/11/10 08:19:19  paulmcav
+ * added updates to ball management classes
+ *
  * Revision 1.4  1999/11/10 00:21:04  paulmcav
  * misc updates.  added ball(s) class to manage ball movement/ drawing.
  *
@@ -68,6 +71,8 @@ public:
     
     int Help( void ){ return iHelpWin ^= 1; }
     int Intro( void ){ return iIntroWin ^= 1; }
+    
+    int Animate( void );
 };
 
 #endif
