@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  1999/12/06 09:21:17  paulmcav
+ * added windos portability code/utils
+ *
  * Revision 1.3  1999/11/24 18:58:48  paulmcav
  * more manipulations for ball movement.
  *
@@ -21,6 +24,8 @@
 
 #include <stdlib.h>
 #ifdef _WIN32
+#  include <windows.h>
+#  include <mmsystem.h>
 #  include <io.h>
 #else
 #  include <unistd.h>
@@ -53,9 +58,11 @@ cAudio::cAudio()
 {
     int f1 = 0;
 
-    iAudioOk = 0;
     iAudCpid = 0;
-#ifndef _WIN32
+#ifdef _WIN32
+	iAudioOk = 1;
+#else
+    iAudioOk = 0;
     if ( (f1 = open( AUDIO_FILE, O_WRONLY )) != -1 ) {
 	iAudioOk = 1;
 
@@ -81,16 +88,19 @@ cAudio::~cAudio()
 int
 cAudio::PlayFile( char *file )
 {
-    char *buff;
-    int len;
+    char *buff = NULL;
+    int len = 0;
     
     if ( iAudioOk ) {
-
+#ifdef _WIN32
+	PlaySound( file, NULL, SND_FILENAME | SND_ASYNC );
+#else
 	buff = new char[ strlen(file)+2 ];
 	strcpy( buff, file );
 	strcat( buff, "\n" );
 	
 	len = write( ph1[1], buff, strlen( buff ) );
+#endif
     }
 
     return iAudioOk;

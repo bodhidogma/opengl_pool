@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  1999/12/06 09:21:18  paulmcav
+ * added windos portability code/utils
+ *
  * Revision 1.10  1999/12/06 04:49:24  paulmcav
  * added pooltable model loading / rendering.
  * Cue stick hit now works.  Timing is a bit better
@@ -48,7 +51,9 @@
 #ifndef _CWMAIN_H_
 #define _CWMAIN_H_
 
-#ifndef _WIN32
+#ifdef _WIN32
+#  include <windows.h>
+#else
 #  include <sys/time.h>
 #  include <unistd.h>
 #endif
@@ -101,7 +106,9 @@ private:
     long frames;
     int iTmp;
 
-#ifndef _WIN32
+#ifdef _WIN32
+	DWORD  tStart, tEnd;
+#else
     struct timeval tStart, tEnd;
 #endif
     

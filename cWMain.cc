@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.17 $
+// $Revision: 1.18 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.17  1999/12/08 01:08:17  paulmcav
+ * added more stuff!
+ *
  * Revision 1.16  1999/12/06 09:40:37  paulmcav
  * final changes to ensure portability for windos version
  *
@@ -70,16 +73,30 @@
 #include "cVstatus.h"
 
 #include <iostream.h>
-#ifndef _WIN32
+#ifdef _WIN32
+#  include <windows.h>
+#  include <mmsystem.h>
+#else
 #  include <sys/time.h>
 #  include <unistd.h>
 #endif
 
 extern GLfloat fFrameRate;
 
-#define TValDiff( f, t ) \
+#ifdef _WIN32
+#  define TValDiff( f, t ) \
+	( (t-f) / 1000.0 )
+
+#  define GET_TIME( t ) \
+	t = timeGetTime()
+#else
+#  define TValDiff( f, t ) \
 	(t.tv_sec-f.tv_sec) + \
 	fabs( (t.tv_usec-f.tv_usec)/1000000.0 )
+
+#  define GET_TIME( t ) \
+	gettimeofday( &t, NULL )
+#endif
 	
 // ------------------------------------------------------------------
 //  Func: cWMain( title, w,h, mode )
@@ -408,8 +425,7 @@ cWMain::Idle( void )
     if ( !iAnim ) {
 	UseCallBack( WCB_IDLE, 0 );	// turns off idle
     
-#ifndef _WIN32
-	gettimeofday( &tEnd, NULL );
+	GET_TIME( tEnd );
 
 	elapsed += TValDiff( tStart, tEnd );
 	
@@ -417,7 +433,6 @@ cWMain::Idle( void )
 	
 	cout << "F: " << frames << " T: " << elapsed
 	     << " fps: " << fFrameRate <<endl;
-#endif
     }
     
     return 0;
@@ -435,14 +450,12 @@ cWMain::Animate( void )
     dly = (long)( .444 * 1000 );
     
     UseCallBack( WCB_IDLE );
-#ifndef _WIN32
-    gettimeofday( &tStart, NULL );			    // start timer
-#endif
+    GET_TIME( tStart );
     do {
-// gettimeofday( &s, NULL );			    // start timer
+// GET_TIME( s );			    // start timer
 	ret = ((cVmain*)views[ mw_main ])->Animate();	// do animation
 	Display();
-// gettimeofday( &e, NULL );			    // start timer
+// GET_TIME( e );			    // start timer
 	frames ++;
 	iAnim = 0;
 

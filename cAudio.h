@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  1999/12/08 01:08:16  paulmcav
+ * added more stuff!
+ *
  * Revision 1.2  1999/12/06 21:19:46  paulmcav
  * updated game to allow collisions between balls
  *
@@ -26,6 +29,8 @@
 #ifdef _WIN32
 #  define BUMPER_AUDIO	"data/bumper.wav"
 #  define CUE_AUDIO	"data/hit_cue.wav"
+#  define HIT_AUDIO	"data/ball_hit.wav"
+#  define SUNK_AUDIO	"data/sunk_ball.wav"
 #else
 #  define BUMPER_AUDIO	"data/bumper.au"
 #  define CUE_AUDIO	"data/hit_cue.au"
