@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  1999/12/06 09:21:18  paulmcav
+ * added windos portability code/utils
+ *
  * Revision 1.4  1999/11/24 18:58:48  paulmcav
  * more manipulations for ball movement.
  *
@@ -175,7 +178,7 @@ cVstatus::Message( char *msg )
     if ( cMessage )
 	delete[] cMessage;
 
-    cMessage = new char[ strlen( msg ) ];
+    cMessage = new char[ strlen( msg )+1 ];
     assert( cMessage );
 
     strcpy( cMessage, msg );

@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.15 $
+// $Revision: 1.16 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.15  1999/12/06 09:21:18  paulmcav
+ * added windos portability code/utils
+ *
  * Revision 1.14  1999/12/06 04:49:24  paulmcav
  * added pooltable model loading / rendering.
  * Cue stick hit now works.  Timing is a bit better
@@ -121,7 +124,9 @@ cWMain::~cWMain()
     if ( views ) {
 	delete views[ mw_main ];
 	delete views[ mw_status ];
+#ifndef _WIN32
 	delete views;
+#endif
     }
     views = NULL;
 }
