@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  1999/11/20 07:53:56  paulmcav
+ * added texmap support, some more menu options, lighting, cleanup, etc.
+ *
  * Revision 1.2  1999/11/19 22:36:57  paulmcav
  * Balls displaying on the table, and more!
  *
@@ -46,8 +49,8 @@ public:
     cTable( float x, float y, float w, float h );
     ~cTable();
 
-    int Draw();
-    int Move();
+    int Draw( void );
+    int Move( void );
 
     int Resize( float x, float y, float w, float h );
     int SetFlags( int wire, int tex );

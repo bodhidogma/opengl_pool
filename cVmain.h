@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  1999/11/24 18:58:48  paulmcav
+ * more manipulations for ball movement.
+ *
  * Revision 1.11  1999/11/20 21:41:30  paulmcav
  * added audio playback support.
  *
@@ -72,6 +75,7 @@ private:
     int iIntroWin;
     int iHelpWin;
     int Xdeg, Ydeg;
+    int StickRotZ, StickTrY;
     float fovy;
     
     cVstatus *Vstat;

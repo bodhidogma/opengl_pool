@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  1999/11/20 07:53:57  paulmcav
+ * added texmap support, some more menu options, lighting, cleanup, etc.
+ *
  * Revision 1.6  1999/11/17 21:05:56  paulmcav
  * added mouse movement support
  *
@@ -49,6 +52,8 @@ enum main_menu_options {
     mM_About,
     mM_Wireframe,
     mM_Texmap,
+    mM_StickMove,
+    mM_StickHit,
     mM_Quit
 };
 

@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.21 $
+// $Revision: 1.22 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.21  1999/11/24 18:58:48  paulmcav
+ * more manipulations for ball movement.
+ *
  * Revision 1.20  1999/11/22 22:17:08  paulmcav
  * enabled ball bouncing
  *
@@ -99,7 +102,8 @@ cVmain::cVmain( int x, int y, int w, int h ) :
 	glcViewport( x, y, w, h ),
 	iIntroWin(1),
 	iHelpWin(0),
-	Xdeg(15), Ydeg(0)
+	Xdeg(15), Ydeg(0),
+	StickRotZ(0), StickTrY(0)
 {
     GLfloat shiny[] = { 5.0 };			// some light stuff
     
