@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  1999/11/04 02:21:43  paulmcav
+ * fixed texmap problem, added colors to out of play balls.
+ *
  * Revision 1.3  1999/11/03 17:28:55  paulmcav
  * added some colors for balls
  *
@@ -57,7 +60,7 @@ cTexMaps::Init( void )
     
     // png is upside down!
     if ( !pngLoad( "data/intro.png", PNG_NOMIPMAP, PNG_SOLID, NULL )) {
-	cerr << "Error: couldn't load texture image! " << tex_intro <<  endl;
+	cerr << "Error: couldn't load texture image! " << (int)tex_intro <<  endl;
 	exit(1);
     }
 
