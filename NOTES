@@ -1,4 +1,4 @@
-** $Revision: 1.3 $
+** $Revision: 1.4 $
 ** Misc Notes **
 
 Scott's Notes:
@@ -10,4 +10,7 @@ Paul's Notes:
  Got multiple viewports working.. do it while performing draw.
  Blend / stipple seems to be the best way to shade the background.
  2d texmaps working okay!
+
+Soudi's Notes:
+ * copy the temp/soudi.* files into the glpool dir and then run 'make soudi'
 
