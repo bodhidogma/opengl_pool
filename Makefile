@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.4 1999-10-19 08:01:10 paulmcav Exp $
+# $Id: Makefile,v 1.5 1999-10-19 22:29:10 paulmcav Exp $
 #
 ##### MACROS #####
 
@@ -63,12 +63,17 @@ GLPOOL	= glpool.o \
 	  cHelp.o \
 	  readtex.o
 
+SOUDI	= soudi.o
+
 TEST	= test.o
 
 glpool	: ${addprefix $(OBJ),$(GLPOOL)}
 	$(LD) $(LDFLAGS) $^ $(LIBS) -o $@
 
 test	: ${addprefix $(OBJ),$(TEST)}
+	$(LD) $(LDFLAGS) $^ $(LIBS) -o $@
+	
+soudi	: ${addprefix $(OBJ),$(SOUDI)}
 	$(LD) $(LDFLAGS) $^ $(LIBS) -o $@
 	
 dep	: ${addprefix $(OBJ),$(sources:.cc=.d)}

@@ -27,7 +27,7 @@
 //                                                               *
 //****************************************************************
 
-#include "billiard.h"
+#include "soudi.h"
 
 static BallType ball1;
 static BallType ball2;
@@ -191,7 +191,7 @@ void MoveForward(void)
 
     distance = ball1.xCo - ball2.xCo;
 
-    if (abs(distance) <= (ball1.r + ball2.r) )
+    if (abs((int)distance) <= (ball1.r + ball2.r) )
 	    direction *= -1;
 
 	angle += (direction * clockWise * 1.5);
@@ -220,7 +220,7 @@ void MoveBackward(void)
 
     distance = ball1.xCo - ball2.xCo;
 
-    if (abs(distance) <= (ball1.r + ball2.r) )
+    if (abs((int)distance) <= (ball1.r + ball2.r) )
 		direction *= -1;
 	
 	angle -= (direction * clockWise * 1.5);
@@ -289,12 +289,12 @@ void Keyboard(unsigned char key, int x, int y)
 		
 		//PlaySound( "sudi.wav", NULL, SND_FILENAME | SND_ASYNC );
 
-        cprintf(" Isn't that nice?\n");
-		cprintf(" You have to be in output window to use this options!\n");
-        cprintf(" Hit 'r' or 'R' to repeat forward move!\n");
-        cprintf(" Hit 'b' or 'B' to repeat backward move!\n");
-        cprintf(" Hit 'i' or 'I' to see these information!\n");   
-        cprintf(" Hit 'q' or 'Q' to quit!\n"); 
+        printf(" Isn't that nice?\n");
+	printf(" You have to be in output window to use this options!\n");
+        printf(" Hit 'r' or 'R' to repeat forward move!\n");
+        printf(" Hit 'b' or 'B' to repeat backward move!\n");
+        printf(" Hit 'i' or 'I' to see these information!\n");   
+        printf(" Hit 'q' or 'Q' to quit!\n"); 
         break;
     case 'Q':
 	case 'q': 

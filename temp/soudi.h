@@ -35,6 +35,7 @@
 #include <GL/glut.h>
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 //#include <conio.h>
 
 static GLint   clockWise     = 1;
