@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  1999/11/10 08:19:19  paulmcav
+ * added updates to ball management classes
+ *
  * Revision 1.4  1999/11/10 00:21:04  paulmcav
  * misc updates.  added ball(s) class to manage ball movement/ drawing.
  *
@@ -33,6 +36,11 @@ cBall::cBall( int wire, int tex )
     flg_Texture = tex;
 
     SetColor( BALL0 );
+    
+    rotation = 0;
+    normal[0] = 0.0;	// normal is Y vector
+    normal[1] = 1.0;
+    normal[2] = 0.0;
 }
 
 cBall::~cBall()
@@ -46,7 +54,9 @@ cBall::Draw()
 
 //    glPushMatrix();		// save current position info
     
-    glTranslatef( (BALL_R*2.5), 0.0, 0.0 );
+//    glTranslatef( (BALL_R*2.5), 0.0, 0.0 );
+    glTranslatef( 2.5, 0.0, 0.0 );
+    glRotatef( rotation, normal[0], normal[1], normal[2] );
     
     if ( flg_Wire ){		// wire frame
 	glutWireSphere( BALL_R, 20, 16 );
@@ -64,6 +74,9 @@ cBall::Draw()
 int
 cBall::Move()
 {
+    rotation += 5;
+    rotation %= 360;
+
     return 0;
 }
 

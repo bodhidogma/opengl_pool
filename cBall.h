@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  1999/11/10 08:19:19  paulmcav
+ * added updates to ball management classes
+ *
  * Revision 1.2  1999/11/10 00:21:04  paulmcav
  * misc updates.  added ball(s) class to manage ball movement/ drawing.
  *
@@ -20,7 +23,7 @@
 #ifndef _CBALL_H_
 #define _CBALL_H_
 
-#define BALL_R	20.0
+#define BALL_R	30.0
 
 /*
 */
@@ -35,6 +38,9 @@ private:
     float mass;
     float torque;
     float friction[2];	// static, kinetic
+
+    int   rotation;
+    float normal[3];
     
     int   flg_Wire;		// wireframe
     int   flg_Texture;		// texture mapped

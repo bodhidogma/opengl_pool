@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  1999/11/10 00:21:04  paulmcav
+ * misc updates.  added ball(s) class to manage ball movement/ drawing.
+ *
  * Revision 1.3  1999/11/02 09:03:53  paulmcav
  * added a box around help menu
  *
@@ -24,6 +27,7 @@
 
 #include <iostream.h>
 #include <assert.h>
+#include <math.h>
 
 // ------------------------------------------------------------------
 //  Func: 
@@ -123,5 +127,16 @@ glshadebar( int x, int y, int w, int h, int raised=1 )
     glEnd();
 
     return 0;
+}
+
+float
+calcangle( float size, float dist )
+{
+    float radtheta, degtheta;
+    
+    radtheta = 2.0 * atan2( size/2.0, dist );
+    degtheta = (180.0 * radtheta) / 3.1415926535;
+    
+    return degtheta;
 }
 

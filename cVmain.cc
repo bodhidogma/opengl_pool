@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  1999/11/10 20:04:49  paulmcav
+ * updated project for use with animation
+ *
  * Revision 1.8  1999/11/10 08:19:19  paulmcav
  * added updates to ball management classes
  *
@@ -63,6 +66,9 @@ cVmain::cVmain( int x, int y, int w, int h ) :
 {
     table = new cTable( 100,100, 20,20 );
     assert( table );
+    
+    tmp = -50;
+    flg_wire = 1;
 }
 
 // ------------------------------------------------------------------
@@ -104,6 +110,9 @@ cVmain::setstatus( cVstatus *stat )
 int
 cVmain::Display( void )
 {
+    GLfloat mat[] = { 50.0 };
+    GLfloat pos[] = { 0.0, 1.0, 0.0, 0.0 };
+    
 //    cout << "vmain:disp: "; dump();
     
     // --- init our viewport ---
@@ -112,17 +121,39 @@ cVmain::Display( void )
     // --- draw our stuff --- 
     glDisable( GL_DEPTH_TEST );
     glDisable( GL_CULL_FACE );		// for texmaps
-    glShadeModel( GL_FLAT );
+    glShadeModel( GL_SMOOTH );
 
-    if ( iIntroWin )
-	DoIntro();
-//    else
-	if ( iHelpWin )
-	DoHelp();
-    else {
-	table->Draw();
+    if ( iIntroWin ){
+//	DoIntro();
     }
+    else {
+//        table->Draw();
+    }
+//    if ( iHelpWin )
+//	DoHelp();
+	glEnable( GL_COLOR_MATERIAL );
+	glEnable( GL_LIGHTING );
+	glEnable( GL_LIGHT0 );
+	glMaterialfv( GL_FRONT, GL_SHININESS, mat );
+	glLightfv( GL_LIGHT0, GL_POSITION, pos );
     
+//    glTranslatef( 50.0, 50.0, 0.0 );
+    
+    glTranslatef( 0.0, 0.0, tmp );
+    
+    tmp ++;
+    
+    glColor3f( ORANGE );
+    if ( flg_wire )
+    	glutWireSphere( 20 , 10,8 );
+    else 
+	glutSolidSphere( 20, 10,8 );
+    
+	glDisable( GL_COLOR_MATERIAL );
+	glDisable( GL_LIGHTING );
+	glDisable( GL_LIGHT0 );
+    
+
     return 0;
 }
 
@@ -154,15 +185,29 @@ cVmain::Resize( int x, int y, int w, int h )
 int
 cVmain::SetView( void )
 {
+    float fovy;
+    
     glViewport( vX,vY, vW,vH );
     glScissor( vX,vY, vW,vH );
 
+    fovy = calcangle( vH, 100 );
+    
+    cout << "fovy: " << fovy << " tmp: " << tmp << endl;
+    
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
-    glOrtho( 0.0, (float)vW, 0.0, (float)vH, -50.0, 50.0 );
+//    glOrtho( 0, vW*1.0, 0, vH*1.0, 1,100 );
+//    glFrustum( -vW/2.0, vW/2.0, -vH/2.0, vH/2.0, 1,500 ); 
+//    glFrustum( -5, 5, -5, 5, 1,10 ); 
+    gluPerspective( fovy, vW/vH, 3, 500 );
+    
+    
+//    cout << "vW: " << vW/2.0 << " vH: " << vH/2.0 << endl;
     
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
+    
+//    glTranslatef( vW/2.0, vH/2.0, -1.0 );
     
     return 0;
 }
@@ -179,6 +224,11 @@ cVmain::DoIntro( void )
 {
     GLfloat pos[4];
 
+    glPushMatrix();
+    
+    glLoadIdentity();
+    glTranslatef( -vW/2.0, -vH/2.0, -1.0 );
+    
     if ( (vW * .7) < vH ) {
     	pos[2] = vW - 10;		// W
     	pos[3] = (vW-20) * .7;		// H : aspect ratio
@@ -209,6 +259,8 @@ cVmain::DoIntro( void )
     }
     glEnd();
     glDisable( GL_TEXTURE_2D );
+    
+    glPopMatrix();
     
     return 0;
 }
@@ -268,5 +320,16 @@ cVmain::Animate( void )
     iIntroWin = 0;
     
     return (table->Move()) ;
+}
+
+int
+cVmain::Wire( int flag )
+{
+    if ( flag >= 0 )
+	flg_wire = flag;
+    else
+	flg_wire ^= 1;
+    
+    return flg_wire;
 }
 

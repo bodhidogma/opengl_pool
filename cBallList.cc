@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  1999/11/10 20:04:49  paulmcav
+ * updated project for use with animation
+ *
  * Revision 1.3  1999/11/10 08:19:19  paulmcav
  * added updates to ball management classes
  *
@@ -86,9 +89,9 @@ cBallList::Move()
 	balls[ bc ].Move();
     }
     
-    cout << "tick: " << tick << endl;
+//    cout << "tick: " << tick << endl;
     
-    if ( tick++ > 20 )
+    if ( tick++ > 4 )
 	tick = 0;
 	
     return !tick;

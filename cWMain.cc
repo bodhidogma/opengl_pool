@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  1999/11/10 20:04:49  paulmcav
+ * updated project for use with animation
+ *
  * Revision 1.5  1999/11/10 00:21:04  paulmcav
  * misc updates.  added ball(s) class to manage ball movement/ drawing.
  *
@@ -169,6 +172,11 @@ cWMain::Keys( unsigned char key, int mx, int my )
 	case 'h':
 	    iAnim = 0;
     	    ((cVmain*)views[ mw_main ])->Help();
+	    Display();
+	    break;
+	    
+	case 'w':
+    	    ((cVmain*)views[ mw_main ])->Wire();
 	    Display();
 	    break;
 	    
