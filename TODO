@@ -1,4 +1,4 @@
-# $Id: TODO,v 1.5 1999-11-10 00:21:04 paulmcav Exp $
+# $Id: TODO,v 1.6 1999-11-19 22:36:57 paulmcav Exp $
 
 Project task list, and projected schedule of completion.  Feel free to add
 tasks as they come up.  Check off the tasks as they are completed.
@@ -16,9 +16,9 @@ Proj 3a
 Proj 3b
  
  [x] Develop code for detecting / managing ball-ball, ball-bumpur collisions
- [x] Create models / texture maps / sounds
+ [X] Create models / texture maps / sounds
  [x] Drawing of model data
- [ ] Manage mouse movement to alter viewpoint (world orbit)
+ [X] Manage mouse movement to alter viewpoint (world orbit)
  [ ] 3ds Model file loading support (ie: similar to .obj file loading)
  [ ] Cue-stick management. Hit the ball w/ variable amount of force
  [ ] Choose texture-mapped/ colored/ wireframe models for objects on screen

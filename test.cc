@@ -125,10 +125,10 @@ void init(void)
     
 //    glCullFace( GL_BACK );
 //    glFrontFace( GL_CCW );
-    glEnable( GL_CULL_FACE );
+//    glEnable( GL_CULL_FACE );
     
     glEnable( GL_COLOR_MATERIAL );
-    glColorMaterial( GL_FRONT, GL_AMBIENT_AND_DIFFUSE );
+//    glColorMaterial( GL_FRONT, GL_AMBIENT_AND_DIFFUSE );
     
     glEnable( GL_LIGHTING );
     glEnable( GL_LIGHT0 );
@@ -136,8 +136,8 @@ void init(void)
     glEnable( GL_DEPTH_TEST );
     glShadeModel( GL_SMOOTH );
 
-    glPolygonMode( GL_FRONT, GL_FILL );
-    glDepthFunc( GL_LESS );
+//    glPolygonMode( GL_FRONT, GL_FILL );
+//    glDepthFunc( GL_LESS );
     
 //    glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
     glMaterialfv( GL_FRONT, GL_SHININESS, mat_shininess );
@@ -153,14 +153,14 @@ void init(void)
     glutWireSphere( 1, 20, 16 );
     
         glColor3f( 1,1,1 );
-/*
-   	glInterleavedArrays( GL_V3F, 0, Box01_vertex );
+
+/*   	glInterleavedArrays( GL_V3F, 0, Box01_vertex );
 	glBegin( GL_TRIANGLES );
 	for ( cnt = 0; cnt < sizeof(Box01_face)/sizeof(long); cnt++ ){
 //	for ( cnt = 0; cnt < (3*3) ; cnt++ ){
 		f = Box01_face[ cnt ];
 		memcpy( &u[0], &Box01_vertex[f*3], sizeof(GLfloat)*3 );
-/*	    if ( !(cnt%3) ) {
+*	    if ( !(cnt%3) ) {
 		f2 = Box01_face[ cnt+1 ];
 		memcpy( &v[0], &Box01_vertex[f2*3], sizeof(GLfloat)*3 );
 		
@@ -178,7 +178,7 @@ void init(void)
 		cout << " n: " << n[0] <<" " << n[1] <<" " << n[2] << endl;
 		
 	    }
-/
+*
 	    glNormal3fv( u );
 	    glArrayElement( f );
 	}
@@ -193,7 +193,6 @@ void init(void)
         }
 	glEnd();
 */
-
         glInterleavedArrays( GL_V3F, 0, rawobj____i );
 	glBegin( GL_TRIANGLES );
             draw_raw();
@@ -225,14 +224,16 @@ void display(void)
     
     glTranslatef( L_POS );
     glColor3f( 1,1,1 );
-    glutWireSphere( .05, 10, 8 );
+    glutSolidSphere( .05, 10, 8 );
     
     glPopMatrix();
     glPushMatrix();
     
+    
     glRotatef( dx, 1, 0, 0 );
     glRotatef( dy, 0, 1, 0 );
     
+    glRotatef( -90, 1, 0, 0 );
 //    glLightfv( GL_LIGHT0, GL_POSITION, light_position );
 //    glRotatef(-45, 1, 0, 0 );
     
@@ -243,7 +244,7 @@ void display(void)
 //    glTranslatef( -225, 0, 0 );
 
     glEnable( GL_NORMALIZE );
-//    glScalef( 2, 2, 2 );
+//    glScalef( 4, 4, 4 );
     glScalef( .002, .002, .002 );
     
     glCallList( dlist );

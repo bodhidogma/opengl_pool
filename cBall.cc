@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  1999/11/11 20:38:31  paulmcav
+ * working on perspective use
+ *
  * Revision 1.5  1999/11/10 08:19:19  paulmcav
  * added updates to ball management classes
  *
@@ -55,7 +58,7 @@ cBall::Draw()
 //    glPushMatrix();		// save current position info
     
 //    glTranslatef( (BALL_R*2.5), 0.0, 0.0 );
-    glTranslatef( 2.5, 0.0, 0.0 );
+    glTranslatef( pos[0], pos[1], pos[3] );
     glRotatef( rotation, normal[0], normal[1], normal[2] );
     
     if ( flg_Wire ){		// wire frame
@@ -107,3 +110,14 @@ cBall::SetColor( float c[3] )
     return 0;
 }
     
+
+int
+cBall::SetPosition( float x, float y )
+{
+    pos[0] = x;
+    pos[1] = y;
+    pos[2] = 0;
+
+    return 0;
+}
+

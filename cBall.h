@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  1999/11/11 20:38:31  paulmcav
+ * working on perspective use
+ *
  * Revision 1.3  1999/11/10 08:19:19  paulmcav
  * added updates to ball management classes
  *
@@ -23,7 +26,7 @@
 #ifndef _CBALL_H_
 #define _CBALL_H_
 
-#define BALL_R	30.0
+#define BALL_R	1.125
 
 /*
 */
@@ -59,6 +62,8 @@ public:
     int SetColor( float r, float g, float b, float a=1.0 );
     int SetColor( float c[3] );
 //    int SetColor( float c[4] );
+    
+    int SetPosition( float x, float y );
 };
 
 

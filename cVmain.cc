@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.16 $
+// $Revision: 1.17 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.16  1999/11/18 16:27:02  scott
+ * Created text for help screen
+ *
  * Revision 1.15  1999/11/18 02:02:23  paulmcav
  * added pool table drawing
  *
@@ -81,7 +84,7 @@ cVmain::cVmain( int x, int y, int w, int h ) :
 	glcViewport( x, y, w, h ),
 	iIntroWin(1),
 	iHelpWin(0),
-	Xdeg(0), Ydeg(0)
+	Xdeg(15), Ydeg(0)
 {
     table = new cTable( 0,0, 48,96 );
     assert( table );
@@ -140,25 +143,31 @@ cVmain::Display( void )
     SetView();
     
     // --- draw our stuff --- 
-//    glDisable( GL_DEPTH_TEST );
-    glDisable( GL_CULL_FACE );		// for texmaps
+    glEnable( GL_DEPTH_TEST );
+    glEnable( GL_CULL_FACE );		// for texmaps
     glShadeModel( GL_SMOOTH );
 
 //    glRotatef(tmp, 0, 1.0, 0 );
 
-    glRotatef( Xdeg, 1, 0, 0 );
-    glRotatef( Ydeg, 0, 1, 0 );
-    
     if ( iIntroWin ){
 	DoIntro();
     }
     else {
+	glPushMatrix();
+	
+	glTranslatef( 0,0, (85-abs(Xdeg)) * 2.5);
+	glRotatef( Xdeg, 1, 0, 0 );
+	glRotatef( Ydeg, 0, 1, 0 );
+	
         table->Draw();
+	
+	glPopMatrix();
     }
     if ( iHelpWin ) {
+        glDisable( GL_DEPTH_TEST );
 	DoHelp();
     }
-    
+	    
     glColor3f( ORANGE );
 
 	glEnable( GL_COLOR_MATERIAL );

@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  1999/11/10 20:04:49  paulmcav
+ * updated project for use with animation
+ *
  * Revision 1.3  1999/11/10 08:19:19  paulmcav
  * added updates to ball management classes
  *
@@ -29,7 +32,7 @@ enum bl_balls {
     b_que,
     b_yellow,
     b_blue,
-/*    b_red,
+    b_red,
     b_purple,
     b_orange,
     b_green,
@@ -42,7 +45,7 @@ enum bl_balls {
     b_sorange,
     b_sgreen,
     b_smagenta,
-*/    b_count
+    b_count
 };
 
 /*
@@ -53,7 +56,8 @@ class cBallList
 private:
     cBall *balls;
     float xMin, xMax, yMin, yMax;	// table dimensions
-    
+    float hDiv, wDiv;
+
     int tick;
     
 protected:
@@ -67,6 +71,9 @@ public:
     int Resize( float x, float y, float w, float h );
     
     int EnableBall( int num );
+    
+    int RackPosition( int ball, float *pos );
+    
 };
 
 #endif

@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1999/11/10 08:19:19  paulmcav
+ * added updates to ball management classes
+ *
  * 
 */
 
@@ -24,6 +27,7 @@ class cTable
 private:
     cBallList *lBalls;				// table balls
     float xMin, xMax, yMin, yMax;
+    int   dlist;
 
 protected:
 public:
