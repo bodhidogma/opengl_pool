@@ -4,51 +4,107 @@
 #include <iostream.h>
 
 #include <unistd.h>
+#include <assert.h>
+#include <math.h>
 
 
 //#include "box.h"
 #include "pooltable.h"
+#include "models.h"
 //#include "box_obj.h"
 
 int spin =0, move=0;
 int beginx, beginy;
 int dx = 0, dy = 0;
 
-void init(void)
-{   
+GLuint dlist;
+
+    GLfloat Box01_vertex[] = {
+         .147160, .208735,-.328553,	// 0
+        -.133291, .423785, .025140,	// 1
+         .147384, .208563, .378553,	// 2
+         .427836,-.006487, .024859,	// 3
+        -.157088,-.188042,-.328553,	// 4
+         .123587,-.403264, .024859,	// 5
+        -.156864,-.188213, .378553,	// 6
+        -.437540, .027008, .025140	// 7
+	};
+
+    long Box01_face[] = {
+        0,1,2, 2,3,0,
+	4,5,6, 6,7,4,
+	0,3,5, 5,4,0,
+        3,2,6, 6,5,3,
+	2,1,7, 7,6,2,
+	1,0,4, 4,7,1
+	};
+/*
+    GLfloat Box01_vertex[] = {
+        -.5, .5, .5,	// 0
+        -.5,-.5, .5,	// 1
+         .5,-.5, .5,	// 2
+         .5, .5, .5,	// 3
+         .5, .5,-.5,	// 4
+         .5,-.5,-.5,	// 5
+        -.5,-.5,-.5,	// 6
+        -.5, .5,-.5	// 
+	};
+
+    long Box01_face[] = {
+        0,1,2, 2,3,0,
+//	4,5,6, 6,7,4,
+//	0,3,5, 5,4,0,
+//      3,2,6, 6,5,3,
+//	2,1,7, 7,6,2,
+//	1,0,4, 4,7,1
+	};
+*/
+#define L_POS -1, 1, 1
+    
     GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-    GLfloat mat_shininess[] = { 50.0 };
-    GLfloat light_position[] = { 1.0, 0.0, 1.0, 0.0 };
+    GLfloat mat_shininess[] = { 5.0 };
+    GLfloat light_position[] = { L_POS , 0.0 };
     GLfloat white_light[] = { 1.0, 1.0, 1.0, 1.0 };
 
-    
-    glClearColor( 0.0, 0.0, 0.0, 0.0 );
-//    glClearColor (0.0, 0.0, 0.0, 1.0);
-   
-    glShadeModel( GL_SMOOTH );
-    glEnable( GL_COLOR_MATERIAL );
 
-    glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
-    glMaterialfv( GL_FRONT, GL_SHININESS, mat_shininess );
-    glLightfv( GL_LIGHT0, GL_POSITION, light_position );
-    glLightfv( GL_LIGHT0, GL_DIFFUSE, white_light );
-    glLightfv( GL_LIGHT0, GL_SPECULAR, white_light );
-	   
-    glEnable( GL_LIGHTING );
-//    glEnable( GL_LIGHT0 );
+GLvoid
+glmCross( GLfloat *u, GLfloat *v, GLfloat *n )
+{
+    assert(u); assert(v); assert(n);
 
+    n[0] = u[1]*v[2] - u[2]*v[1];
+    n[1] = u[2]*v[0] - u[0]*v[2];
+    n[2] = u[0]*v[1] - u[1]*v[0];
 }
 
+GLvoid
+glmNormalize( GLfloat *v )
+{
+    GLfloat l;
+    
+    assert(v);
+
+    l = (GLfloat)sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2] );
+    v[0] /= l;
+    v[1] /= l;
+    v[2] /= l;
+}
+    
 void draw_raw( void )
 {
-    int cnt, pos;
-    
+    GLfloat u[3];
+    int cnt, v, pos, f;
+	    
     for ( cnt=0, pos=0; cnt< rawobj[3]; cnt++ ){
 //    for ( cnt=0, pos=0; cnt< 3; cnt++ ){
-    	glDrawElements( GL_LINE_STRIP,
-	    rawobj__iii[pos]*3,
-	    GL_UNSIGNED_INT, &rawobj__iii[pos+2] );
-	
+	for (v=0; v<rawobj__iii[pos]*3; v++ ){
+	    
+	    f = rawobj__iii[pos+2+v];
+	    memcpy( &u[0], &rawobj____i[ f*3 ], sizeof(GLfloat)*3 );
+	    
+	    glNormal3fv( u );
+	    glArrayElement( f );
+	}
 //	cout << "cnt: " << cnt << " p: " << pos << " # " << rawobj__iii[pos];
 	
 	pos += (rawobj__iii[pos]* 3)+2;
@@ -59,81 +115,139 @@ void draw_raw( void )
 
 }
 
-void display(void)
-{
-    int cnt, tmp;
+void init(void)
+{   
+    GLfloat u[3], v[3], n[3];
+    int cnt, f,f2;
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-   
-    GLfloat verticies[] =
-   	{ -200.0, -100.0, 0.0,
-	  -200.0, 100.0, 0.0,
-	   0.0, 100.0, 0.0,
-	   0.0, -100.0, 0.0 };
+//    glClearColor( 0.0, 0.0, 0.0, 0.0 );
+    glClearColor (0.0, 0.0, 0.0, 1.0);
+    
+//    glCullFace( GL_BACK );
+//    glFrontFace( GL_CCW );
+    glEnable( GL_CULL_FACE );
+    
+    glEnable( GL_COLOR_MATERIAL );
+    glColorMaterial( GL_FRONT, GL_AMBIENT_AND_DIFFUSE );
+    
+    glEnable( GL_LIGHTING );
+    glEnable( GL_LIGHT0 );
 
-    int vlist[] = {
-	0, 1 ,2,
-	3, 4, 5,
-	6, 7, 8,
-	9, 10, 11 };
+    glEnable( GL_DEPTH_TEST );
+    glShadeModel( GL_SMOOTH );
+
+    glPolygonMode( GL_FRONT, GL_FILL );
+    glDepthFunc( GL_LESS );
     
-    glColor3ub( 100,40,180 );
+//    glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
+    glMaterialfv( GL_FRONT, GL_SHININESS, mat_shininess );
+    glLightfv( GL_LIGHT0, GL_POSITION, light_position );
+//    glLightfv( GL_LIGHT0, GL_DIFFUSE, white_light );
+//    glLightfv( GL_LIGHT0, GL_SPECULAR, white_light );
+
+    dlist = glGenLists(1);
     
-    glPushMatrix();
-       	
-    glRotatef( dx, 1, 0, 0 );
-    glRotatef( dy, 0, 1, 0 );
+    glNewList( dlist, GL_COMPILE );
     
-//    glRotatef(-45, 1, 0, 0 );
+    glColor3ub( 180,40,100 );
+    glutWireSphere( 1, 20, 16 );
     
-    glInterleavedArrays( GL_V3F, 0, verticies );
+        glColor3f( 1,1,1 );
+/*
+   	glInterleavedArrays( GL_V3F, 0, Box01_vertex );
+	glBegin( GL_TRIANGLES );
+	for ( cnt = 0; cnt < sizeof(Box01_face)/sizeof(long); cnt++ ){
+//	for ( cnt = 0; cnt < (3*3) ; cnt++ ){
+		f = Box01_face[ cnt ];
+		memcpy( &u[0], &Box01_vertex[f*3], sizeof(GLfloat)*3 );
+/*	    if ( !(cnt%3) ) {
+		f2 = Box01_face[ cnt+1 ];
+		memcpy( &v[0], &Box01_vertex[f2*3], sizeof(GLfloat)*3 );
+		
+		glmCross( u, v, n );
+		
+		glmNormalize( n );
+
+		glNormal3fv( n );
+		
+		cout << "c: " << cnt << " f=" << f << " f2=" << f2 << endl;
+		cout << " (f: " << Box01_vertex[f*3];
+		cout << "," << Box01_vertex[f2*3] << " )" << endl;
+		cout << " u: " << u[0] <<" " << u[1] <<" " << u[2] << endl;
+		cout << " v: " << v[0] <<" " << v[1] <<" " << v[2] << endl;
+		cout << " n: " << n[0] <<" " << n[1] <<" " << n[2] << endl;
+		
+	    }
+/
+	    glNormal3fv( u );
+	    glArrayElement( f );
+	}
+        glEnd();
+*/
+/*   	glInterleavedArrays( YBALLFORMAT, 0,(GLvoid*)&YBALLMODEL );
+	glBegin( GL_TRIANGLES );
+	for ( cnt=0; cnt < YBALLPOLYCNT *3; cnt++ ) {
+	    memcpy( &u[0], &YBALLMODEL[ cnt ], sizeof(GLfloat)*3 );
+	    glNormal3fv( u );
+	    glArrayElement( cnt );
+        }
+	glEnd();
+*/
+
+        glInterleavedArrays( GL_V3F, 0, rawobj____i );
+	glBegin( GL_TRIANGLES );
+            draw_raw();
+	glEnd();
+		
+    glEndList();
+		
+    
 //    glDrawArrays( GL_QUADS, 0, 4 );
 //    glDrawElements( GL_QUADS, 4, GL_UNSIGNED_INT, vlist );
 
 //    glInterleavedArrays( GL_V3F, 0, (GLvoid *)(&rawobj__iii[2]) );
 //    glDrawArrays( GL_LINES, 0, 576 );
 	    
-//    glInterleavedArrays( GL_V3F, 0, rawobj____i );
 //    glInterleavedArrays( GL_V3F, 0, Box01_vertex );
 //    glInterleavedArrays( GL_V3F, 0, Torus01_vertex );
 
-    glEnable( GL_DEPTH_TEST );
-    glEnable( GL_CULL_FACE );
+
+}
+
+void display(void)
+{
+//    int cnt, tmp;
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   
     
-//    glutWireSphere( 400, 20, 16 );
+    glPushMatrix();
     
-    glRotatef( -90, 1, 0, 0 );
-    glTranslatef( -225, 0, 0 );
-
-//    draw_raw();
-
-    glDrawElements( GL_LINE_STRIP,
-	    sizeof(vlist)/sizeof(long),
-	    GL_UNSIGNED_INT, vlist );
-
-/*    glDrawElements(
-	    GL_LINE_STRIP,
-//	    GL_TRIANGLE_STRIP,
-//	    3,
-	    sizeof(Torus01_face)/sizeof(long),
-	    GL_UNSIGNED_INT, Torus01_face );
-*/    
-//    glDrawArrays( GL_LINES, 0, sizeof(Cylinder03_vertex)/sizeof(Point3) );
+    glTranslatef( L_POS );
+    glColor3f( 1,1,1 );
+    glutWireSphere( .05, 10, 8 );
     
-/*
-   glBegin(GL_QUADS);
-   glTexCoord2f(0.0, 0.0); glVertex3f(-2.0, -1.0, 0.0);
-   glTexCoord2f(0.0, 3.0); glVertex3f(-2.0, 1.0, 0.0);
-   glTexCoord2f(3.0, 3.0); glVertex3f(0.0, 1.0, 0.0);
-   glTexCoord2f(3.0, 0.0); glVertex3f(0.0, -1.0, 0.0);
+    glPopMatrix();
+    glPushMatrix();
+    
+    glRotatef( dx, 1, 0, 0 );
+    glRotatef( dy, 0, 1, 0 );
+    
+//    glLightfv( GL_LIGHT0, GL_POSITION, light_position );
+//    glRotatef(-45, 1, 0, 0 );
+    
+//    glColor3ub( 180,40,100 );
+//    glutWireSphere( 1, 20, 16 );
+    
+//    glRotatef( -90, 1, 0, 0 );
+//    glTranslatef( -225, 0, 0 );
 
-   glTexCoord2f(0.0, 0.0); glVertex3f(1.0, -1.0, 0.0);
-   glTexCoord2f(0.0, 3.0); glVertex3f(1.0, 1.0, 0.0);
-   glTexCoord2f(3.0, 3.0); glVertex3f(2.41421, 1.0, -1.41421);
-   glTexCoord2f(3.0, 0.0); glVertex3f(2.41421, -1.0, -1.41421);
-   glEnd();
-*/
- 
+    glEnable( GL_NORMALIZE );
+//    glScalef( 2, 2, 2 );
+    glScalef( .002, .002, .002 );
+    
+    glCallList( dlist );
+
     glPopMatrix();
 
 //   glFlush();
@@ -150,7 +264,6 @@ void reshape(int w, int h)
    glLoadIdentity();
    glTranslatef(0.0, 0.0, -3.0);
    
-   glScalef( .002, .002, .002 );
 }
 
 /* ARGSUSED1 */
@@ -198,13 +311,13 @@ void mousemove( int x, int y )
 	if ( x-beginx )
 	    dy += (x-beginx);
 	
-	if ( dx < -15 )
+/*	if ( dx < -15 )
 	    dx = -15;
 	if ( dx > 90 )
 	    dx = 90;
+*/	
 	
-	
-	cout << "dx: " << dx << " dy: " << dy << endl;
+//	cout << "dx: " << dx << " dy: " << dy << endl;
 	
 	
 	beginx = x;
