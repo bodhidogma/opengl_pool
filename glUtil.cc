@@ -3,9 +3,13 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  1999/10/29 04:31:21  paulmcav
+ * added viewport class to manage glviewports in a window.
+ * Also enabled texture mapping class!
+ *
  * Revision 1.1  1999/10/25 06:33:21  paulmcav
  * working project with fancy windowing class for GL.
  * Tex maps sorta working, looks sharp though!
@@ -61,7 +65,8 @@ glshadebox( int x, int y, int w, int h, int raised=1 )
 	    glColor3f( GRAY44 );
 	else
 	    glColor3f( WHITE );
-	glVertex2i( x, h );		// L: |
+	glVertex2i( x, h-1 );		// L: |
+//	glVertex2i( x, h );		// L: |
 	glVertex2i( x, y );
 	glVertex2i( x, y );		// B: _
 	glVertex2i( w, y );
