@@ -1,4 +1,4 @@
-** $Revision: 1.6 $
+** $Revision: 1.7 $
 ** Misc Notes **
 
 Required Libraries:
@@ -34,6 +34,13 @@ Source Availability:
 -----------------
 Scott's Notes:
  Hey, Paul helped get my modem configured!
+
+ 11/3:  Completed a balltest file for testing texture maps on billiard
+      balls created using opengl/glut.  Didn't get to test it out due to
+      a problem with updating the Makefile.  Hopefully, it works!  The 
+      balltext1.rgb file resides in the temp directory with scott.c
+
+ 11/17:  Completed text used for help screen.
 
 -----------------
 Paul's Notes:
