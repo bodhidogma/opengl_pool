@@ -1,8 +1,21 @@
-# $Id: TODO,v 1.2 1999-10-25 06:33:21 paulmcav Exp $
+# $Id: TODO,v 1.3 1999-11-03 17:28:55 paulmcav Exp $
 
-* finish getting texmap class working correctly?  Why is it segfaulting?
-* create a list of all global classes with enum'd names to track / pass around
-* create object classes for game
-* import model file and display with lighting.
 
+ [X] Create base classes for glut windows
+ [X] Create base clasess for glut viewport management
+ [x] Develop code for detecting / managing ball-ball, ball-bumpur collisions
+ [X] Create texture mapping class for loading / managing texture maps
+ [X] Implement help window
+ [X] Implement grey'd out background
+ [X] Texture mapped / bitmap background
+ [ ] Manage mouse movement to alter viewpoint (world orbit)
+ [ ] 3ds Model file loading support (ie: similar to .obj file loading)
+ [x] Drawing of model data
+ [ ] Cue-stick management. Hit the ball w/ variable amount of force
+ [X] Seperate functionality for Status / Main viewport areas
+ [ ] Choose texture-mapped/ colored/ wireframe models for objects on screen
+ [ ] Manage animation while ball's continue to move on screen
+ [ ] Implement sound support.  Threaded, windows support also?
+ [x] Create models / texture maps / sounds
+ [ ]
 
