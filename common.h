@@ -4,10 +4,13 @@
 // Desc:        common header file
 //              
 // 
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  1999/10/13 16:13:11  paulmcav
+ * state of project for turn in (proj2a)
+ *
  * Revision 1.1  1999/10/13 05:22:43  paulmcav
  * template files for future classes
 */
@@ -27,27 +30,16 @@
 */
 
 // library includes
-#include <GL/gl.h>
-#include <GL/glu.h>
 #include <GL/glut.h>
+
+#include <assert.h>
 
 // local class / functions
 #include "glpool.h"
-#include "cMenu.h"
-#include "cHelp.h"
-
-// external support functions
-#include "readtex.h"
 
 /*
  * Constants / globals
  */
-//#ifndef __CH_EXTERNS__
-#define __CH_EXTERNS__
-
-static int help = 0;
-
-//#endif
 
 #endif
 

@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.5 1999-10-19 22:29:10 paulmcav Exp $
+# $Id: Makefile,v 1.6 1999-10-25 06:33:21 paulmcav Exp $
 #
 ##### MACROS #####
 
@@ -18,12 +18,12 @@ GL	= MesaGL
 GL_LIBS	= $(LIBDIR) -lglut -lMesaGLU -l$(GL) -lm $(XLIBS)
 
 #debugging!
-#MALLOC	 -static -lefence
+#MALLOC	= -static -lefence
 
 CC	= g++
 CFLAGS	= $(INCDIR) -Wall -g
 LD	= $(CC)
-LDFLAGS	=
+LDFLAGS	= -lpng
 LIBS	= $(GL_LIBS) $(MALLOC)
 OBJ	= obj/
 
@@ -36,7 +36,17 @@ VPATH	= .:$(OBJ)
 $(OBJ)%.o: %.cc
 	$(CC) $(CFLAGS) -c $< -o $@
 
+$(OBJ)%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
 $(OBJ)%.d: %.cc
+	@rm -f $@
+	@$(SHELL) -ec '$(CC) -MM $(CPPFLAGS) $< | \
+	sed -e "1s|^|$(OBJ)|" -e "s|:| $@:|" \
+	> $@; \
+	[ -s $@ ] || rm -f $@'
+
+$(OBJ)%.d: %.c
 	@rm -f $@
 	@$(SHELL) -ec '$(CC) -MM $(CPPFLAGS) $< | \
 	sed -e "1s|^|$(OBJ)|" -e "s|:| $@:|" \
@@ -59,9 +69,12 @@ endif
 sources	=$(wildcard *.cc)
 
 GLPOOL	= glpool.o \
-	  cMenu.o \
-	  cHelp.o \
-	  readtex.o
+	  glWindow.o \
+	  glUtil.o \
+	  glpng.o \
+	  cTexMaps.o \
+	  cWStatus.o \
+	  cWMain.o 
 
 SOUDI	= soudi.o
 

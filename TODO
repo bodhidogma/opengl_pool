@@ -1,2 +1,8 @@
+# $Id: TODO,v 1.2 1999-10-25 06:33:21 paulmcav Exp $
 
-start project, and then finish it.
+* finish getting texmap class working correctly?  Why is it segfaulting?
+* create a list of all global classes with enum'd names to track / pass around
+* create object classes for game
+* import model file and display with lighting.
+
+
