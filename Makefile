@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.10 1999-11-20 07:53:56 paulmcav Exp $
+# $Id: Makefile,v 1.11 1999-11-20 21:41:30 paulmcav Exp $
 #
 ##### MACROS #####
 
@@ -13,7 +13,6 @@ XLIBS	= -lX11 -lXext -lXi -lXmu
 
 # glx / mesagl
 GL	= GL
-GL	= glxGL
 
 GL_LIBS	= $(LIBDIR) -lglut -lGLU -l$(GL) -lm $(XLIBS)
 
@@ -73,13 +72,14 @@ GLPOOL	= glpool.o \
 	  glcViewport.o \
 	  glUtil.o \
 	  glpng.o \
+	  cAudio.o \
 	  cTexMaps.o \
 	  cWMain.o \
 	  cVmain.o \
 	  cVstatus.o \
 	  cTable.o \
 	  cBall.o \
-	  cBallList.o
+	  cBallList.o 
 
 SOUDI	= soudi.o
 

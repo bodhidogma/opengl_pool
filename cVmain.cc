@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.18 $
+// $Revision: 1.19 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.18  1999/11/20 07:53:57  paulmcav
+ * added texmap support, some more menu options, lighting, cleanup, etc.
+ *
  * Revision 1.17  1999/11/19 22:36:57  paulmcav
  * Balls displaying on the table, and more!
  *
@@ -93,9 +96,11 @@ cVmain::cVmain( int x, int y, int w, int h ) :
     GLfloat shiny[] = { 5.0 };
     GLfloat spec[] = { 1, 1, 1, 1 };
     
-    
     table = new cTable( 0,0, 48,96 );
     assert( table );
+    
+    audio = new cAudio();
+    assert( audio );
     
     tmp = 0;
     flg_wire = DEF_WIRE;
@@ -116,6 +121,8 @@ cVmain::cVmain( int x, int y, int w, int h ) :
 
 cVmain::~cVmain()
 {
+    if ( audio )
+	delete audio;
     if ( table )
 	delete table; 
 }
@@ -356,6 +363,9 @@ cVmain::help_message( float x, float y, float w, float h )
     x += .5;
     h -= 3.5;
 
+    // test audio file
+    audio->PlayFile( "data/ball_hit.au" );
+    
     glputs( x, h, "               GLPool v0.1 - MESH GAMING"); h -= 3;
     glputs( x, h, "                      Help Screen" ); h -= 3;
     glputs( x, h, " _____________________________________________________"); h-= 6;
@@ -388,10 +398,12 @@ cVmain::help_message( float x, float y, float w, float h )
 int
 cVmain::Animate( void )
 {
+    
     iHelpWin = 0;	// turns off these displays
     iIntroWin = 0;
     
 //    cout << "mwA" << endl;
+
     
     return (table->Move()) ;
 }

@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  1999/11/20 07:53:57  paulmcav
+ * added texmap support, some more menu options, lighting, cleanup, etc.
+ *
  * Revision 1.9  1999/11/18 01:12:19  paulmcav
  * added help menu again, intro win, got correct fovy
  *
@@ -48,6 +51,7 @@
 #include "cVstatus.h"
 
 #include "cTable.h"
+#include "cAudio.h"
 
 /*
  * Main view implementation. Base class is glcViewport
@@ -70,6 +74,7 @@ private:
     
     cVstatus *Vstat;
     cTable *table;
+    cAudio *audio;
     
     float tmp;
     int  flg_wire, flg_tex;

@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  1999/11/20 07:53:57  paulmcav
+ * added texmap support, some more menu options, lighting, cleanup, etc.
+ *
  * Revision 1.9  1999/11/17 21:05:56  paulmcav
  * added mouse movement support
  *
@@ -90,8 +93,11 @@ cWMain::cWMain( char *title, int w, int h, unsigned int mode, int cb ) :
 
 cWMain::~cWMain()
 {
-    if ( views )
-	delete[] views;
+    if ( views ) {
+	delete views[ mw_main ];
+	delete views[ mw_status ];
+	delete views;
+    }
     views = NULL;
 }
 
@@ -171,7 +177,7 @@ cWMain::Keys( unsigned char key, int mx, int my )
     switch( key ){
 	case 27:
 	case 'q':
-	    quit_game();
+	    Menu( mM_Quit );
 	    break;
 
 	case 'i':
