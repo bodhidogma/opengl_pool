@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  1999/11/11 20:38:31  paulmcav
+ * working on perspective use
+ *
  * Revision 1.6  1999/11/10 20:04:49  paulmcav
  * updated project for use with animation
  *
@@ -177,6 +180,10 @@ cWMain::Keys( unsigned char key, int mx, int my )
 	    
 	case 'w':
     	    ((cVmain*)views[ mw_main ])->Wire();
+	    Display();
+	    break;
+	    
+	case ' ':
 	    Display();
 	    break;
 	    

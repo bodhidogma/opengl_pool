@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  1999/11/12 08:56:35  paulmcav
+ * more viewport work
+ *
  * Revision 1.10  1999/11/11 20:38:31  paulmcav
  * working on perspective use
  *
@@ -70,8 +73,10 @@ cVmain::cVmain( int x, int y, int w, int h ) :
     table = new cTable( 100,100, 20,20 );
     assert( table );
     
-    tmp = -2;
+    tmp = 0;
     flg_wire = 1;
+    
+    fH = 2.0;
 }
 
 // ------------------------------------------------------------------
@@ -123,48 +128,41 @@ cVmain::Display( void )
     
     // --- draw our stuff --- 
 //    glDisable( GL_DEPTH_TEST );
-//    glDisable( GL_CULL_FACE );		// for texmaps
+    glDisable( GL_CULL_FACE );		// for texmaps
     glShadeModel( GL_SMOOTH );
 
     glTranslatef( 0.0, 0.0, -2 );
+    glRotatef(tmp, 0, 1.0, 0 );
+
 
     if ( iIntroWin ){
 	DoIntro();
     }
     else {
-//        table->Draw();
+        table->Draw();
     }
 //    if ( iHelpWin )
 //	DoHelp();
     
-/*    glBegin( GL_QUADS );
-    {
-	glVertex3f( 0, 0, 0.0 );
-	glVertex3f( 1, 0, 0.0 );
-	glVertex3f( 1, 1, 0.0 );
-	glVertex3f( 0, 1, 0.0 );
-    }
-    glEnd();
-*/
+    glColor3f( ORANGE );
+
 	glEnable( GL_COLOR_MATERIAL );
 	glEnable( GL_LIGHTING );
 	glEnable( GL_LIGHT0 );
 	glMaterialfv( GL_FRONT, GL_SHININESS, mat );
 	glLightfv( GL_LIGHT0, GL_POSITION, pos );
     
-//    tmp ++;
-    glColor3f( ORANGE );
+    tmp ++;
     
     if ( flg_wire )
-    	glutWireSphere( .5 , 20,16 );
+    	glutWireSphere( 1 , 20,16 );
     else 
-	glutSolidSphere( .5, 20,16 );
+	glutSolidSphere( 1, 20,16 );
   
 	glDisable( GL_COLOR_MATERIAL );
 	glDisable( GL_LIGHTING );
 	glDisable( GL_LIGHT0 );
     
-
     return 0;
 }
 
@@ -178,13 +176,16 @@ cVmain::Display( void )
 int
 cVmain::Resize( int x, int y, int w, int h )
 {
+       
 //    if ( x >= 0 ) vX = x;
 //    if ( y >= 0 ) vY = y;
-    if ( w >= 0 ) vW = w;
-    if ( h >= 0 ) vH = h;
-
     vW = w;
     vH = h;
+
+    fW = ( (float)w/(float)h ) * 2;
+    
+    cout << "h: " << fH << " w: " << fW << endl;
+    
     
     return 0;
 }
@@ -199,14 +200,10 @@ cVmain::Resize( int x, int y, int w, int h )
 int
 cVmain::SetView( void )
 {
-    float w,h;
     
     glViewport( vX,vY, vW,vH );
     glScissor( vX,vY, vW,vH );
 
-    w = vW;
-    h = vH;
-    
 //    fovy = calcangle( vH, 100 );
     
 //    cout << "vW/vH: " << (float)(w/h) << " tmp: " << tmp << endl;
@@ -214,7 +211,7 @@ cVmain::SetView( void )
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
 //    glOrtho( -1, 1, -1, 1, 1,100 );
-    gluPerspective( 60, w/h, 1, 10 );
+    gluPerspective( 60, fW/2, 1, 10 );
     
 //    cout << "vW: " << vW/2.0 << " vH: " << vH/2.0 << endl;
     
@@ -240,8 +237,8 @@ cVmain::DoIntro( void )
 
     glPushMatrix();
     
-    glLoadIdentity();
-//    glTranslatef( -vW/2.0, -vH/2.0, -1.0 );
+//    glLoadIdentity();
+//    glTranslatef( 0, 0, -2.0 );
 /*    
     if ( (vW * .7) < vH ) {
     	pos[2] = vW - 10;		// W
@@ -256,11 +253,10 @@ cVmain::DoIntro( void )
     pos[0] = (vW-pos[2]);		// X
     pos[1] = (vH-pos[3]);		// Y
 */
-
-    pos[0] = -1.4;
-    pos[1] = -1.1;
-    pos[2] = 1.4;
-    pos[3] = 1.1;
+    pos[0] = -fW/2 ;		// x
+    pos[1] = -1.0 ;		// y
+    pos[2] = fW/2 ;		// x2
+    pos[3] = 1.0 ;		// y2
     
     glEnable( GL_TEXTURE_2D );
     glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
