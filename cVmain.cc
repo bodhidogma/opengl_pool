@@ -3,93 +3,16 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.27 $
+// $Revision: 1.28 $
 /*
  * $Log: not supported by cvs2svn $
- * Revision 1.26  1999/12/08 01:08:17  paulmcav
- * added more stuff!
- *
- * Revision 1.25  1999/12/06 09:21:18  paulmcav
- * added windos portability code/utils
- *
- * Revision 1.24  1999/12/06 04:49:24  paulmcav
- * added pooltable model loading / rendering.
- * Cue stick hit now works.  Timing is a bit better
- * Includes timing statistics
- *
- * Revision 1.23  1999/12/03 21:57:34  paulmcav
- * Added que stick action to game
- *
- * Revision 1.22  1999/12/01 21:06:11  paulmcav
- * *** empty log message ***
- *
- * Revision 1.21  1999/11/24 18:58:48  paulmcav
- * more manipulations for ball movement.
- *
- * Revision 1.20  1999/11/22 22:17:08  paulmcav
- * enabled ball bouncing
- *
- * Revision 1.19  1999/11/20 21:41:30  paulmcav
- * added audio playback support.
- *
- * Revision 1.18  1999/11/20 07:53:57  paulmcav
- * added texmap support, some more menu options, lighting, cleanup, etc.
- *
- * Revision 1.17  1999/11/19 22:36:57  paulmcav
- * Balls displaying on the table, and more!
- *
- * Revision 1.16  1999/11/18 16:27:02  scott
- * Created text for help screen
- *
- * Revision 1.15  1999/11/18 02:02:23  paulmcav
- * added pool table drawing
- *
- * Revision 1.14  1999/11/18 01:12:19  paulmcav
- * added help menu again, intro win, got correct fovy
- *
- * Revision 1.13  1999/11/17 21:05:56  paulmcav
- * added mouse movement support
- *
- * Revision 1.12  1999/11/12 21:05:40  paulmcav
- * more perspective work
- *
- * Revision 1.11  1999/11/12 08:56:35  paulmcav
- * more viewport work
- *
- * Revision 1.10  1999/11/11 20:38:31  paulmcav
- * working on perspective use
- *
- * Revision 1.9  1999/11/10 20:04:49  paulmcav
- * updated project for use with animation
- *
- * Revision 1.8  1999/11/10 08:19:19  paulmcav
- * added updates to ball management classes
- *
- * Revision 1.7  1999/11/10 00:21:04  paulmcav
- * misc updates.  added ball(s) class to manage ball movement/ drawing.
- *
- * Revision 1.6  1999/11/04 02:21:43  paulmcav
- * fixed texmap problem, added colors to out of play balls.
- *
- * Revision 1.5  1999/11/03 17:28:55  paulmcav
- * added some colors for balls
- *
- * Revision 1.4  1999/11/02 09:03:53  paulmcav
- * added a box around help menu
- *
- * Revision 1.3  1999/11/02 08:47:04  paulmcav
- * added menu / kb callback support; & help window
- *
- * Revision 1.2  1999/10/29 07:12:22  paulmcav
- * added some more documentation to the class
- *
- * Revision 1.1  1999/10/29 04:31:21  paulmcav
- * added viewport class to manage glviewports in a window.
- * Also enabled texture mapping class!
+ * Revision 1.27  1999/12/08 21:58:10  scott
+ * updated help screen
  *
  */
 
 #include <iostream.h>
+#include <assert.h>
 
 #include "cVmain.h"
 # include "colors.h"
@@ -100,10 +23,8 @@
 
 #include "glUtil.h"
 
-#include <assert.h>
+#include "common.h"
 
-//#include "pooltable.h"
- 
 extern cTexMaps *texList;		// external texturemaps list
 extern cAudio *audio;
 //extern GLuint texName[];
@@ -390,7 +311,7 @@ cVmain::help_message( GLfloat x, GLfloat y, GLfloat w, GLfloat h )
     x += .5;
     h -= 3.5;
 
-    glputs( x, h, "               GLPool v0.1 - MESH GAMING"); h -= 3;
+    glputs( x, h, "               GLPool v" VERSION " - MESH GAMING"); h -= 3;
     glputs( x, h, "                      Help Screen" ); h -= 3;
     glputs( x, h, " _____________________________________________________"); h-= 6;
     glputs( x, h, "I. Menu Options:"); h-= 5;

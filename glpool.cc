@@ -3,51 +3,11 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 /*
  * $Log: not supported by cvs2svn $
- * Revision 1.13  1999/12/06 09:21:18  paulmcav
- * added windos portability code/utils
- *
- * Revision 1.12  1999/12/06 04:49:24  paulmcav
- * added pooltable model loading / rendering.
- * Cue stick hit now works.  Timing is a bit better
- * Includes timing statistics
- *
- * Revision 1.11  1999/11/24 18:58:48  paulmcav
- * more manipulations for ball movement.
- *
- * Revision 1.10  1999/11/22 22:17:08  paulmcav
- * enabled ball bouncing
- *
- * Revision 1.9  1999/11/20 07:53:57  paulmcav
- * added texmap support, some more menu options, lighting, cleanup, etc.
- *
- * Revision 1.8  1999/11/17 21:05:56  paulmcav
- * added mouse movement support
- *
- * Revision 1.7  1999/11/02 08:47:04  paulmcav
- * added menu / kb callback support; & help window
- *
- * Revision 1.6  1999/10/29 04:31:21  paulmcav
- * added viewport class to manage glviewports in a window.
- * Also enabled texture mapping class!
- *
- * Revision 1.5  1999/10/25 06:33:22  paulmcav
- * working project with fancy windowing class for GL.
- * Tex maps sorta working, looks sharp though!
- *
- * Revision 1.4  1999/10/19 21:14:27  soudi
- * *** empty log message ***
- *
- * Revision 1.3  1999/10/19 08:01:10  paulmcav
- * added multiple viewports, blending and texture maps
- *
- * Revision 1.2  1999/10/13 16:13:11  paulmcav
- * state of project for turn in (proj2a)
- *
- * Revision 1.1  1999/10/13 05:22:43  paulmcav
- * template files for future classes
+ * Revision 1.14  1999/12/08 01:08:17  paulmcav
+ * added more stuff!
  *
  */
 
@@ -94,7 +54,7 @@ main( int argc, char *argv[] )
     glutInit( &argc, argv );
     
     // configure GL callabcks for win0
-    wMain = new cWMain( "MESH - GLPool v.01",
+    wMain = new cWMain( "MESH - GLPool v"VERSION,
 	    600, 512,
 	    GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH,
 	    WCB_KEYS | WCB_MOUSECLK | WCB_MOUSEMOVE

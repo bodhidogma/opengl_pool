@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.18 $
+// $Revision: 1.19 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.18  1999/12/08 07:05:25  paulmcav
+ * added sound / timing support for windos version
+ *
  * Revision 1.17  1999/12/08 01:08:17  paulmcav
  * added more stuff!
  *
@@ -79,6 +82,7 @@
 #else
 #  include <sys/time.h>
 #  include <unistd.h>
+#  include <GL/glx.h>
 #endif
 
 extern GLfloat fFrameRate;
@@ -176,6 +180,10 @@ cWMain::Display( void )
     glDisable( GL_SCISSOR_TEST );
 
     glutSwapBuffers();
+    
+#ifdef GLX_H
+    glXWaitGL();
+#endif
     
     return 0;
 }
