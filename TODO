@@ -1,4 +1,4 @@
-# $Id: TODO,v 1.7 1999-11-20 07:57:28 paulmcav Exp $
+# $Id: TODO,v 1.8 1999-11-22 17:18:36 paulmcav Exp $
 
 Project task list, and projected schedule of completion.  Feel free to add
 tasks as they come up.  Check off the tasks as they are completed.
@@ -19,12 +19,12 @@ Proj 3b
  [X] Create models / texture maps / sounds
  [x] Drawing of model data
  [X] Manage mouse movement to alter viewpoint (world orbit)
- [ ] 3ds Model file loading support (ie: similar to .obj file loading)
- [ ] Cue-stick management. Hit the ball w/ variable amount of force
+ [x] 3ds Model file loading support (ie: similar to .obj file loading)
  [X] Choose texture-mapped/ colored/ wireframe models for objects on screen
  [x] Manage animation while ball's continue to move on screen
+ [X] Implement sound support.  Threaded, windows support also?
  
 Proj 3c
  
- [ ] Implement sound support.  Threaded, windows support also?
+ [ ] Cue-stick management. Hit the ball w/ variable amount of force
 
