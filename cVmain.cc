@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.26 $
+// $Revision: 1.27 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.26  1999/12/08 01:08:17  paulmcav
+ * added more stuff!
+ *
  * Revision 1.25  1999/12/06 09:21:18  paulmcav
  * added windos portability code/utils
  *
@@ -392,26 +395,26 @@ cVmain::help_message( GLfloat x, GLfloat y, GLfloat w, GLfloat h )
     glputs( x, h, " _____________________________________________________"); h-= 6;
     glputs( x, h, "I. Menu Options:"); h-= 5;
     glputs( x, h, "Depress the RMB to access the menu from anywhere on the"); h-=3;
-    glputs( x, h, "intro screen.  Select from the following options:"); h-=4;
+    glputs( x, h, "intro screen.  Select from the following basic options:"); h-=4;
     glputs( x, h, "     New Game - Starts a new single player game."); h-=3;
     glputs( x, h, "     Practice - Practice shots with a single ball."); h-=3;
     glputs( x, h, "     2-Player - Starts a new 2-player game."); h-=3;
     glputs( x, h, "     Help     - Enter/Exit the Help Screen."); h-=3;
     glputs( x, h, "     Exit     - Exit the game."); h-=5;
     glputs( x, h, "II. Game Modes:"); h-=5;
-    glputs( x, h, "There are 2 modes in GLPool: Movement and Shoot. In");h-=3;
-    glputs( x, h, "movement mode (default), depress the LMB while moving");
+    glputs( x, h, "There are 3 modes in GLPool: Table, Stick. & Hit. In");h-=3;
+    glputs( x, h, "Table mode (default), depress the LMB while moving the");
     h-=3;
-    glputs( x, h, "the mouse to tumble around the table.  In shoot mode,");
+    glputs( x, h, "mouse to tumble around the table. Toggle on Stick mode");
     h-=3;
-    glputs( x, h, "the cue stick is positioned for a shot.  Use the mouse");
+    glputs( x, h, "to position the cue stick for a shot. Toggle on Hit");
     h-=3;
-    glputs( x, h, "to simulate the stick action."); h-=6;
-    glputs( x, h, "III. Hot Keys:     'h' - Enter/Exit the Help Screen.");
+    glputs( x, h, "mode and use the mouse to simulate the stick action."); h-=6;
+    glputs( x, h, "III. Hot Keys:  'h' - Enter/Exit the Help Screen.");
     h-=3;
-    glputs( x, h, "                   'q' - Quit the Game."); h-=3;
-    glputs( x, h, "                   'm' - Toggle on Movement Mode.");h-=3;
-    glputs( x, h, "                   SPACEBAR - Toggle on Shoot Mode.");
+    glputs( x, h, "                'q' - Quit the Game."); h-=3;
+    glputs( x, h, "                '1' - Toggle on Hit Mode.");h-=3;
+    glputs( x, h, "           SPACEBAR - Toggle between Table/Stick Mode.");
 
     return 0;
 }
