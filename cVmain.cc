@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.22 $
+// $Revision: 1.23 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.22  1999/12/01 21:06:11  paulmcav
+ * *** empty log message ***
+ *
  * Revision 1.21  1999/11/24 18:58:48  paulmcav
  * more manipulations for ball movement.
  *
@@ -458,3 +461,22 @@ cVmain::Yrot( int deg )
     Ydeg += deg;
     return 0;
 }
+
+int
+cVmain::StickRot( int deg )
+{
+    return table->StickRot( deg );
+}
+
+int
+cVmain::StickTr( int dx )
+{
+    return table->StickTr( dx );
+}
+
+int
+cVmain::StickToggle( int val )
+{
+    return table->StickToggle( val );
+}
+

@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  1999/12/01 21:06:11  paulmcav
+ * *** empty log message ***
+ *
  * Revision 1.3  1999/11/20 07:53:56  paulmcav
  * added texmap support, some more menu options, lighting, cleanup, etc.
  *
@@ -31,6 +34,7 @@
 enum tl_tables {
     tl_solid,
     tl_wire,
+    tl_stick,
     tl_count
 };
 
@@ -40,10 +44,13 @@ private:
     cBallList *lBalls;				// table balls
     float xMin, xMax, yMin, yMax;
     int   iWire, iTex;
+    int   StickRotZ, StickTrY;
+    int   iStick;				// draw stick
     int   dlist;
 
 protected:
     int  make_table( int wire, int lnum );
+    int  make_stick( int lnum );
 
 public:
     cTable( float x, float y, float w, float h );
@@ -54,6 +61,11 @@ public:
 
     int Resize( float x, float y, float w, float h );
     int SetFlags( int wire, int tex );
+    
+    int StickRot( int deg );
+    int StickTr( int dx );
+    int StickToggle( int val );
+	
 };
 
 #endif

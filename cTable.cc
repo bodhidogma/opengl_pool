@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  1999/11/20 07:53:56  paulmcav
+ * added texmap support, some more menu options, lighting, cleanup, etc.
+ *
  * Revision 1.4  1999/11/19 22:36:57  paulmcav
  * Balls displaying on the table, and more!
  *
@@ -36,7 +39,9 @@ cTable::cTable( float x, float y, float w, float h ) :
     yMin(y),
     yMax(h),
     iWire(DEF_WIRE),
-    iTex(DEF_TEX)
+    iTex(DEF_TEX),
+    StickRotZ(0), StickTrY(0),
+    iStick(0)
 {
     lBalls = new cBallList( x,y, w*.92,h*.92 );	// put balls on the table!
     assert( lBalls );
@@ -45,6 +50,7 @@ cTable::cTable( float x, float y, float w, float h ) :
 
     make_table( 0, dlist );
     make_table( 1, dlist+1 );
+    make_stick( dlist+2 );
 }
 
 cTable::~cTable()
@@ -132,6 +138,20 @@ cTable::make_table( int wire, int lnum )
 }
 
 int
+cTable::make_stick( int lnum )
+{
+    glNewList( lnum, GL_COMPILE );
+    {
+	glRotatef( 268, 1, 0, 0 );
+	glTranslatef( 0,0, -50 );
+	glutSolidCone( .5, 50, 20, 16 );
+    }
+    glEndList();
+
+    return 0;
+}
+
+int
 cTable::Draw()
 {
     glPushMatrix();
@@ -145,6 +165,16 @@ cTable::Draw()
 
     glEnable( GL_LIGHTING );
     lBalls->Draw();
+    
+    
+    if ( iStick ) {
+	lBalls->MoveToBall( 0 );			// move to que ball
+
+	glRotatef( StickRotZ, 0,0,1 );
+	glTranslatef( 0, (.25*StickTrY) + BALL_R, 0 );
+	
+	glCallList( dlist+tl_stick );
+    }
     
     glPopMatrix();
 
@@ -182,4 +212,25 @@ cTable::SetFlags( int wire, int tex )
 //  Ret:  
 // ------------------------------------------------------------------
 
+
+int
+cTable::StickRot( int deg )
+{
+    StickRotZ += deg;
+    return 0;
+}
+
+int
+cTable::StickTr( int dx )
+{
+    StickTrY += dx;
+    return 0;
+}
+
+int
+cTable::StickToggle( int val )
+{
+    iStick = val;
+    return 0;
+}
 

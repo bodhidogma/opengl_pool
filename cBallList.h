@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  1999/11/24 19:32:06  paulmcav
+ * adde profiling / drawing routines
+ *
  * Revision 1.8  1999/11/24 18:58:48  paulmcav
  * more manipulations for ball movement.
  *
@@ -80,6 +83,8 @@ public:
     
     int Draw();
     int Move();
+    
+    int MoveToBall( int num );
     
     int Resize( float x, float y, float w, float h );
     

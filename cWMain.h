@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  1999/12/01 21:06:11  paulmcav
+ * *** empty log message ***
+ *
  * Revision 1.7  1999/11/20 07:53:57  paulmcav
  * added texmap support, some more menu options, lighting, cleanup, etc.
  *
@@ -80,6 +83,7 @@ private:
     int iAnim;			// idle loop animation working.
     int pX, pY;
     int MMove; 			// mouse move
+    int StMove, StHit;
     int iTmp;
 
 protected:

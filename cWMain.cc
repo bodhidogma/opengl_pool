@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.12 $
+// $Revision: 1.13 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  1999/11/24 18:58:48  paulmcav
+ * more manipulations for ball movement.
+ *
  * Revision 1.11  1999/11/20 21:41:30  paulmcav
  * added audio playback support.
  *
@@ -67,7 +70,8 @@ cWMain::cWMain( char *title, int w, int h, unsigned int mode, int cb ) :
 	views(0),
 	iAnim(0),
 	pX(0), pY(0),
-	MMove(0)
+	MMove(0),
+	StMove(0), StHit(0)
 {
     views = new glcViewport *[ mw_count ];
     assert( views );
@@ -200,9 +204,19 @@ cWMain::Keys( unsigned char key, int mx, int my )
 	    break;
 	    
 	case ' ':
+	    StMove ^= 1;
+	    StHit = 0;
+    	    ((cVmain*)views[ mw_main ])->StickToggle( StMove );
 	    Display();
 	    break;
 	    
+	case '1':
+	    StHit ^= 1;
+	    StMove = 1;  
+    	    ((cVmain*)views[ mw_main ])->StickToggle( StMove );
+	    Display();
+	    break;
+	  
 	case 'a':
 	    Menu( mM_Practice );
 	    break;
@@ -288,11 +302,22 @@ cWMain::MouseClk( int button, int state, int x, int y )
 int
 cWMain::MouseMove( int x, int y )
 {
-    if ( MMove ) {
-	if ( y-pY )
-	   ((cVmain*)views[ mw_main ])->Xrot( -(y-pY) );
-	if ( x-pX )
-	   ((cVmain*)views[ mw_main ])->Yrot( (x-pX) );
+    if ( MMove ) {			// mouse is moving in window
+
+	if ( StHit ) {
+	    if ( y-pY )
+	       ((cVmain*)views[ mw_main ])->StickTr( -(y-pY) );
+	}
+	else if (StMove ) {
+	    if ( x-pX )
+	       ((cVmain*)views[ mw_main ])->StickRot( (x-pX) );
+	}
+	else {
+	    if ( y-pY )
+	       ((cVmain*)views[ mw_main ])->Xrot( -(y-pY) );
+	    if ( x-pX )
+	       ((cVmain*)views[ mw_main ])->Yrot( (x-pX) );
+	}
 	
 	pX = x;
 	pY = y;

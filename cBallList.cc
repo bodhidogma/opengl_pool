@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  1999/11/24 18:58:48  paulmcav
+ * more manipulations for ball movement.
+ *
  * Revision 1.9  1999/11/22 22:17:08  paulmcav
  * enabled ball bouncing
  *
@@ -173,7 +176,18 @@ cBallList::Move()
 	
     return !tick;
 }
+
+int
+cBallList::MoveToBall( int num )
+{
+    glTranslatef(				// ball center
+	    balls[num].pos[bN][bX],
+	    balls[num].pos[bN][bY],
+	    balls[num].pos[bN][bZ] );
     
+    return 0;
+}
+
 int
 cBallList::Resize( float x, float y, float w, float h )
 {

@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  1999/12/01 21:06:11  paulmcav
+ * *** empty log message ***
+ *
  * Revision 1.12  1999/11/24 18:58:48  paulmcav
  * more manipulations for ball movement.
  *
@@ -111,6 +114,10 @@ public:
     
     int Xrot( int deg );
     int Yrot( int deg );
+    
+    int StickRot( int deg );
+    int StickTr( int dx );
+    int StickToggle( int val );
 };
 
 #endif
