@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  1999/11/17 21:05:56  paulmcav
+ * added mouse movement support
+ *
  * Revision 1.7  1999/11/11 20:38:31  paulmcav
  * working on perspective use
  *
@@ -49,11 +52,18 @@
  * Manage and draw main application view
 */
 
+#define VMAIN_HEIGHT 100	// 100
+#define VMAIN_DXCNTR 400	// 86
+
+#define VMAIN_MINXD  -15
+#define VMAIN_MAXXD   90
+
 class cVmain : public glcViewport {
 private:
     int iIntroWin;
     int iHelpWin;
     int Xdeg, Ydeg;
+    float fovy;
     
     cVstatus *Vstat;
     cTable *table;

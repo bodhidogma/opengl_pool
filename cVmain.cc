@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  1999/11/17 21:05:56  paulmcav
+ * added mouse movement support
+ *
  * Revision 1.12  1999/11/12 21:05:40  paulmcav
  * more perspective work
  *
@@ -80,7 +83,7 @@ cVmain::cVmain( int x, int y, int w, int h ) :
     tmp = 0;
     flg_wire = 1;
     
-    fH = 2.0;
+    fH = VMAIN_HEIGHT;		// viewport height
 }
 
 // ------------------------------------------------------------------
@@ -135,7 +138,6 @@ cVmain::Display( void )
     glDisable( GL_CULL_FACE );		// for texmaps
     glShadeModel( GL_SMOOTH );
 
-    glTranslatef( 0.0, 0.0, -2 );
 //    glRotatef(tmp, 0, 1.0, 0 );
 
     glRotatef( Xdeg, 1, 0, 0 );
@@ -147,8 +149,9 @@ cVmain::Display( void )
     else {
         table->Draw();
     }
-//    if ( iHelpWin )
-//	DoHelp();
+    if ( iHelpWin ) {
+	DoHelp();
+    }
     
     glColor3f( ORANGE );
 
@@ -159,12 +162,12 @@ cVmain::Display( void )
 	glLightfv( GL_LIGHT0, GL_POSITION, pos );
     
 //    tmp ++;
-    
+/*    
     if ( flg_wire )
-    	glutWireSphere( 1 , 20,16 );
+    	glutWireSphere( (VMAIN_HEIGHT/2)-1 , 20,16 );
     else 
-	glutSolidSphere( 1, 20,16 );
-  
+	glutSolidSphere( (VMAIN_HEIGHT/2)-1, 20,16 );
+*/ 
 	glDisable( GL_COLOR_MATERIAL );
 	glDisable( GL_LIGHTING );
 	glDisable( GL_LIGHT0 );
@@ -185,13 +188,15 @@ cVmain::Resize( int x, int y, int w, int h )
        
 //    if ( x >= 0 ) vX = x;
 //    if ( y >= 0 ) vY = y;
-    vW = w;
+    vW = w;	// real window coordinates
     vH = h;
 
-    fW = ( (float)w/(float)h ) * 2;
+    fW = ( (float)w/(float)h ) * VMAIN_HEIGHT;	// (fake) used Width / height
     
-    cout << "h: " << fH << " w: " << fW << endl;
-    
+    fovy = calcangle( VMAIN_HEIGHT, VMAIN_DXCNTR );
+
+//    cout << "fovy: " << fovy << endl;
+//    cout << "h: " << fH << " w: " << fW << endl;
     
     return 0;
 }
@@ -206,25 +211,22 @@ cVmain::Resize( int x, int y, int w, int h )
 int
 cVmain::SetView( void )
 {
-    
     glViewport( vX,vY, vW,vH );
     glScissor( vX,vY, vW,vH );
 
-//    fovy = calcangle( vH, 100 );
-    
+//    cout << "fW: " << fW << endl;
 //    cout << "vW/vH: " << (float)(w/h) << " tmp: " << tmp << endl;
     
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
-//    glOrtho( -1, 1, -1, 1, 1,100 );
-    gluPerspective( 60, fW/2, 1, 10 );
-    
+    gluPerspective( fovy, fW/VMAIN_HEIGHT, 1, 1000 );
+//    glOrtho( -(fW/2), (fW/2), -(fH/2), (fH/2), 1,1000 );
 //    cout << "vW: " << vW/2.0 << " vH: " << vH/2.0 << endl;
     
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
     
-//    glTranslatef( vW/2.0, vH/2.0, -*1.01.0 );
+    glTranslatef( 0.0, 0.0, -VMAIN_DXCNTR );
     
     return 0;
 }
@@ -239,31 +241,27 @@ cVmain::SetView( void )
 int
 cVmain::DoIntro( void )
 {
-    GLfloat pos[4];
+    GLfloat pos[4];	// 
+    GLfloat w,h;
 
     glPushMatrix();
     
-//    glLoadIdentity();
-//    glTranslatef( 0, 0, -2.0 );
-/*    
-    if ( (vW * .7) < vH ) {
-    	pos[2] = vW - 10;		// W
-    	pos[3] = (vW-20) * .7;		// H : aspect ratio
-	pos[3] += (vH-pos[3]+10) / 2;
+    w = fW / 2;
+    h = fH / 2;
+    
+    if ( (w * .7) < h ) {
+    	pos[2] = w-5;			// W			(x2)
+    	pos[3] = (w-5) * .7;		// H : aspect ratio	(y2)
+//	pos[3] += (h-pos[3]+10) / 2;
     }
     else {
-    	pos[3] = vH - 10;		// H
-    	pos[2] = (vH-20) * 1.42;	// W : aspect ratio
-    	pos[2] += (vW-pos[2]+10) / 2;
+    	pos[3] = h-5;			// H			(y2)
+    	pos[2] = (h-5) * 1.42;		// W : aspect ratio	(x2)
+//    	pos[2] += (w-pos[2]+10) / 2;
     }
-    pos[0] = (vW-pos[2]);		// X
-    pos[1] = (vH-pos[3]);		// Y
-*/
-    pos[0] = -fW/2 ;		// x
-    pos[1] = -1.0 ;		// y
-    pos[2] = fW/2 ;		// x2
-    pos[3] = 1.0 ;		// y2
-    
+    pos[0] = -pos[2];		// X1
+    pos[1] = -pos[3];		// Y1
+
     glEnable( GL_TEXTURE_2D );
     glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
     texList->Bind( GL_TEXTURE_2D, tex_intro );
@@ -297,28 +295,35 @@ cVmain::DoIntro( void )
 int
 cVmain::DoHelp( void )
 {
-    GLfloat x,y,w,h;
+    GLfloat pos[4], w,h;
 
-    x = y = 50.0;
-    w = vW -50.0;
-    h = vH -50.0;
+    w = fW/2;
+    h = fH/2;
+    
+    pos[2] = w-10;
+    pos[3] = h-10;
+
+    pos[0] = -pos[2];
+    pos[1] = -pos[3];
     
     glColor4f( BLACK, 0.65 );
     glEnable( GL_BLEND );
     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-    glRectf( 0.0, 0.0, vW, vH );
+    glRectf( pos[0], pos[1], pos[2], pos[3] );
     
     glColor4f( GRAY, 0.20 );
-    glRectf( x, y, w, h );
+    glRectf( pos[0],pos[1] ,pos[2],pos[3]  );
     
     glDisable( GL_BLEND );
 
-    glshadebox( (int)x,(int)y, (int)w,(int)h+1, 1 );
-//    glshadebox( (int)x+1,(int)y+1, (int)w-1,(int)h-0, 0 );
+    glshadebox( pos[0],pos[1], pos[2], pos[3], 1 );
 
     glColor3f( WHITE );
+    
+//    cout << "x,y: " << (int)pos[0] << "," << pos[3] << endl;
 
-    help_message( x,y, w,h );
+//    help_message( pos[0],pos[3], w*2,h*2 );
+    help_message( (int)pos[0],pos[1], pos[2],pos[3] );
     
     return 0;
 }
@@ -326,11 +331,11 @@ cVmain::DoHelp( void )
 int
 cVmain::help_message( float x, float y, float w, float h )
 {
-    x += 8;
-    h -= 16;
+    x += .5;
+    h -= 3.5;
     
-    glputs( x, h, "Hi, this is some test message!" ); h -= 16;
-    glputs( x, h, "This is a second line..." ); h -= 16;
+    glputs( x, h, "Hi, this is some test message!" ); h -= 3;
+    glputs( x, h, "This is a second line..." ); h -= 3;
 
     return 0;
 }
@@ -360,10 +365,10 @@ cVmain::Xrot( int deg )
 {
     Xdeg += deg;
 
-    if ( Xdeg < -15 )
-        Xdeg = -15;
-    if ( Xdeg > 90 )
-        Xdeg = 90;
+    if ( Xdeg < VMAIN_MINXD )
+        Xdeg = VMAIN_MINXD;
+    if ( Xdeg > VMAIN_MAXXD )
+        Xdeg = VMAIN_MAXXD;
     
     return 0;
 }

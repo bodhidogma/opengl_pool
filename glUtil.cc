@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  1999/11/11 20:38:31  paulmcav
+ * working on perspective use
+ *
  * Revision 1.4  1999/11/10 00:21:04  paulmcav
  * misc updates.  added ball(s) class to manage ball movement/ drawing.
  *
@@ -54,6 +57,8 @@ glputs( GLfloat x, GLfloat y, char *buff )
     
     glRasterPos2f( x,y );
     
+//    cout << "x: " << x << " y: " << y << endl;
+    
     for ( ptr=buff; *ptr; ptr++ ) {
 	glutBitmapCharacter( GLUT_BITMAP_9_BY_15, *ptr );
     }
@@ -86,6 +91,33 @@ glshadebox( int x, int y, int w, int h, int raised=1 )
 	glVertex2i( w, h-1 );
 	glVertex2i( w-1, h-1 );		// R: |
 	glVertex2i( w-1, y );
+    }
+    glEnd();
+
+    return 0;
+}
+
+
+int
+glshadebox( float x, float y, float w, float h, int raised=1 )
+{
+    glBegin( GL_LINE_LOOP );
+    {
+	if ( raised )
+	    glColor3f( GRAY44 );
+	else
+	    glColor3f( WHITE );
+	glVertex2f( x, h );		// L: |
+	glVertex2f( x, y );		// B: _
+	glVertex2f( w, y );
+
+	if ( raised )
+	    glColor3f( WHITE );
+	else
+	    glColor3f( GRAY44 );
+	glVertex2f( w, y );
+	glVertex2f( w, h );		// R: |
+//	glVertex2f( x, h );
     }
     glEnd();
 
