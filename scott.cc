@@ -25,6 +25,9 @@ int spin =0, move=0;
 int beginx, beginy;
 int dx = 0, dy = 0;
 int stickflag = 0;
+int stickspin=0, stickmove=0;
+int stickbx, stickby, stickbz;
+int stickdx = 0, stickdy = 0, stickdz = 0;
 
 GLuint dlist;
 GLuint sticklist;
@@ -222,8 +225,8 @@ void init(void)
 
     sticklist = glGenLists (1);
     glNewList (sticklist, GL_COMPILE);
-         glTranslatef( 0, -500, 400);
-         glRotatef(240.0, 1.0, 0, 0);
+         glRotatef(130.0, 1.0, 0, 0);
+         glTranslatef( 0, 0, -600);
          glutSolidCone(10, 600, 20, 16);
     glEndList ();
 }
@@ -242,6 +245,7 @@ void display(void)
     glutSolidSphere( .05, 10, 8 );
     
     glPopMatrix();
+    
     glPushMatrix();
     
     
@@ -249,26 +253,36 @@ void display(void)
     glRotatef( dy, 0, 1, 0 );
     
     glRotatef( -90, 1, 0, 0 );
-//    glLightfv( GL_LIGHT0, GL_POSITION, light_position );
-//    glRotatef(-45, 1, 0, 0 );
+//  glLightfv( GL_LIGHT0, GL_POSITION, light_position );
+//  glRotatef(-45, 1, 0, 0 );
     
-//    glColor3ub( 180,40,100 );
-//    glutWireSphere( 1, 20, 16 );
-    
-//    glRotatef( -90, 1, 0, 0 );
-//    glTranslatef( -225, 0, 0 );
+//  glColor3ub( 180,40,100 );
+//  glutWireSphere( 1, 20, 16 );
+  
+//  glRotatef( -90, 1, 0, 0 );
+//  glTranslatef( -225, 0, 0 );
 
     glEnable( GL_NORMALIZE );
-//    glScalef( 4, 4, 4 );
+//  glScalef( 4, 4, 4 );
     glScalef( .002, .002, .002 );
     
     glCallList( dlist );
-    
     if( stickflag )
+    {
+	glPushMatrix();
+    
+        glRotatef(stickdx, 1, 0, 0);
+	glRotatef(stickdy, 0, 1, 0);
+	glTranslatef(0, 0, stickdz);
+	
     	glCallList( sticklist );
+        
+	glPopMatrix();
+    }
 
+      
     glPopMatrix();
-
+    
 //   glFlush();
    glutSwapBuffers();
 }
@@ -285,26 +299,32 @@ void reshape(int w, int h)
    
 }
 
+
+void drawstick( void )
+//Draws cue stick to screen
+{
+     if( stickflag )
+        stickflag = 0;
+     else
+        stickflag = 1;
+}
+
+
 /* ARGSUSED1 */
 void keyboard (unsigned char key, int x, int y)
 {
    switch (key) {
       case 27:
+
       case 'q':
          exit(0);
          break;
 	 
       case ' ':
+	 drawstick();
 	 glutPostRedisplay();
 	 break;
-      
-      case 's':
-	 if( stickflag )
-	     stickflag = 0;
-	 else
-	     stickflag = 1;
-	 glutPostRedisplay();
-	 break;	 
+	 
       default:
          break;
    }
@@ -314,17 +334,49 @@ void keyboard (unsigned char key, int x, int y)
 
 void mouse( int button, int state, int x, int y )
 {
-    if ( button == GLUT_LEFT_BUTTON ) {
-	if ( state == GLUT_DOWN ) {
-	    glutIdleFunc( NULL );
-	    spin = 0;
-	    move = 1;
-	    beginx = x;
-	    beginy = y;
-    	}
-	else {	// GLUT_UP 
-	    move = 0;
-	}
+    switch( button )
+    {
+	case GLUT_LEFT_BUTTON:
+	    if ( state == GLUT_DOWN && stickflag == 0 ) 
+	    {
+	        glutIdleFunc( NULL );
+	        spin = 0;
+	        move = 1;
+	        beginx = x;
+	        beginy = y;
+    	    }
+	    else
+	    {
+		move = 0;
+	    }
+	    if( state == GLUT_DOWN && stickflag != 0 )
+	    {
+                 glutIdleFunc( NULL );
+	         stickspin = 0;
+	         stickmove = 1;
+	         stickbx = x;
+	         stickby = y;
+	    }
+	    else
+	    {	// GLUT_UP 
+	        stickmove = 0;
+	    }
+	    break;
+	    
+	case GLUT_RIGHT_BUTTON:
+    	    if( state == GLUT_DOWN && stickflag != 0 )
+	    {	
+		 glutIdleFunc( NULL );
+	         stickspin = 0;
+	         stickmove = 1;
+	         stickbx = x;
+	         stickby = y;
+    	    }
+            else 
+	    {	// GLUT_UP 
+	         stickmove = 0;
+	    }
+	
     }
 }
 
@@ -341,11 +393,8 @@ void mousemove( int x, int y )
 	    dx = -15;
 	if ( dx > 90 )
 	    dx = 90;
+	cout << "dx: " << dx << " dy: " << dy << endl;
 */	
-	
-//	cout << "dx: " << dx << " dy: " << dy << endl;
-	
-	
 	beginx = x;
 	beginy = y;
 	
@@ -353,11 +402,28 @@ void mousemove( int x, int y )
 
 //	glutIdleFunc( idle );
     }
-}
+    if( stickmove )
+    {
+	if ( y-stickby )
+	    stickdx -= (y-stickby);
+	
+	if ( x-stickbx )
+	    stickdy += (x-stickbx);
+	
+/*	if ( stickdx < -15 )
+	    stickdx = -15;
+	if ( stickdx > 90 )
+	    stickdx = 90;
+	cout << "stickdx: " << stickdx << " stickdy: " << stickdy << endl;
+*/	
+	stickbx = x;
+	stickby = y;
+	
+	glutPostRedisplay();
 
-void drawstick( void )
-{
-        
+//	glutIdleFunc( idle );
+    }
+	
 }
 
 void idle( void )
