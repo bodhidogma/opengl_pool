@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  1999/11/22 22:17:08  paulmcav
+ * enabled ball bouncing
+ *
  * Revision 1.6  1999/11/20 07:53:56  paulmcav
  * added texmap support, some more menu options, lighting, cleanup, etc.
  *
@@ -61,6 +64,9 @@ enum ball_color {	// R,G,B,A
 class cBall
 {
 private:
+protected:
+public:
+    int   move;
     float pos[2][3];		// x,y,z
     float vel[2][3];
     float accel[2][3];
@@ -79,11 +85,6 @@ private:
     int   flg_Texture;		// texture mapped
     float color[4];		// color
     
-    
-protected:
-    int then2now( void );
-
-public:
     cBall( int num, int wire, int tex=0 );
     ~cBall();
     
@@ -99,6 +100,8 @@ public:
     
     int SetPosition( float x, float y );
     int SetNumber( int ballnum );
+
+    int then2now( void );
 };
 
 

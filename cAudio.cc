@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  1999/11/22 22:17:08  paulmcav
+ * enabled ball bouncing
+ *
  * Revision 1.1  1999/11/20 21:41:30  paulmcav
  * added audio playback support.
  *
@@ -95,6 +98,7 @@ DevAudio( void )
     pin = fdopen( ph1[0], "rb" );
     
     while( 1 ) {
+	buff[0] = '\0';
 	fgets( buff, 1024, pin );
 	buff[ strlen(buff)-1 ] = 0;
 

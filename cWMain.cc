@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  1999/11/20 21:41:30  paulmcav
+ * added audio playback support.
+ *
  * Revision 1.10  1999/11/20 07:53:57  paulmcav
  * added texmap support, some more menu options, lighting, cleanup, etc.
  *
@@ -118,10 +121,10 @@ cWMain::Display( void )
     
     glEnable( GL_SCISSOR_TEST );
     
+//    views[ mw_main ]->Display();
     // draw all my views!
-    for ( cnt = mw_main; cnt < mw_count; cnt++ ){
+    for ( cnt = mw_main; cnt < mw_count; cnt++ )
 	views[ cnt ]->Display();
-    }
     
     glDisable( GL_SCISSOR_TEST );
 

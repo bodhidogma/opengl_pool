@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.20 $
+// $Revision: 1.21 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.20  1999/11/22 22:17:08  paulmcav
+ * enabled ball bouncing
+ *
  * Revision 1.19  1999/11/20 21:41:30  paulmcav
  * added audio playback support.
  *
@@ -69,10 +72,11 @@
 #include <iostream.h>
 
 #include "cVmain.h"
-#include "colors.h"
+# include "colors.h"
 
 #include "glpng.h"
 #include "cTexMaps.h"
+#include "cAudio.h"
 
 #include "glUtil.h"
 
@@ -81,6 +85,7 @@
 //#include "pooltable.h"
  
 extern cTexMaps *texList;		// external texturemaps list
+extern cAudio *audio;
 //extern GLuint texName[];
 
 // ------------------------------------------------------------------
@@ -101,9 +106,6 @@ cVmain::cVmain( int x, int y, int w, int h ) :
     table = new cTable( 0,0, 48,96 );		// our table (size)
     assert( table );
     
-    audio = new cAudio();			// audio server
-    assert( audio );
-    
     tmp = 0;
     flg_wire = DEF_WIRE;			// default flags
     flg_tex = DEF_TEX;
@@ -122,8 +124,6 @@ cVmain::cVmain( int x, int y, int w, int h ) :
 
 cVmain::~cVmain()
 {
-    if ( audio )		// clean up when destroying class
-	delete audio;
     if ( table )
 	delete table; 
 }
@@ -189,7 +189,7 @@ cVmain::Display( void )
 	glTranslatef( 0,0, (85-abs(Xdeg)) * 3.5);	// zoom with height
 	glRotatef( Xdeg, 1, 0, 0 );			// rotate around X
 	glRotatef( Ydeg, 0, 1, 0 );			// rotate around Y
-	
+
         table->Draw();				// draw our table .. etc.
 	
 	glDisable( GL_LIGHT0 );
@@ -241,15 +241,16 @@ cVmain::Resize( int x, int y, int w, int h )
 int
 cVmain::SetView( void )
 {
-    glViewport( vX,vY, vW,vH );
-    glScissor( vX,vY, vW,vH );
-
 //    cout << "fW: " << fW << endl;
 //    cout << "vW/vH: " << (float)(w/h) << " tmp: " << tmp << endl;
     
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
-    gluPerspective( fovy, fW/VMAIN_HEIGHT, 1, 1000 );
+    gluPerspective( fovy, fW/VMAIN_HEIGHT, 50, 1000 );
+
+    glViewport( vX,vY, vW,vH );
+    glScissor( vX,vY, vW,vH );
+
 //    glOrtho( -(fW/2), (fW/2), -(fH/2), (fH/2), 1,1000 );
 //    cout << "vW: " << vW/2.0 << " vH: " << vH/2.0 << endl;
     

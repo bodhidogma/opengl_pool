@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  1999/11/22 22:17:08  paulmcav
+ * enabled ball bouncing
+ *
  * Revision 1.8  1999/11/20 07:53:56  paulmcav
  * added texmap support, some more menu options, lighting, cleanup, etc.
  *
@@ -33,6 +36,8 @@
  */
 
 #include "cBallList.h"
+#include "cTexMaps.h"
+#include "cAudio.h"
 
 #include "colors.h"
 
@@ -40,6 +45,9 @@
 #include <assert.h>
 #include <iostream.h>
 #include <math.h>
+
+extern cTexMaps *texList;
+extern cAudio *audio;
 
 // ------------------------------------------------------------------
 //  Func: 
@@ -80,6 +88,7 @@ cBallList::cBallList( float x, float y, float w, float h ) :
 	if ( !bc ) {	// cue ball .. no texmap
 	    balls[bc].SetPosition( wDiv*2,hDiv*2);
 	    balls[bc].SetFlags( 0,iTex );
+	    balls[bc].move = 1;
 	}
 	else { 		// other balls
 	    RackPosition( bc, rp );
@@ -108,11 +117,37 @@ cBallList::Draw()
     int bc;
 
     // move to table origin
-    glTranslatef( 0,0, BALL_R );
+    glTranslatef( 0,0, (BALL_R*1.0) );
     
     for ( bc=0; bc< b_count; bc++ ) {
-	glPushMatrix();
-	balls[ bc ].Draw();
+	glPushMatrix();				// origin is at bottom left.
+	
+//	balls[ bc ].Draw();
+	
+	// move ball into correct position
+	glTranslatef(
+		balls[bc].pos[bN][bX],
+		balls[bc].pos[bN][bY],
+		balls[bc].pos[bN][bZ] );
+	glRotatef( balls[bc].rotation, BALL_NORMAL );
+	
+	if ( balls[bc].flg_Texture && bc ) {		// use texture map
+	    glEnable( GL_TEXTURE_2D );
+	    texList->Bind( GL_TEXTURE_2D, (tex_list)(bc) );
+	}
+	else {
+	    glColor4fv( balls[bc].color );		// else use ball color
+	}
+       
+	if ( balls[bc].flg_Wire ){		// wire frame
+	    glutWireSphere( BALL_R, 20, 16 );
+	}
+	else {			// solid
+	    glCallList( balls[bc].dlist );
+	}
+	
+	glDisable( GL_TEXTURE_2D );
+ 
 	glPopMatrix();
     }
     
@@ -125,13 +160,15 @@ cBallList::Move()
     int bc;
 
     for ( bc=0; bc< b_count; bc++ ) {
-	balls[ bc ].MoveWall( xMax, yMax );
-	balls[ bc ].MoveBall();
+	if ( balls[ bc ].move ) {
+	    balls[ bc ].MoveWall( xMax, yMax );
+	    balls[ bc ].MoveBall();
+	}
     }
     
 //    cout << "tick: " << tick << endl;
     
-    if ( tick++ > 125 )
+    if ( tick++ > 500 )
 	tick = 0;
 	
     return !tick;

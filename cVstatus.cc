@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  1999/11/04 02:21:43  paulmcav
+ * fixed texmap problem, added colors to out of play balls.
+ *
  * Revision 1.2  1999/10/29 07:12:22  paulmcav
  * added some more documentation to the class
  *
@@ -143,13 +146,13 @@ cVstatus::Resize( int x, int y, int w, int h )
 int
 cVstatus::SetView( void )
 {
-    glViewport( vX,vY, vW,vH );
-    glScissor( vX,vY, vW,vH );
-    
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
     glOrtho( 0.0, (float)vW, 0.0, (float)vH, -10.0, 20.0 );
 	
+    glViewport( vX,vY, vW,vH );
+    glScissor( vX,vY, vW,vH );
+    
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
     

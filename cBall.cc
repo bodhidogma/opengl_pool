@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  1999/11/22 22:17:08  paulmcav
+ * enabled ball bouncing
+ *
  * Revision 1.8  1999/11/20 07:53:56  paulmcav
  * added texmap support, some more menu options, lighting, cleanup, etc.
  *
@@ -30,6 +33,7 @@
 #include "colors.h"
 
 #include "cTexMaps.h"
+#include "cAudio.h"
 
 #include <GL/glut.h>
 #include <iostream.h>
@@ -44,9 +48,11 @@
 // ------------------------------------------------------------------
 
 extern cTexMaps *texList;
+extern cAudio *audio;
 
 cBall::cBall( int num, int wire, int tex )
 {
+    move = 0; 
     if ( num )
 	flg_Wire = wire;
     else 
@@ -106,6 +112,7 @@ cBall::MoveWall( int x, int y )
 {
     float d_pos;	// delta position
     float mx = 0+BALL_R, my = 0+BALL_R;
+    int   bump = 0;
     
     if ( ballnum ) { 
 	rotation += 20;
@@ -118,12 +125,16 @@ cBall::MoveWall( int x, int y )
 	    
 	    d_pos = pos[bN][bX] - x;		// dx past edge of table
 	    pos[bN][bX] -= d_pos;
+	    bump = 1;
+	audio->PlayFile( "data/bumper.au" );
 	}
 	if ( pos[bN][bX] <= mx ) {
 	    vel[bN][bX] *= -1;			// reflection
 	    
 	    d_pos = mx-pos[bN][bX];		// dx past edge of table
 	    pos[bN][bX] += d_pos;
+	    bump = 1;
+	audio->PlayFile( "data/bumper.au" );
 	}
 	pos[bN][bY] += vel[bN][bY];
 	if ( pos[bN][bY] >= y ) {
@@ -131,16 +142,22 @@ cBall::MoveWall( int x, int y )
 	    
 	    d_pos = pos[bN][bY] - y;		// dx past edge of table
 	    pos[bN][bY] -= d_pos;
+	    bump = 1;
+	audio->PlayFile( "data/bumper.au" );
 	}
 	if ( pos[bN][bY] <= my ) {
 	    vel[bN][bY] *= -1;			// reflection
 	    
 	    d_pos = my-pos[bN][bY];		// dx past edge of table
 	    pos[bN][bY] += d_pos;
+	    bump = 1;
+	audio->PlayFile( "data/bumper.au" );
 	}
 	    
     }
 
+    if ( bump ) {
+    }
     return 0;
 }
 
@@ -220,8 +237,8 @@ int
 cBall::SetNumber( int num )
 {
     if ( !num ){
-	vel[bN][bX] = 1;	// cue ball y velocity now
-	vel[bN][bY] = 3;	// cue ball y velocity now
+	vel[bN][bX] = 1;	// cue ball x velocity now
+	vel[bN][bY] = 2;	// cue ball y velocity now
     }
 
     return (ballnum = num);

@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  1999/11/22 22:17:08  paulmcav
+ * enabled ball bouncing
+ *
  * Revision 1.9  1999/11/20 07:53:57  paulmcav
  * added texmap support, some more menu options, lighting, cleanup, etc.
  *
@@ -48,6 +51,7 @@
 
 #include "cWMain.h"
 #include "cTexMaps.h"
+#include "cAudio.h"
 
 
 // ------------------------------------------------------------------
@@ -64,6 +68,7 @@ void real_exit( int , void * );
 
 cWMain	 *wMain;
 cTexMaps *texList;
+cAudio	 *audio;
     
 int
 main( int argc, char *argv[] )
@@ -83,6 +88,9 @@ main( int argc, char *argv[] )
 
     texList = new cTexMaps;
     assert( texList );
+    
+    audio = new cAudio();
+    assert( audio );
     
     wMain->Init();
     
@@ -138,5 +146,7 @@ void real_exit( int i, void *ptr )
 	delete texList;
     if ( wMain )
 	delete wMain;
+    if ( audio )
+	delete audio;
 
 }

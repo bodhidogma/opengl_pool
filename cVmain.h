@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  1999/11/20 21:41:30  paulmcav
+ * added audio playback support.
+ *
  * Revision 1.10  1999/11/20 07:53:57  paulmcav
  * added texmap support, some more menu options, lighting, cleanup, etc.
  *
@@ -51,7 +54,6 @@
 #include "cVstatus.h"
 
 #include "cTable.h"
-#include "cAudio.h"
 
 /*
  * Main view implementation. Base class is glcViewport
@@ -74,7 +76,6 @@ private:
     
     cVstatus *Vstat;
     cTable *table;
-    cAudio *audio;
     
     float tmp;
     int  flg_wire, flg_tex;
