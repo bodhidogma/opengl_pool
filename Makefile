@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.11 1999-11-20 21:41:30 paulmcav Exp $
+# $Id: Makefile,v 1.12 1999-11-22 17:15:46 paulmcav Exp $
 #
 ##### MACROS #####
 
@@ -85,7 +85,7 @@ SOUDI	= soudi.o
 
 TEST	= test.o
 
-SCOTT	= scott.o readtex.o
+SCOTT	= scott.o 
 
 glpool	: ${addprefix $(OBJ),$(GLPOOL)}
 	$(LD) $(LDFLAGS) $^ $(LIBS) -o $@
