@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  1999/11/03 17:28:55  paulmcav
+ * added some colors for balls
+ *
  * Revision 1.2  1999/10/29 04:31:21  paulmcav
  * added viewport class to manage glviewports in a window.
  * Also enabled texture mapping class!
@@ -47,11 +50,11 @@ cTexMaps::Init( void )
 //    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
 //    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
     
+    glBindTexture( GL_TEXTURE_2D, texName[ tex_intro ] );
+
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
     
-    glBindTexture( GL_TEXTURE_2D, texName[ tex_intro ] );
-
     // png is upside down!
     if ( !pngLoad( "data/intro.png", PNG_NOMIPMAP, PNG_SOLID, NULL )) {
 	cerr << "Error: couldn't load texture image! " << tex_intro <<  endl;

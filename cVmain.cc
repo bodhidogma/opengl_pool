@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  1999/11/03 17:28:55  paulmcav
+ * added some colors for balls
+ *
  * Revision 1.4  1999/11/02 09:03:53  paulmcav
  * added a box around help menu
  *
@@ -31,7 +34,7 @@
 
 #include "glUtil.h"
 
-#include "pooltable.h"
+//#include "pooltable.h"
 
 extern cTexMaps *texList;		// external texturemaps list
 
@@ -179,7 +182,7 @@ cVmain::DoIntro( void )
     glEnable( GL_TEXTURE_2D );
     glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
     texList->Bind( GL_TEXTURE_2D, tex_intro );
-    
+
     glBegin( GL_QUADS );
     {
 	glTexCoord2f( 0.0, 1.0 );

@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  1999/10/29 07:12:22  paulmcav
+ * added some more documentation to the class
+ *
  * Revision 1.1  1999/10/29 04:31:21  paulmcav
  * added viewport class to manage glviewports in a window.
  * Also enabled texture mapping class!
@@ -49,6 +52,9 @@ private:
 protected:
     char *cMessage;
     int  iBallList[15];
+	
+	 
+
     int  iBallCnt;
     
 public:

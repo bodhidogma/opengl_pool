@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  1999/11/03 17:28:55  paulmcav
+ * added some colors for balls
+ *
  * Revision 1.1  1999/10/25 06:33:21  paulmcav
  * working project with fancy windowing class for GL.
  * Tex maps sorta working, looks sharp though!
@@ -43,14 +46,14 @@
 #define BALL5	1.0,  0.6,  0.0		// orange
 #define BALL6	0.2,  0.8,  0.0		// green
 #define BALL7	0.6,  0.0,  0.0		// magenta (dark red)
-#define BALL8	0.0,  0.0,  0.0		// black
-#define BALL9	1.0,  0.8,  0.0		// s - yellow
-#define BALL10	0.3,  0.4,  1.0		// s - blue
-#define BALL11	0.8,  0.0,  0.0		// s - red
-#define BALL12	0.8,  0.4,  0.8		// s - purple
-#define BALL13	1.0,  0.6,  0.0		// s - orange
-#define BALL14	0.2,  0.8,  0.0		// s - green
-#define BALL15	0.6,  0.0,  0.0		// s - magenta
+#define BALL8	0.2,  0.2,  0.2		// black
+#define BALL9	1.0,  1.0,  0.2		// s - yellow
+#define BALL10	0.5,  0.6,  1.0		// s - blue
+#define BALL11	1.0,  0.2,  0.2		// s - red
+#define BALL12	1.0,  0.6,  1.0		// s - purple
+#define BALL13	1.0,  0.8,  0.1		// s - orange
+#define BALL14	0.4,  1.0,  0.2		// s - green
+#define BALL15	0.8,  0.2,  0.2		// s - magenta
 
 #endif
 

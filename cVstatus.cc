@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  1999/10/29 07:12:22  paulmcav
+ * added some more documentation to the class
+ *
  * Revision 1.1  1999/10/29 04:31:21  paulmcav
  * added viewport class to manage glviewports in a window.
  * Also enabled texture mapping class!
@@ -190,8 +193,12 @@ cVstatus::DrawBallQ( void )
     GLUquadricObj *q = gluNewQuadric();
     GLfloat mat[] = { 50.0 };
     GLfloat pos[] = { 0.5, 0.5, 0.5, 0.0 };
-
-
+    
+    GLfloat BallClr[][3] = {
+	{ BALL1 }, { BALL2 }, { BALL3 }, { BALL4 }, { BALL5 },
+	{ BALL6 }, { BALL7 }, { BALL8 }, { BALL9 }, { BALL10 },
+	{ BALL11 }, { BALL12 }, { BALL13 }, { BALL14 }, { BALL15 } };
+    
     glNewList( myLists + ws_ballque, GL_COMPILE );
     {
 	glEnable( GL_COLOR_MATERIAL );
@@ -205,7 +212,7 @@ cVstatus::DrawBallQ( void )
 	glTranslatef( vW-(SC_BALL_W*14.65), 13, -20.0 );
     	for (cnt = 0; cnt < 15; cnt++ ){
 	    if ( iBallList[ cnt ] ) {
-    		glColor3f( YELLOW );
+    		glColor3fv( BallClr[ cnt ] );
 		gluQuadricNormals( q, GL_SMOOTH );
 		gluSphere( q, SC_BALL_W/2 , 10, 5 );
 	    }
@@ -232,8 +239,9 @@ cVstatus::DrawBallQ( void )
 int
 cVstatus::ResetBalls( void )
 {
-    for (iBallCnt = 1; iBallCnt < 16; iBallCnt++ )
+    for (iBallCnt = 1; iBallCnt < 16; iBallCnt++ ) {
 	iBallList[ iBallCnt-1 ] = 16-iBallCnt;
+    }
 
     return 0;
 }
