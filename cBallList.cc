@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  1999/11/10 00:21:04  paulmcav
+ * misc updates.  added ball(s) class to manage ball movement/ drawing.
+ *
  * Revision 1.1  1999/11/08 20:21:40  paulmcav
  * added new ball management classes.
  *
@@ -15,7 +18,7 @@
 
 #include "colors.h"
 
-#include "GL/glut.h"
+#include <GL/glut.h>
 #include <assert.h>
 
 // ------------------------------------------------------------------
@@ -28,33 +31,55 @@
 cBallList::cBallList( float x, float y, float w, float h ) :
     balls(0)
 {
-    balls = new cBall[16];
+    GLfloat BallClr[][3] = {
+	{ BALL0 },
+	{ BALL1 }, { BALL2 }, { BALL3 }, { BALL4 }, { BALL5 },
+	{ BALL6 }, { BALL7 }, { BALL8 }, { BALL9 }, { BALL10 },
+	{ BALL11 }, { BALL12 }, { BALL13 }, { BALL14 }, { BALL15 } };
+    int bc;
+	
+    balls = new cBall[ b_count ](1);	// some balls
     assert( balls );
 
     xMin = x;
     yMin = y;
     xMax = x + w;
     yMax = y + h;
+
+    for ( bc=0; bc< b_count; bc++ )
+	balls[ bc ].SetColor( BallClr[ bc ] );
 }
 
 cBallList::~cBallList()
 {
     if ( balls )
-	delete balls;
+	delete[] balls;
 }
 
 int
 cBallList::Draw()
 {
+    int bc;
+
+    // move to table origin
     glTranslatef( xMin, yMin, 0.0 );
-    glColor3f( YELLOW );
-    glutWireSphere( 40, 20, 16 );
+    
+    for ( bc=0; bc< b_count; bc++ ) {
+	balls[ bc ].Draw();
+    }
+    
     return 0;
 }
 
 int
 cBallList::Move()
 {
+    int bc;
+
+    for ( bc=0; bc< b_count; bc++ ) {
+	balls[ bc ].Move();
+    }
+    
     return 0;
 }
     

@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  1999/11/10 00:21:04  paulmcav
+ * misc updates.  added ball(s) class to manage ball movement/ drawing.
+ *
  * Revision 1.6  1999/11/04 02:21:43  paulmcav
  * fixed texmap problem, added colors to out of play balls.
  *
@@ -55,8 +58,8 @@ cVmain::cVmain( int x, int y, int w, int h ) :
 	iIntroWin(1),
 	iHelpWin(0)
 {
-    lBalls = new cBallList( 100,100, 20,20 );
-    assert( lBalls );
+    table = new cTable( 100,100, 20,20 );
+    assert( table );
 }
 
 // ------------------------------------------------------------------
@@ -68,8 +71,8 @@ cVmain::cVmain( int x, int y, int w, int h ) :
 
 cVmain::~cVmain()
 {
-    if ( lBalls )
-	delete lBalls; 
+    if ( table )
+	delete table; 
 }
 
 // ------------------------------------------------------------------
@@ -114,7 +117,7 @@ cVmain::Display( void )
 	if ( iHelpWin )
 	DoHelp();
     else {
-	lBalls->Draw();
+	table->Draw();
     }
     
     return 0;

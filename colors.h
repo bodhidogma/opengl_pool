@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  1999/11/04 02:21:43  paulmcav
+ * fixed texmap problem, added colors to out of play balls.
+ *
  * Revision 1.2  1999/11/03 17:28:55  paulmcav
  * added some colors for balls
  *
@@ -39,6 +42,7 @@
 #define PURPLE	0.75, 0.0,  1.0
 
 // ball colors
+#define BALL0	0.9,  0.9,  0.9		// cue white!
 #define BALL1	1.0,  0.8,  0.0		// yellow
 #define BALL2	0.2,  0.4,  1.0		// blue
 #define BALL3	0.8,  0.0,  0.0		// red

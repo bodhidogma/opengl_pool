@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  1999/11/10 00:21:04  paulmcav
+ * misc updates.  added ball(s) class to manage ball movement/ drawing.
+ *
  * Revision 1.3  1999/11/02 08:47:04  paulmcav
  * added menu / kb callback support; & help window
  *
@@ -29,7 +32,7 @@
 #include "glcViewport.h"
 #include "cVstatus.h"
 
-#include "cBallList.h"
+#include "cTable.h"
 
 /*
  * Main view implementation. Base class is glcViewport
@@ -43,7 +46,7 @@ private:
     int iHelpWin;
     
     cVstatus *Vstat;
-    cBallList *lBalls;
+    cTable *table;
     
 protected:
     

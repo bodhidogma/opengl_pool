@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.8 1999-11-10 00:21:04 paulmcav Exp $
+# $Id: Makefile,v 1.9 1999-11-10 08:19:19 paulmcav Exp $
 #
 ##### MACROS #####
 
@@ -77,6 +77,7 @@ GLPOOL	= glpool.o \
 	  cWMain.o \
 	  cVmain.o \
 	  cVstatus.o \
+	  cTable.o \
 	  cBall.o \
 	  cBallList.o
 

@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  1999/11/10 00:21:04  paulmcav
+ * misc updates.  added ball(s) class to manage ball movement/ drawing.
+ *
  * Revision 1.1  1999/11/08 20:21:40  paulmcav
  * added new ball management classes.
  *
@@ -18,6 +21,26 @@
 #define _CBALLLIST_H_
 
 #include "cBall.h"
+
+enum bl_balls {
+    b_que,
+    b_yellow,
+    b_blue,
+/*    b_red,
+    b_purple,
+    b_orange,
+    b_green,
+    b_magenta,
+    b_black,
+    b_syellow,
+    b_sblue,
+    b_sred,
+    b_spurple,
+    b_sorange,
+    b_sgreen,
+    b_smagenta,
+*/    b_count
+};
 
 /*
 */
