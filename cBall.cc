@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  1999/11/19 22:36:57  paulmcav
+ * Balls displaying on the table, and more!
+ *
  * Revision 1.6  1999/11/11 20:38:31  paulmcav
  * working on perspective use
  *
@@ -23,7 +26,11 @@
 #include "cBall.h"
 #include "colors.h"
 
+#include "cTexMaps.h"
+
 #include <GL/glut.h>
+#include <iostream.h>
+#include <assert.h>
 
 // ------------------------------------------------------------------
 //  Func: 
@@ -32,18 +39,24 @@
 //  Ret:  
 // ------------------------------------------------------------------
 
+extern cTexMaps *texList;
 
-cBall::cBall( int wire, int tex )
+cBall::cBall( int num, int wire, int tex )
 {
-    flg_Wire = wire;
+    if ( num )
+	flg_Wire = wire;
+    else 
+	flg_Wire = 0;
     flg_Texture = tex;
 
+    ballnum = num;	// ball number
     SetColor( BALL0 );
     
     rotation = 0;
     normal[0] = 0.0;	// normal is Y vector
     normal[1] = 1.0;
     normal[2] = 0.0;
+
 }
 
 cBall::~cBall()
@@ -57,18 +70,22 @@ cBall::Draw()
 
 //    glPushMatrix();		// save current position info
     
-//    glTranslatef( (BALL_R*2.5), 0.0, 0.0 );
     glTranslatef( pos[0], pos[1], pos[3] );
     glRotatef( rotation, normal[0], normal[1], normal[2] );
+    
+    if ( flg_Texture && ballnum ) {
+	glEnable( GL_TEXTURE_2D );
+	texList->Bind( GL_TEXTURE_2D, (tex_list)(ballnum) );
+    }
     
     if ( flg_Wire ){		// wire frame
 	glutWireSphere( BALL_R, 20, 16 );
     }
-    else if ( flg_Texture ){	// texture mapped
-    }
     else {			// solid
-	glutSolidSphere( BALL_R, 20, 16 );
+	glCallList( dlist );
     }
+    
+    glDisable( GL_TEXTURE_2D );
     
 //    glPopMatrix();
     return 0;
@@ -84,8 +101,32 @@ cBall::Move()
 }
 
 int
+cBall::Resize( void )
+{
+    GLUquadricObj *q = gluNewQuadric();
+    assert( q );
+    
+    dlist = glGenLists(1);
+    glNewList( dlist, GL_COMPILE );
+    {
+	gluQuadricNormals( q, GL_SMOOTH );
+	gluQuadricTexture( q, GL_TRUE );
+	gluSphere( q, BALL_R, 20,16 );
+    }
+    glEndList();
+
+    gluDeleteQuadric( q );
+
+    return 0;
+}
+
+int
 cBall::SetFlags( int wire, int texture )
 {
+//    if ( !ballnum )
+	flg_Wire = wire;
+    flg_Texture = texture;
+
     return 0;
 }
 
@@ -121,3 +162,8 @@ cBall::SetPosition( float x, float y )
     return 0;
 }
 
+int
+cBall::SetNumber( int num )
+{
+    return (ballnum = num);
+}

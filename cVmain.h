@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  1999/11/18 01:12:19  paulmcav
+ * added help menu again, intro win, got correct fovy
+ *
  * Revision 1.8  1999/11/17 21:05:56  paulmcav
  * added mouse movement support
  *
@@ -55,7 +58,7 @@
 #define VMAIN_HEIGHT 100	// 100
 #define VMAIN_DXCNTR 400	// 86
 
-#define VMAIN_MINXD  -15
+#define VMAIN_MINXD  -18
 #define VMAIN_MAXXD   90
 
 class cVmain : public glcViewport {
@@ -69,7 +72,7 @@ private:
     cTable *table;
     
     float tmp;
-    int  flg_wire;
+    int  flg_wire, flg_tex;
     
 protected:
     
@@ -88,12 +91,13 @@ public:
     int DoHelp( void );
 
     int help_message( float x, float y, float w, float h );
-    
+
     int Help( void ){ return iHelpWin ^= 1; }
     int Intro( void ){ return iIntroWin ^= 1; }
     
     int Animate( void );
     int Wire( int flag =-1 );
+    int Texmap( int flag =-1 );
     
     int Xrot( int deg );
     int Yrot( int deg );

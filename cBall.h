@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  1999/11/19 22:36:57  paulmcav
+ * Balls displaying on the table, and more!
+ *
  * Revision 1.4  1999/11/11 20:38:31  paulmcav
  * working on perspective use
  *
@@ -28,6 +31,8 @@
 
 #define BALL_R	1.125
 
+#include <GL/glut.h>
+
 /*
 */
 
@@ -44,6 +49,9 @@ private:
 
     int   rotation;
     float normal[3];
+
+    int   ballnum;	// ball number
+    int   dlist;	// display list
     
     int   flg_Wire;		// wireframe
     int   flg_Texture;		// texture mapped
@@ -52,11 +60,12 @@ private:
     
 protected:
 public:
-    cBall( int wire, int tex=0 );
+    cBall( int num, int wire, int tex=0 );
     ~cBall();
     
-    int Draw();
-    int Move();
+    int Draw(void);
+    int Move(void);
+    int Resize(void);
 
     int SetFlags( int wire, int texture );
     int SetColor( float r, float g, float b, float a=1.0 );
@@ -64,6 +73,7 @@ public:
 //    int SetColor( float c[4] );
     
     int SetPosition( float x, float y );
+    int SetNumber( int ballnum );
 };
 
 

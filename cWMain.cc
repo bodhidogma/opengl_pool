@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  1999/11/17 21:05:56  paulmcav
+ * added mouse movement support
+ *
  * Revision 1.8  1999/11/12 21:05:40  paulmcav
  * more perspective work
  *
@@ -172,20 +175,19 @@ cWMain::Keys( unsigned char key, int mx, int my )
 	    break;
 
 	case 'i':
-	    iAnim = 0;
- 	    ((cVmain*)views[ mw_main ])->Intro();
-	    Display();
+	    Menu( mM_About );
 	    break;
 	    
 	case 'h':
-	    iAnim = 0;
-    	    ((cVmain*)views[ mw_main ])->Help();
-	    Display();
+	    Menu( mM_Help );
 	    break;
 	    
 	case 'w':
-    	    ((cVmain*)views[ mw_main ])->Wire();
-	    Display();
+	    Menu( mM_Wireframe );
+	    break;
+	    
+	case 't':
+	    Menu( mM_Texmap );
 	    break;
 	    
 	case ' ':
@@ -193,14 +195,9 @@ cWMain::Keys( unsigned char key, int mx, int my )
 	    break;
 	    
 	case 'a':
-	    iAnim ^= 1;
+	    Menu( mM_Practice );
 	    break;
     }
-    
-    if ( iAnim )
-	UseCallBack( WCB_IDLE );
-    else
-	UseCallBack( WCB_IDLE, 0 );	// turns off idle
     
     return 0;
 }
@@ -217,16 +214,36 @@ cWMain::Menu( int opt )
 {
     switch( opt ){
 	case mM_New:
-	break;
+	    iAnim ^= 1;
+	    break;
 	
 	case mM_Practice:
-	break;
+	    iAnim ^= 1;
+	    break;
 
 	case mM_TwoPlayer:
-	break;
+	    iAnim ^= 1;
+	    break;
 
 	case mM_Help:
+	    iAnim = 0;
     	    ((cVmain*)views[ mw_main ])->Help();
+	    Display();
+	    break;
+	    
+	case mM_About:
+	    iAnim = 0;
+ 	    ((cVmain*)views[ mw_main ])->Intro();
+	    Display();
+	    break;
+
+	case mM_Wireframe:
+    	    ((cVmain*)views[ mw_main ])->Wire();
+	    Display();
+	    break;
+
+	case mM_Texmap:
+    	    ((cVmain*)views[ mw_main ])->Texmap();
 	    Display();
 	    break;
 
@@ -234,6 +251,11 @@ cWMain::Menu( int opt )
 	    quit_game();
 	    break;
     }
+    
+    if ( iAnim )
+	UseCallBack( WCB_IDLE );
+    else
+	UseCallBack( WCB_IDLE, 0 );	// turns off idle
 
     return 0;
 }
@@ -288,6 +310,9 @@ cWMain::Init( void )
     glutAddMenuEntry( "Practice", mM_Practice);
     glutAddMenuEntry( "2-Player", mM_TwoPlayer );
     glutAddMenuEntry( "Help", mM_Help );
+    glutAddMenuEntry( "About", mM_About );
+    glutAddMenuEntry( "Wireframe", mM_Wireframe );
+    glutAddMenuEntry( "TexMap", mM_Texmap );
     glutAddMenuEntry( "Quit", mM_Quit );
     glutAttachMenu( GLUT_RIGHT_BUTTON );
     
@@ -310,3 +335,12 @@ cWMain::Idle( void )
     return 0;
 }
 
+int
+cWMain::stat_message( char *msg )
+{
+    assert( msg );
+    
+    ((cVstatus*)views[ mw_status ])->Message( msg );
+
+    return 0;
+}

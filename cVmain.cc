@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.17 $
+// $Revision: 1.18 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.17  1999/11/19 22:36:57  paulmcav
+ * Balls displaying on the table, and more!
+ *
  * Revision 1.16  1999/11/18 16:27:02  scott
  * Created text for help screen
  *
@@ -70,8 +73,9 @@
 #include <assert.h>
 
 //#include "pooltable.h"
-
+ 
 extern cTexMaps *texList;		// external texturemaps list
+//extern GLuint texName[];
 
 // ------------------------------------------------------------------
 //  Func: cVmain( x,y, w,h )
@@ -86,13 +90,21 @@ cVmain::cVmain( int x, int y, int w, int h ) :
 	iHelpWin(0),
 	Xdeg(15), Ydeg(0)
 {
+    GLfloat shiny[] = { 5.0 };
+    GLfloat spec[] = { 1, 1, 1, 1 };
+    
+    
     table = new cTable( 0,0, 48,96 );
     assert( table );
     
     tmp = 0;
-    flg_wire = 1;
+    flg_wire = DEF_WIRE;
+    flg_tex = DEF_TEX;
     
     fH = VMAIN_HEIGHT;		// viewport height
+    
+    glMaterialfv( GL_FRONT, GL_SHININESS, shiny );
+//    glLightfv(GL_LIGHT0, GL_SPECULAR, spec );
 }
 
 // ------------------------------------------------------------------
@@ -131,12 +143,12 @@ cVmain::setstatus( cVstatus *stat )
 //  Ret:  0
 // ------------------------------------------------------------------
 
+#define LIGHT_POS	0, 0, 1 
+
 int
 cVmain::Display( void )
 {
-    GLfloat mat[] = { 50.0 };
-    GLfloat pos[] = { 0.0, 1.0, 0.0, 0.0 };
-    
+    GLfloat pos[] = { LIGHT_POS, 0.0 };
 //    cout << "vmain:disp: "; dump();
     
     // --- init our viewport ---
@@ -146,6 +158,7 @@ cVmain::Display( void )
     glEnable( GL_DEPTH_TEST );
     glEnable( GL_CULL_FACE );		// for texmaps
     glShadeModel( GL_SMOOTH );
+    glEnable( GL_COLOR_MATERIAL );
 
 //    glRotatef(tmp, 0, 1.0, 0 );
 
@@ -155,11 +168,24 @@ cVmain::Display( void )
     else {
 	glPushMatrix();
 	
-	glTranslatef( 0,0, (85-abs(Xdeg)) * 2.5);
+	glEnable( GL_LIGHTING );
+	glEnable( GL_LIGHT0 );
+	
+	glLightfv( GL_LIGHT0, GL_POSITION, pos );
+
+/*	glPushMatrix();
+	glTranslatef( LIGHT_POS );
+	glutWireSphere(5, 20,16 );
+	glPopMatrix();
+*/
+	glTranslatef( 0,0, (85-abs(Xdeg)) * 3.5);
 	glRotatef( Xdeg, 1, 0, 0 );
 	glRotatef( Ydeg, 0, 1, 0 );
 	
         table->Draw();
+	
+	glDisable( GL_LIGHT0 );
+	glDisable( GL_LIGHTING );
 	
 	glPopMatrix();
     }
@@ -168,25 +194,6 @@ cVmain::Display( void )
 	DoHelp();
     }
 	    
-    glColor3f( ORANGE );
-
-	glEnable( GL_COLOR_MATERIAL );
-	glEnable( GL_LIGHTING );
-	glEnable( GL_LIGHT0 );
-	glMaterialfv( GL_FRONT, GL_SHININESS, mat );
-	glLightfv( GL_LIGHT0, GL_POSITION, pos );
-    
-//    tmp ++;
-/*    
-    if ( flg_wire )
-    	glutWireSphere( (VMAIN_HEIGHT/2)-1 , 20,16 );
-    else 
-	glutSolidSphere( (VMAIN_HEIGHT/2)-1, 20,16 );
-*/ 
-	glDisable( GL_COLOR_MATERIAL );
-	glDisable( GL_LIGHTING );
-	glDisable( GL_LIGHT0 );
-    
     return 0;
 }
 
@@ -278,7 +285,7 @@ cVmain::DoIntro( void )
     pos[1] = -pos[3];		// Y1
 
     glEnable( GL_TEXTURE_2D );
-    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
+    
     texList->Bind( GL_TEXTURE_2D, tex_intro );
 
     glBegin( GL_QUADS );
@@ -397,7 +404,20 @@ cVmain::Wire( int flag )
     else
 	flg_wire ^= 1;
     
+    table->SetFlags( flg_wire, flg_tex );
     return flg_wire;
+}
+
+int
+cVmain::Texmap( int flag )
+{
+    if ( flag >= 0 )
+	flg_tex = flag;
+    else
+	flg_tex ^= 1;
+    
+    table->SetFlags( flg_wire, flg_tex );
+    return flg_tex;
 }
 
 int
@@ -417,6 +437,5 @@ int
 cVmain::Yrot( int deg )
 {
     Ydeg += deg;
-//>>>>>>> 1.15
     return 0;
 }

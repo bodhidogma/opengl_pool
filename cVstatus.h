@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  1999/11/04 02:21:43  paulmcav
+ * fixed texmap problem, added colors to out of play balls.
+ *
  * Revision 1.2  1999/10/29 07:12:22  paulmcav
  * added some more documentation to the class
  *
@@ -53,8 +56,6 @@ protected:
     char *cMessage;
     int  iBallList[15];
 	
-	 
-
     int  iBallCnt;
     
 public:

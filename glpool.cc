@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  1999/11/17 21:05:56  paulmcav
+ * added mouse movement support
+ *
  * Revision 1.7  1999/11/02 08:47:04  paulmcav
  * added menu / kb callback support; & help window
  *
@@ -99,9 +102,13 @@ init ( void )
 {
     // we want to draw the window before running init sequence
     if (count) {
-    	glutIdleFunc( NULL );
+    	glutIdleFunc( NULL );	// 2'nd pass. everything else to start
+	texList->Init2();
+    	wMain->stat_message("Ready:");
+	wMain->Display();
     }
     else {
+    	wMain->stat_message("Loading..");
 	texList->Init();
     }
     count++;

@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  1999/11/19 22:36:57  paulmcav
+ * Balls displaying on the table, and more!
+ *
  * Revision 1.4  1999/11/10 20:04:49  paulmcav
  * updated project for use with animation
  *
@@ -57,6 +60,7 @@ private:
     cBall *balls;
     float xMin, xMax, yMin, yMax;	// table dimensions
     float hDiv, wDiv;
+    int iWire, iTex;
 
     int tick;
     
@@ -73,6 +77,8 @@ public:
     int EnableBall( int num );
     
     int RackPosition( int ball, float *pos );
+    
+    int SetFlags( int wire, int tex );
     
 };
 

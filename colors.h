@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  1999/11/18 02:02:23  paulmcav
+ * added pool table drawing
+ *
  * Revision 1.4  1999/11/10 08:19:19  paulmcav
  * added updates to ball management classes
  *
@@ -26,6 +29,9 @@
 
 #ifndef _COLORS_H_
 #define _COLORS_H_
+
+#define DEF_WIRE 0
+#define DEF_TEX  1
 
 /*
 	list of floating pt color values
@@ -47,23 +53,27 @@
 #define BLUE	0.0,  0.0,  1.0
 #define PURPLE	0.75, 0.0,  1.0
 
+#define FELT	0.0,  0.4,  0.0
+#define BUMPER  0.0,  0.6,  0.0
+#define WOOD	0.4,  0.2,  0.0
+
 // ball colors
-#define BALL0	0.9,  0.9,  0.9		// cue white!
-#define BALL1	1.0,  0.8,  0.0		// yellow
+#define BALL0	0.8,  0.8,  0.8		// cue white!
+#define BALL1	1.0,  1.0,  0.0		// yellow
 #define BALL2	0.2,  0.4,  1.0		// blue
-#define BALL3	0.8,  0.0,  0.0		// red
-#define BALL4	0.8,  0.4,  0.8		// purple
-#define BALL5	1.0,  0.6,  0.0		// orange
+#define BALL3	1.0,  0.0,  0.0		// red
+#define BALL4	0.8,  0.2,  0.8		// purple
+#define BALL5	1.0,  0.4,  0.0		// orange
 #define BALL6	0.2,  0.8,  0.0		// green
-#define BALL7	0.6,  0.0,  0.0		// magenta (dark red)
+#define BALL7	0.8,  0.0,  0.0		// magenta (dark red)
 #define BALL8	0.2,  0.2,  0.2		// black
-#define BALL9	1.0,  1.0,  0.2		// s - yellow
-#define BALL10	0.5,  0.6,  1.0		// s - blue
-#define BALL11	1.0,  0.2,  0.2		// s - red
-#define BALL12	1.0,  0.6,  1.0		// s - purple
-#define BALL13	1.0,  0.8,  0.1		// s - orange
-#define BALL14	0.4,  1.0,  0.2		// s - green
-#define BALL15	0.8,  0.2,  0.2		// s - magenta
+#define BALL9	1.0,  1.0,  0.8		// s - yellow
+#define BALL10	0.8,  1.0,  1.0		// s - blue
+#define BALL11	1.0,  0.8,  0.8		// s - red
+#define BALL12	1.0,  0.8,  1.0		// s - purple
+#define BALL13	1.0,  0.8,  0.6		// s - orange
+#define BALL14	0.6,  1.0,  0.8		// s - green
+#define BALL15	1.0,  0.4,  0.4		// s - magenta
 
 #endif
 

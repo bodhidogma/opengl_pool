@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  1999/11/19 22:36:57  paulmcav
+ * Balls displaying on the table, and more!
+ *
  * Revision 1.6  1999/11/18 02:02:23  paulmcav
  * added pool table drawing
  *
@@ -33,6 +36,7 @@
 #include <GL/glut.h>
 #include <assert.h>
 #include <iostream.h>
+#include <math.h>
 
 // ------------------------------------------------------------------
 //  Func: 
@@ -42,7 +46,16 @@
 // ------------------------------------------------------------------
 
 cBallList::cBallList( float x, float y, float w, float h ) :
-    balls(0)
+    balls(NULL),
+    xMin(x),
+    xMax(x + w),
+    yMin(y),
+    yMax(y + h),
+    hDiv(yMax/8),
+    wDiv(xMax/4),
+    iWire(DEF_WIRE),
+    iTex(DEF_TEX),
+    tick(0)
 {
     GLfloat BallClr[][3] = {
 	{ BALL0 },
@@ -52,96 +65,32 @@ cBallList::cBallList( float x, float y, float w, float h ) :
     int bc;
     float rp[3];	// rack position
 	
-    balls = new cBall[ b_count ](1);	// some balls
+    balls = new cBall[ b_count ](0,iWire,iTex);	// some balls
     assert( balls );
 
-    xMin = x;
-    yMin = y;
-    xMax = x + w;
-    yMax = y + h;
-
-    hDiv = yMax/8;
-    wDiv = xMax/4;
-    
 //    for ( bc=b_count-1; bc; --bc ) {
     for ( bc=0; bc<b_count; ++bc ) {
+
+	balls[ bc ].SetNumber( bc );
 	balls[ bc ].SetColor( BallClr[ bc ] );
 	
-	if ( !bc ) {	// cue ball
+	if ( !bc ) {	// cue ball .. no texmap
 	    balls[bc].SetPosition( wDiv*2,hDiv*2);
-//    	    cout << "hDiv: " << hDiv*2 << endl;
+	    balls[bc].SetFlags( 0,iTex );
 	}
 	else { 		// other balls
 	    RackPosition( bc, rp );
 	    balls[bc].SetPosition( wDiv*2+rp[0], yMax-(hDiv*2)+rp[1] );
+	    balls[bc].SetFlags( iWire,iTex );
 	}
 
     }
+
+    for ( bc=0; bc< b_count; bc++ ) {
+	balls[ bc ].Resize();
+    }
     
     tick = 0;
-}
-
-int
-cBallList::RackPosition( int ball, float *pos )
-{
-    int row;
-    int col;
-    
-    switch( ball ){
-	case 1: row = 0;
-		break;
-	case 2:
-	case 3: row = 1;
-		break;
-	case 4: 
-	case 8:
-	case 6: row = 2;
-		break;
-	case 7:
-	case 5:
-	case 9:
-	case 10: row = 3;
-		 break;
-	case 11:
-	case 12:
-	case 13:
-	case 14:
-	case 15: row = 4;
-		 break;
-    };
-	    
-    switch( ball ){
-	case 1:
-	case 8:
-	case 13: col = 0;
-		 break;
-	case 2:
-	case 5: col = -1;
-		break;
-	case 3:
-	case 9: col = 1;
-		break;
-	case 4: 
-	case 12: col = -2;
-		break;
-	case 6: 
-	case 14: col = 2;
-		break;
-	case 7: col = -3;
-		break;
-	case 10: col = 3;
-		break;
-	case 11: col = -4;
-		break;
-	case 15: col = 4;
-		break;
-    };
-	    
-    pos[2] = 0;
-    pos[1] = row*BALL_R*2;
-    pos[0] = col*BALL_R*2;
-    
-    return 0;
 }
 
 cBallList::~cBallList()
@@ -155,10 +104,7 @@ cBallList::Draw()
 {
     int bc;
 
-//    cout << "blD" << endl;
-    
     // move to table origin
-//    glTranslatef( xMin, yMin, 0.0 );
     glTranslatef( 0,0, BALL_R );
     
     for ( bc=0; bc< b_count; bc++ ) {
@@ -190,6 +136,12 @@ cBallList::Move()
 int
 cBallList::Resize( float x, float y, float w, float h )
 {
+    int bc;
+
+    for ( bc=0; bc< b_count; bc++ ) {
+	balls[ bc ].Resize();
+    }
+    
     return 0;
 }
 
@@ -198,4 +150,95 @@ cBallList::EnableBall( int num )
 {
     return 0;
 }
+
+int
+cBallList::RackPosition( int ball, float *pos )
+{
+    int row;
+    int col;
+    
+    //         1
+    //       9   2
+    //     3   8  10
+    //  11   5  12   6 
+    // 7  13   4  14  15
+    
+    switch( ball ){
+	case 1: row = 0;
+		break;
+	case 2:
+	case 9: row = 1;
+		break;
+	case 3: 
+	case 8:
+	case 10: row = 2;
+		break;
+	case 11:
+	case 5:
+	case 12:
+	case 6: row = 3;
+		 break;
+	case 7:
+	case 13:
+	case 4:
+	case 14:
+	case 15: row = 4;
+		 break;
+    };
+	    
+    switch( ball ){
+	case 1:
+	case 8:
+	case 4: col = 0;
+		 break;
+	case 2:
+	case 12: col = -1;
+		break;
+	case 9:
+	case 5: col = 1;
+		break;
+	case 10: 
+	case 14: col = -2;
+		break;
+	case 3: 
+	case 13: col = 2;
+		break;
+	case 6: col = -3;
+		break;
+	case 11: col = 3;
+		break;
+	case 15: col = -4;
+		break;
+	case 7: col = 4;
+		break;
+    };
+	    
+    pos[2] = 0;
+    pos[1] = row*(BALL_R*.707106)*2;
+    pos[0] = col*(BALL_R*.707106)*2;
+    
+    return 0;
+}
+
+
+int
+cBallList::SetFlags( int wire, int tex )
+{
+    int bc;
+
+    iWire = wire;
+    iTex = tex;
+    
+//    cout << "bl-status: " << wire << ", " << tex << endl;
+    
+    for ( bc=0; bc< b_count; bc++ ) {
+	if ( bc ) 
+	    balls[ bc ].SetFlags( wire, tex );
+	else 
+	    balls[ bc ].SetFlags( 0, tex );
+    }
+    
+    return 0;
+}
+
 

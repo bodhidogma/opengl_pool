@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  1999/11/17 21:05:56  paulmcav
+ * added mouse movement support
+ *
  * Revision 1.5  1999/11/10 20:04:49  paulmcav
  * updated project for use with animation
  *
@@ -43,6 +46,9 @@ enum main_menu_options {
     mM_Practice,
     mM_TwoPlayer,
     mM_Help,
+    mM_About,
+    mM_Wireframe,
+    mM_Texmap,
     mM_Quit
 };
 
@@ -88,6 +94,8 @@ public:
     
     int Init( void );
     int Idle( void );
+
+    int stat_message( char *msg );
 };
 	
 

@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  1999/11/10 19:47:18  paulmcav
+ * fixed erro message on RH6.0
+ *
  * Revision 1.4  1999/11/04 02:21:43  paulmcav
  * fixed texmap problem, added colors to out of play balls.
  *
@@ -27,7 +30,7 @@
 
 #include <iostream.h>
 
-//    GLuint texName[ tex_cnt+1 ];
+//GLuint texName[ tex_cnt+1 ];
     
 // ------------------------------------------------------------------
 //  Func: 
@@ -48,20 +51,79 @@ cTexMaps::~cTexMaps()
 int
 cTexMaps::Init( void )
 {
-//    cout << "init" << endl;
-
-//    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-//    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-    
     glBindTexture( GL_TEXTURE_2D, texName[ tex_intro ] );
 
+    if ( !pngLoad( "data/intro.png" , PNG_NOMIPMAP, PNG_SOLID, NULL )) {
+	cerr << "Error: couldn't load texture image! "
+	    << (int)tex_intro <<  endl;
+	exit(1);
+    }
+
+    // init texture parameters
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
     
+    glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL );
+    glTexGeni( GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP );
+    glTexGeni( GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP );
+    
+    glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST );
+
+    return 0;
+}
+
+int
+cTexMaps::Init2( void )
+{
+    int cnt;
+    char flist[][24] = {
+	{ "data/intro.png" },
+	{ "data/1.png" },
+	{ "data/2.png" },
+	{ "data/3.png" },
+	{ "data/4.png" },
+	{ "data/5.png" },
+	{ "data/6.png" },
+	{ "data/7.png" },
+	{ "data/8.png" },
+	{ "data/9.png" },
+	{ "data/10.png" },
+	{ "data/11.png" },
+	{ "data/12.png" },
+	{ "data/13.png" },
+	{ "data/14.png" },
+	{ "data/15.png" }
+    };
+
+/*    	glBindTexture( GL_TEXTURE_2D, texName[ 0 ] );
+    	if ( !pngLoad( flist[0], PNG_NOMIPMAP, PNG_SOLID, NULL )) {
+	    cerr << "Error: couldn't load texture image! "
+	    	<< cnt <<  endl;
+	    exit(1);
+	}
+    	glBindTexture( GL_TEXTURE_2D, texName[ 1 ] );
+    	if ( !pngLoad( flist[1], PNG_NOMIPMAP, PNG_SOLID, NULL )) {
+	    cerr << "Error: couldn't load texture image! "
+	    	<< cnt <<  endl;
+	    exit(1);
+	}
+*/	
     // png is upside down!
-    if ( !pngLoad( "data/intro.png", PNG_NOMIPMAP, PNG_SOLID, NULL )) {
-	cerr << "Error: couldn't load texture image! " << (int)tex_intro <<  endl;
-	exit(1);
+    for ( cnt=1; cnt< tex_cnt; cnt++ ){
+    	glBindTexture( GL_TEXTURE_2D, texName[ cnt ] );
+
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL );
+	glTexGeni( GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP );
+	glTexGeni( GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP );
+	glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST );
+    
+    	if ( !pngLoad( flist[cnt], PNG_NOMIPMAP, PNG_SOLID, NULL )) {
+	    cerr << "Error: couldn't load texture image! "
+	    	<< cnt <<  endl;
+	    exit(1);
+	}
     }
 
     return 0;

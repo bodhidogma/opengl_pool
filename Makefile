@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.9 1999-11-10 08:19:19 paulmcav Exp $
+# $Id: Makefile,v 1.10 1999-11-20 07:53:56 paulmcav Exp $
 #
 ##### MACROS #####
 
@@ -12,8 +12,8 @@ INCDIR = -I/usr/local/include
 XLIBS	= -lX11 -lXext -lXi -lXmu
 
 # glx / mesagl
-#GL	= MesaGL
 GL	= GL
+GL	= glxGL
 
 GL_LIBS	= $(LIBDIR) -lglut -lGLU -l$(GL) -lm $(XLIBS)
 

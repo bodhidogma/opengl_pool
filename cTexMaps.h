@@ -4,10 +4,14 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1999/10/25 06:33:21  paulmcav
+ * working project with fancy windowing class for GL.
+ * Tex maps sorta working, looks sharp though!
+ *
  * 
 */
 
@@ -18,6 +22,21 @@
 
 enum tex_list{
     tex_intro,
+    tex_b1,
+    tex_b2,
+    tex_b3,
+    tex_b4,
+    tex_b5,
+    tex_b6,
+    tex_b7,
+    tex_b8,
+    tex_b9,
+    tex_b10,
+    tex_b11,
+    tex_b12,
+    tex_b13,
+    tex_b14,
+    tex_b15,
     tex_cnt
 };
 
@@ -36,6 +55,7 @@ public:
     ~cTexMaps();
 	
     int Init( void );
+    int Init2( void );
     
     int Bind( GLenum type, tex_list name );
 };
