@@ -3,9 +3,13 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1999/10/25 06:33:21  paulmcav
+ * working project with fancy windowing class for GL.
+ * Tex maps sorta working, looks sharp though!
+ *
  */
 
 #include "cTexMaps.h"
@@ -34,7 +38,7 @@ cTexMaps::~cTexMaps()
 int
 cTexMaps::Init( void )
 {
-    cout << "init" << endl;
+//    cout << "init" << endl;
 
     glBindTexture( GL_TEXTURE_2D, texName[ tex_intro ] );
 

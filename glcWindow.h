@@ -1,4 +1,4 @@
-// File:        glWindow.h
+// File:        glcWindow.h
 // Author:      Paul McAvoy <paulmcav@auctomation.com>
 // Org:
 // Desc:        
@@ -8,14 +8,19 @@
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1999/10/25 06:33:21  paulmcav
+ * working project with fancy windowing class for GL.
+ * Tex maps sorta working, looks sharp though!
+ *
  * 
 */
 
-#ifndef _GLWINDOW_H_
-#define _GLWINDOW_H_
+#ifndef _GLCWINDOW_H_
+#define _GLCWINDOW_H_
 
 #define MAX_WINDOWS 32
 
+// call back usage flags
 #define WCB_KEYS	0x01
 #define WCB_SKEYS	0x02
 #define WCB_MOUSECLK	0x04
@@ -26,7 +31,7 @@
 /*
 */
 
-class glWindow
+class glcWindow
 {
 private:
 static int glWinNum;
@@ -49,15 +54,15 @@ protected:
           wXpos,
 	  wYpos;
 
-    int iWindow;
+    int icWindow;
     int iMyNum;
     int iMyParent;
     
 public:
-    glWindow( glWindow *, float x, float y, float w, float h, int pct=0,
+    glcWindow( glcWindow *, float x, float y, float w, float h, int pct=0,
 	    int cb=0 );
-    glWindow( char *title, int w, int h, unsigned int mode, int cb=0 );
-    virtual ~glWindow();
+    glcWindow( char *title, int w, int h, unsigned int mode, int cb=0 );
+    virtual ~glcWindow();
 
 static    void cbDisplay( void );
 static    void cbResize( int w, int h );

@@ -3,9 +3,13 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  1999/10/25 06:33:22  paulmcav
+ * working project with fancy windowing class for GL.
+ * Tex maps sorta working, looks sharp though!
+ *
  * Revision 1.4  1999/10/19 21:14:27  soudi
  * *** empty log message ***
  *
@@ -29,9 +33,7 @@
 
 #include "common.h"
 
-#include "glWindow.h"
 #include "glUtil.h"
-#include "cWStatus.h"
 #include "cWMain.h"
 
 #include "cTexMaps.h"
@@ -47,13 +49,11 @@
 // ------------------------------------------------------------------
 
 cWMain	*wMain;
-cWStatus *wStatus;
 cTexMaps *texList;
     
 int
 main( int argc, char *argv[] )
 {
-    
     // init GL stuff
     glutInit( &argc, argv );
     
@@ -65,9 +65,6 @@ main( int argc, char *argv[] )
     assert( wMain );
 
     glutKeyboardFunc( keypress );
-    
-    wStatus = new cWStatus( wMain );
-    assert( wStatus );
     
     texList = new cTexMaps;
     assert( texList );
@@ -94,16 +91,16 @@ init ( void )
 {
     // we want to draw the window before running init sequence
     if (count) {
-    	wStatus->Message( "Loading please wait ... " );
+//    	wStatus->Message( "Loading please wait ... " );
     
 //	sleep(2);
     
-   	wStatus->Message( "" );
+//   	wStatus->Message( "" );
     
     	glutIdleFunc( NULL );
     }
     else {
-//	texList->Init();
+	texList->Init();
     }
     count++;
 }

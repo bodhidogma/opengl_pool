@@ -1,4 +1,4 @@
-// File:        glWindow.cc
+// File:        glcWindow.cc
 // Author:      Paul McAvoy <paulmcav@auctomation.com>
 // Org:
 // Desc:        
@@ -6,17 +6,21 @@
 // $Revision: 1.1 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1999/10/25 06:33:21  paulmcav
+ * working project with fancy windowing class for GL.
+ * Tex maps sorta working, looks sharp though!
+ *
  */
 
-#include "glWindow.h"
+#include "glcWindow.h"
 
 #include <string.h>
 #include <iostream.h>
 #include <assert.h>
 
-int glWindow::glWinNum = 0;
+int glcWindow::glWinNum = 0;
 
-glWindow *glWinList[ MAX_WINDOWS ];
+glcWindow *glWinList[ MAX_WINDOWS ];
 
 // ------------------------------------------------------------------
 //  Func: 
@@ -27,7 +31,7 @@ glWindow *glWinList[ MAX_WINDOWS ];
 
 // create a child window from a given parent
 
-glWindow::glWindow( glWindow *parent, float x, float y, float w, float h,
+glcWindow::glcWindow( glcWindow *parent, float x, float y, float w, float h,
 	int pct=0, int cb=0) :
 	iNumChildren(0),
 	iPctg( pct ),
@@ -43,7 +47,7 @@ glWindow::glWindow( glWindow *parent, float x, float y, float w, float h,
     assert( parent );
     
     iMyParent = parent->iMyNum;
-    iWindow = parent->iWindow;
+    icWindow = parent->icWindow;
     
 /*    wsWidth = wWidth = w;
     wsHeight = wHeight = h;
@@ -78,7 +82,7 @@ glWindow::glWindow( glWindow *parent, float x, float y, float w, float h,
 
 // create a new top level window with a title bar
 
-glWindow::glWindow( char *title, int w, int h, unsigned int mode, int cb=0 ) :
+glcWindow::glcWindow( char *title, int w, int h, unsigned int mode, int cb=0 ) :
 	iNumChildren(0),
 	iPctg(0),
 	wsWidth(w),
@@ -119,10 +123,10 @@ glWindow::glWindow( char *title, int w, int h, unsigned int mode, int cb=0 ) :
     if ( cb & WCB_MOUSEENTER )
 	glutEntryFunc( cbMouseEnter );
     
-    iWindow = iMyNum;
+    icWindow = iMyNum;
 
     if ( !glWinNum ){
-	memset( glWinList, 0, MAX_WINDOWS*sizeof(glWindow*) );
+	memset( glWinList, 0, MAX_WINDOWS*sizeof(glcWindow*) );
     }
 
     glWinList[ iMyNum ] = this;
@@ -130,7 +134,7 @@ glWindow::glWindow( char *title, int w, int h, unsigned int mode, int cb=0 ) :
     glWinNum++;
 }
 
-glWindow::~glWindow()
+glcWindow::~glcWindow()
 {
     glWinList[ iMyNum ] = NULL;
     glWinNum--;
@@ -139,17 +143,17 @@ glWindow::~glWindow()
 }
 
 void 
-glWindow::cbDisplay( void )
+glcWindow::cbDisplay( void )
 {
     glWinList[ glutGetWindow() ]->Display();
 }
 
 void
-glWindow::cbResize( int w, int h )
+glcWindow::cbResize( int w, int h )
 {
-    glWindow *win = glWinList[ glutGetWindow() ];
+    glcWindow *win = glWinList[ glutGetWindow() ];
 
-//    cout << "cbResize: " << glutGetWindow() << endl;
+//    cout << "cbResize: " << glutGetcWindow() << endl;
     
     // set new window size 
     win->wWidth = (float)w;
@@ -161,7 +165,7 @@ glWindow::cbResize( int w, int h )
     // if window has any children
     if ( win->iNumChildren ) {
     	int cnt;
-    	glWindow *child;
+    	glcWindow *child;
     
 	// resize any children
 	for ( cnt = 0; cnt < win->iNumChildren; cnt++ ){
@@ -177,25 +181,25 @@ glWindow::cbResize( int w, int h )
 }
 
 void 
-glWindow::cbKeys( unsigned char key, int mx, int my )
+glcWindow::cbKeys( unsigned char key, int mx, int my )
 {
     glWinList[ glutGetWindow() ]->Keys( key, mx, my );
 }
 
 void 
-glWindow::cbSKeys( int key, int mx, int my )
+glcWindow::cbSKeys( int key, int mx, int my )
 {
     glWinList[ glutGetWindow() ]->SKeys( key, mx, my );
 }
 
 void 
-glWindow::cbMouseClk( int b, int s, int x, int y )
+glcWindow::cbMouseClk( int b, int s, int x, int y )
 {
     glWinList[ glutGetWindow() ]->MouseClk( b, s, x, y );
 }
 
 void 
-glWindow::cbMouseEnter( int s )
+glcWindow::cbMouseEnter( int s )
 {
     glWinList[ glutGetWindow() ]->MouseEnter( s );
 }
@@ -203,12 +207,12 @@ glWindow::cbMouseEnter( int s )
 // should be called as an individual window (ie: it knows about itself)
 
 int
-glWindow::rescale( void )
+glcWindow::rescale( void )
 {
 //    cout << "rescale: " << iMyNum << " pct: " << iPctg << endl;
 
     if ( iPctg && iMyParent ) {		// window sizes are some pcg of parent
-    	glWindow *p = glWinList[ iMyParent ];
+    	glcWindow *p = glWinList[ iMyParent ];
 	
 	if ( wsXpos <= 1 )
 	    wXpos = wsXpos * p->wXpos;
@@ -227,14 +231,14 @@ glWindow::rescale( void )
 }
 
 int
-glWindow::Visible( int iVis )
+glcWindow::Visible( int iVis )
 {
     return 0;
 }
 
 
 int
-glWindow::newchild( int winnum )
+glcWindow::newchild( int winnum )
 {
     if ( iNumChildren < MAX_WINDOWS ) {
 	wChildList[ iNumChildren++ ] = winnum;

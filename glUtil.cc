@@ -3,9 +3,13 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1999/10/25 06:33:21  paulmcav
+ * working project with fancy windowing class for GL.
+ * Tex maps sorta working, looks sharp though!
+ *
  */
 
 #include "glUtil.h"
@@ -57,19 +61,19 @@ glshadebox( int x, int y, int w, int h, int raised=1 )
 	    glColor3f( GRAY44 );
 	else
 	    glColor3f( WHITE );
-	glVertex2i( x, h );		// |
+	glVertex2i( x, h );		// L: |
 	glVertex2i( x, y );
-	glVertex2i( x, y+1 );		// _
-	glVertex2i( w, y+1 );
+	glVertex2i( x, y );		// B: _
+	glVertex2i( w, y );
 
 	if ( raised )
 	    glColor3f( WHITE );
 	else
 	    glColor3f( GRAY44 );
-	glVertex2i( x+1, h-1 );		// _
+	glVertex2i( x+1, h-1 );		// T: _
 	glVertex2i( w, h-1 );
-	glVertex2i( w-1, h-1 );		// |
-	glVertex2i( w-1, y+1 );
+	glVertex2i( w-1, h-1 );		// R: |
+	glVertex2i( w-1, y );
     }
     glEnd();
 

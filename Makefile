@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.6 1999-10-25 06:33:21 paulmcav Exp $
+# $Id: Makefile,v 1.7 1999-10-29 04:31:21 paulmcav Exp $
 #
 ##### MACROS #####
 
@@ -6,16 +6,16 @@
 LIBDIR	= -L/usr/X11R6/lib
 
 # sfsu settings
-#INCDIR = -I$(HOME)/include
+INCDIR = -I/usr/local/include
 #LIBDIR = -L$(HOME)/lib -L/usr/openwin/lib
 
 XLIBS	= -lX11 -lXext -lXi -lXmu
 
 # glx / mesagl
-GL	= MesaGL
-#GL	= GL
+#GL	= MesaGL
+GL	= GL
 
-GL_LIBS	= $(LIBDIR) -lglut -lMesaGLU -l$(GL) -lm $(XLIBS)
+GL_LIBS	= $(LIBDIR) -lglut -lGLU -l$(GL) -lm $(XLIBS)
 
 #debugging!
 #MALLOC	= -static -lefence
@@ -69,12 +69,14 @@ endif
 sources	=$(wildcard *.cc)
 
 GLPOOL	= glpool.o \
-	  glWindow.o \
+	  glcWindow.o \
+	  glcViewport.o \
 	  glUtil.o \
 	  glpng.o \
 	  cTexMaps.o \
-	  cWStatus.o \
-	  cWMain.o 
+	  cWMain.o \
+	  cVmain.o \
+	  cVstatus.o
 
 SOUDI	= soudi.o
 

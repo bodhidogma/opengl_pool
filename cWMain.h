@@ -4,29 +4,39 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1999/10/25 06:33:21  paulmcav
+ * working project with fancy windowing class for GL.
+ * Tex maps sorta working, looks sharp though!
+ *
  * 
 */
 
 #ifndef _CWMAIN_H_
 #define _CWMAIN_H_
 
-#include "glWindow.h"
+enum mw_views {
+    mw_main,
+    mw_status,
+    mw_count
+};
+
+#include "glcWindow.h"
+#include "glcViewport.h"
 
 /*
  *
 */
 
-class cWMain : public glWindow
+class cWMain : public glcWindow
 {
 private:
-    GLuint texIntro;
+    glcViewport **views;
 
 protected:
-    float vX, vY, vW, vH;
     
 public:
     cWMain( char *title, int w, int h, unsigned int mode );
