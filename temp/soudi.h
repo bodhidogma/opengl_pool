@@ -36,6 +36,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 //#include <conio.h>
 
 static GLint   clockWise     = 1;
@@ -43,6 +44,9 @@ static GLfloat angle         = 0.0;
 static GLfloat zaxis         = 4.0f;
 static GLint   maxSizeFlag   = 0;
 static int     direction     = 1;
+static GLfloat size = 3.0f;
+static GLint   subWidth  = 300;
+static GLint   subHeight = 300;
 
 //****************************************************************
 // Init : initializes the kind and position of the light and the *
@@ -95,6 +99,18 @@ void MoveBackward(void);
 //****************************************************************
 
 void Mouse(int btn, int state, int x, int y);
+
+void mainMenu(int id);
+
+void CreateSub(void);
+
+void reshape2(int w, int h);
+
+void DisplayInfo(void);
+
+void tick(void);
+
+void output(int x, int y, char *string);
 
 //****************************************************************
 // Keyboard: defines the effects of different keys on the        *
