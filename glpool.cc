@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.3 $
+// $Revision: 1.4 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  1999/10/19 08:01:10  paulmcav
+ * added multiple viewports, blending and texture maps
+ *
  * Revision 1.2  1999/10/13 16:13:11  paulmcav
  * state of project for turn in (proj2a)
  *
@@ -124,10 +127,12 @@ init ( void )
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
     
+    /*
     if ( !LoadRGBMipmaps( "data/intro.rgb", GL_RGB )) {
 	cerr << "Error: couldn't load texture image!" << endl;
 	exit(1);
     }
+    */
 }
 
 // ------------------------------------------------------------------
