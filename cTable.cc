@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  1999/12/06 21:19:46  paulmcav
+ * updated game to allow collisions between balls
+ *
  * Revision 1.8  1999/12/06 09:21:18  paulmcav
  * added windos portability code/utils
  *
@@ -386,3 +389,19 @@ cTable::StickToggle( int val )
     return 0;
 }
 
+int
+cTable::setstatus( cVstatus *stat )
+{
+    if ( stat ) {
+	lBalls->setstatus( stat );
+    }
+    return 0;
+}
+    
+int
+cTable::Reset( void )
+{
+    lBalls->Reset();
+
+    return 0;
+}

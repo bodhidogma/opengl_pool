@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.7 $
+// $Revision: 1.8 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  1999/12/06 09:21:18  paulmcav
+ * added windos portability code/utils
+ *
  * Revision 1.6  1999/12/06 04:49:24  paulmcav
  * added pooltable model loading / rendering.
  * Cue stick hit now works.  Timing is a bit better
@@ -35,6 +38,7 @@
 #define _CTABLE_H_
 
 #include "cBallList.h"
+#include "cVstatus.h"
 
 /*
 */
@@ -63,6 +67,7 @@ protected:
     int  make_stick( int lnum );
 
 public:
+    
     cTable( GLfloat x, GLfloat y, GLfloat w, GLfloat h );
     ~cTable();
 
@@ -76,6 +81,9 @@ public:
     int StickTr( int dx );
     int StickToggle( int val );
 	
+    int setstatus( cVstatus *stat );
+    
+    int Reset( void );
 };
 
 #endif

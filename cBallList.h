@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  1999/12/06 21:19:46  paulmcav
+ * updated game to allow collisions between balls
+ *
  * Revision 1.12  1999/12/06 09:21:17  paulmcav
  * added windos portability code/utils
  *
@@ -53,6 +56,8 @@
 #define _CBALLLIST_H_
 
 #include "cBall.h"
+#include "cVstatus.h"
+
 
 enum bl_balls {
     b_que,
@@ -86,6 +91,7 @@ private:
     GLfloat xMin, xMax, yMin, yMax;	// table dimensions
     GLfloat hDiv, wDiv;
     int iWire, iTex;
+    cVstatus *status;
 
 protected:
 public:
@@ -105,6 +111,10 @@ public:
     int RackPosition( int ball, GLfloat *pos );
     
     int SetFlags( int wire, int tex );
+    int Reset( void );
+    
+    int setstatus( cVstatus *sptr );
+    
     
 };
 

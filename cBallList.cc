@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  1999/12/06 21:19:46  paulmcav
+ * updated game to allow collisions between balls
+ *
  * Revision 1.13  1999/12/06 09:21:17  paulmcav
  * added windos portability code/utils
  *
@@ -81,6 +84,23 @@ cBallList::cBallList( GLfloat x, GLfloat y, GLfloat w, GLfloat h ) :
     ,iWire(DEF_WIRE)
     ,iTex(DEF_TEX)
 {
+    int bc;
+
+    balls = new cBall[ b_count ];	// some balls
+    assert( balls );
+
+    status = NULL;
+
+    Reset();
+    
+    for ( bc=0; bc< b_count; bc++ ) {
+	balls[ bc ].Resize();
+    }
+}
+
+int
+cBallList::Reset( void )
+{
     GLfloat BallClr[][3] = {
 	{ BALL0 },
 	{ BALL1 }, { BALL2 }, { BALL3 }, { BALL4 }, { BALL5 },
@@ -89,11 +109,8 @@ cBallList::cBallList( GLfloat x, GLfloat y, GLfloat w, GLfloat h ) :
     int bc;
     GLfloat rp[3];	// rack position
 	
-    balls = new cBall[ b_count ];	// some balls
-    assert( balls );
-
 //    for ( bc=b_count-1; bc; --bc ) {
-    for ( bc=0; bc<b_count; ++bc ) {
+    for ( bc=0; bc<b_count; ++bc ) {		// loop through all balls
 
 	balls[ bc ].SetNumber( bc );
 	balls[ bc ].SetColor( BallClr[ bc ] );
@@ -103,17 +120,20 @@ cBallList::cBallList( GLfloat x, GLfloat y, GLfloat w, GLfloat h ) :
 	    balls[bc].SetFlags( 0,iTex );
 	}
 	else { 		// other balls
-	    RackPosition( bc, rp );
+	    RackPosition( bc, rp );		// find racking position
 	    balls[bc].SetPosition( wDiv*2+rp[0], yMax-(hDiv*2)+rp[1] );
 	    balls[bc].SetFlags( iWire,iTex );
+	    
+	    if ( status ) {
+		status->ToggleBall( bc, 0 );
+	    }
 	}
-
+    }
+    if ( status ) {
+	status->DrawBallQ();
     }
 
-    for ( bc=0; bc< b_count; bc++ ) {
-	balls[ bc ].Resize();
-    }
-
+    return 0;
 }
 
 // ------------------------------------------------------------------
@@ -145,6 +165,9 @@ cBallList::Draw( void )
     glTranslatef( 0,0, (BALL_R*1.0) );
     
     for ( bc=0; bc< b_count; bc++ ) {
+	if ( !balls[bc].Enabled() )		// skip ball if not active
+	    continue;
+
 	glPushMatrix();				// origin is at bottom left.
 	
 //	balls[ bc ].Draw();
@@ -191,11 +214,17 @@ cBallList::Move( void )
 {
     int bc;
     int anim = 0;
+    int sunk = 0;
 
     for ( bc=0; bc< b_count; bc++ ) {
 	if ( balls[ bc ].move ) {		// if a ball is 'move'ing
-	    balls[ bc ].MoveWall( xMax, yMax );	// move ball and bounce-wall
-	    anim |= balls[ bc ].MoveBall( balls, b_count );
+	    sunk = balls[ bc ].MoveWall( xMax, yMax );	// move ball and bounce
+	    if ( !sunk ) {
+	    	anim |= balls[ bc ].MoveBall( balls, b_count );
+	    }
+	    else {
+		balls[ bc ].SetNumber( -1 );
+	    }
 	}
     }
     
@@ -263,6 +292,8 @@ cBallList::Resize( GLfloat x, GLfloat y, GLfloat w, GLfloat h )
 int
 cBallList::EnableBall( int num )
 {
+    balls[ num ].SetNumber( num );
+
     return 0;
 }
 
@@ -370,3 +401,11 @@ cBallList::SetFlags( int wire, int tex )
 }
 
 
+int
+cBallList::setstatus( cVstatus *stat )
+{
+    if ( stat ) {
+	status = stat;
+    }
+    return 0;
+}

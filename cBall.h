@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  1999/12/06 21:19:46  paulmcav
+ * updated game to allow collisions between balls
+ *
  * Revision 1.10  1999/12/06 09:21:17  paulmcav
  * added windos portability code/utils
  *
@@ -97,7 +100,8 @@ public:
     int   rotation;
 //    GLfloat normal[3];
 
-    int   ballnum;	// ball number
+    int   ballnum;	// ball number (>= 0 ok, <0 = off)
+    int	  enabled;
     int   dlist;	// display list
     
     int   flg_Wire;		// wireframe
@@ -112,6 +116,7 @@ public:
     
     int Draw(void);
     int MoveWall( int x, int y );
+    int MovePocket( int y );
     int MoveBall( cBall *balls, int numballs );
     int Resize(void);
 
@@ -129,6 +134,9 @@ public:
     GLfloat mag( void );
     int HitBall( GLfloat x, GLfloat y );
     
+    int Enabled(void) { return enabled; }
+    
+    int CheckPocket( );
     
 };
 

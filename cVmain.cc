@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.25 $
+// $Revision: 1.26 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.25  1999/12/06 09:21:18  paulmcav
+ * added windos portability code/utils
+ *
  * Revision 1.24  1999/12/06 04:49:24  paulmcav
  * added pooltable model loading / rendering.
  * Cue stick hit now works.  Timing is a bit better
@@ -153,8 +156,11 @@ cVmain::~cVmain()
 int
 cVmain::setstatus( cVstatus *stat )
 {
-    if ( stat )			// get handle to status window
+    if ( stat ) {			// get handle to status window
 	Vstat = stat;
+	
+	table->setstatus( stat );
+    }
 	
     return 0;
 }
@@ -435,11 +441,21 @@ cVmain::Intro( int flag )
 int
 cVmain::Animate( void )
 {
+    int ret;
     
     iHelpWin = 0;	// turns off these displays
     iIntroWin = 0;
     
-    return (table->Move()) ;
+    ret = table->Move();
+    
+    if ( ret ) {				// ! animate
+	Vstat->Message( "Ready to hit:", 0 );
+    }
+    else {					// working
+	Vstat->Message( "Busy..",0 );
+    }
+    
+    return ret ;
 }
 
 int
@@ -504,3 +520,11 @@ cVmain::StickToggle( int val )
     return (table->StickToggle( val ));
 }
 
+int
+cVmain::Reset( void )
+{
+    Vstat->ResetBalls();
+    table->Reset();
+
+    return 0;
+}

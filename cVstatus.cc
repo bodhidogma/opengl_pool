@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  1999/12/06 09:40:36  paulmcav
+ * final changes to ensure portability for windos version
+ *
  * Revision 1.5  1999/12/06 09:21:18  paulmcav
  * added windos portability code/utils
  *
@@ -173,7 +176,7 @@ cVstatus::SetView( void )
 // ------------------------------------------------------------------
 
 int
-cVstatus::Message( char *msg )
+cVstatus::Message( char *msg, int disp )
 {
     if ( cMessage )
 	delete[] cMessage;
@@ -183,7 +186,8 @@ cVstatus::Message( char *msg )
 
     strcpy( cMessage, msg );
     
-    Display();
+    if ( disp )
+	Display();
 
     return 0;
 }
@@ -224,8 +228,9 @@ cVstatus::DrawBallQ( void )
     		glColor3fv( BallClr[ cnt ] );
 		gluQuadricNormals( q, GL_SMOOTH );
 		gluSphere( q, SC_BALL_W/2 , 10, 5 );
+		
+		glTranslatef( SC_BALL_W, 0.0, 0.0 );	// move over a little
 	    }
-    	    glTranslatef( SC_BALL_W, 0.0, 0.0 );
     	}
     	glPopMatrix();
 
@@ -249,7 +254,8 @@ int
 cVstatus::ResetBalls( void )
 {
     for (iBallCnt = 1; iBallCnt < 16; iBallCnt++ ) {
-	iBallList[ iBallCnt-1 ] = 16-iBallCnt;
+//	iBallList[ iBallCnt-1 ] = 16-iBallCnt;
+	iBallList[ iBallCnt-1 ] = 1;			// turn on display
     }
 
     return 0;
@@ -263,8 +269,13 @@ cVstatus::ResetBalls( void )
 // ------------------------------------------------------------------
 
 int
-cVstatus::AddBalls( int ballnum )
+cVstatus::ToggleBall( int ballnum, int set )
 {
+    if ( set >= 0 )
+	iBallList[ ballnum-1 ] = set;
+    else 
+	iBallList[ ballnum-1 ] ^= 1;
+    
     return 0;
 }
 

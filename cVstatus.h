@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  1999/11/20 07:53:57  paulmcav
+ * added texmap support, some more menu options, lighting, cleanup, etc.
+ *
  * Revision 1.3  1999/11/04 02:21:43  paulmcav
  * fixed texmap problem, added colors to out of play balls.
  *
@@ -67,12 +70,12 @@ public:
 
     int SetView( void );
 
-    int Message( char *msg );
+    int Message( char *msg, int disp=1 );
 
     int DrawBallQ( void );
 
     int ResetBalls( void );
-    int AddBalls( int ballnum );
+    int ToggleBall( int ballnum, int set =-1 );
 	
 };
 

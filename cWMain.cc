@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.16 $
+// $Revision: 1.17 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.16  1999/12/06 09:40:37  paulmcav
+ * final changes to ensure portability for windos version
+ *
  * Revision 1.15  1999/12/06 09:21:18  paulmcav
  * added windos portability code/utils
  *
@@ -241,6 +244,7 @@ cWMain::Keys( unsigned char key, int mx, int my )
     	    ((cVmain*)views[ mw_main ])->StickToggle( StMove );
  	    ((cVmain*)views[ mw_main ])->Intro(0);
     	    ((cVmain*)views[ mw_main ])->Help(0);
+	    stat_message( "Ready to hit:" );
 	    Display();
 	    break;
 	  
@@ -264,15 +268,17 @@ cWMain::Menu( int opt )
 {
     switch( opt ){
 	case mM_New:
-	    iAnim ^= 1;
-	    break;
+//	    iAnim ^= 1;
+//	    break;
 	
 	case mM_Practice:
-	    iAnim ^= 1;
-	    break;
+//	    iAnim ^= 1;
+//	    break;
 
 	case mM_TwoPlayer:
 	    iAnim ^= 1;
+    	    ((cVmain*)views[ mw_main ])->Reset();
+	    Display();
 	    break;
 
 	case mM_Help:
@@ -347,9 +353,9 @@ cWMain::MouseMove( int x, int y )
 		    Animate();
 	        }
 	    }
-	}
+/*	}
 	else if (StMove ) {
-	    
+*/	    
 	    if ( x-pX )
 	       ((cVmain*)views[ mw_main ])->StickRot( (x-pX) );
 	}

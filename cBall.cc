@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  1999/12/06 21:19:46  paulmcav
+ * updated game to allow collisions between balls
+ *
  * Revision 1.13  1999/12/06 09:21:17  paulmcav
  * added windos portability code/utils
  *
@@ -88,6 +91,7 @@ cBall::init(int num, int wire, int tex )
     flg_Texture = tex;
 
     ballnum = num;	// ball number
+    enabled = 1;	// ball is available
     SetColor( BALL0 );
     
     rotation = 0;
@@ -153,6 +157,7 @@ cBall::Draw( void )
 // ------------------------------------------------------------------
 //  Func: MoveWall( x,y )
 //  Desc: Move ball and check to see if ball hit a wall
+//	  x = table width, y = table height
 //
 //  Ret:  
 // ------------------------------------------------------------------
@@ -162,8 +167,24 @@ cBall::MoveWall( int x, int y )
 {
     GLfloat d_pos;	// delta position
     GLfloat mx = 0+BALL_R, my = 0+BALL_R;
+    int  in_pocket = 0;
     
     pos[bN][bX] += vel[bN][bX];
+    
+    if ( pos[bN][bX] > x/2 ) {		// right pockets?
+	if ( pos[bN][bX] >= x ) {	// went in (close!)
+	   in_pocket = MovePocket( y ); 
+	}
+    }
+    else {				// left pockets?
+	if ( pos[bN][bX] <= mx ) {	// went in (close!)
+	   in_pocket = MovePocket( y ); 
+	}
+    }
+
+    if ( in_pocket )
+	return in_pocket;
+    
     if ( pos[bN][bX] >= x ) {		// right wall
 	vel[bN][bX] *= -1;			// reflection
 	
@@ -199,6 +220,25 @@ cBall::MoveWall( int x, int y )
 }
 
 // ------------------------------------------------------------------
+//  Func: MovePocket( y )
+//  Desc: 
+//
+//  Ret:  
+// ------------------------------------------------------------------
+
+int
+cBall::MovePocket( int y )
+{
+    int in = 1;
+    
+    if ( in ) {
+	audio->PlayFile( SUNK_AUDIO );
+    }
+    
+    return in;
+}
+
+// ------------------------------------------------------------------
 //  Func: MoveBall()
 //  Desc: move the ball and reduce it's velocity
 //
@@ -215,13 +255,16 @@ cBall::MoveBall( cBall *balls, int numballs )
     vel[bN][bY] -= (K_FRICTION*vel[bN][bY]);
     
     for ( i=0; i < numballs; i++ ) {	// look at all balls
-	if ( i != ballnum ) {		// dont want to check against self
+	if ( i != ballnum		//   don't check against self
+	     && balls[i].Enabled() )	//   ball is actually avalable
+       	    {
 	    dx = distance( balls[ i ], x,y );
 	    
 	    if ( dx <= 2*BALL_R ) {	// collision with a ball
 		balls[i].HitBall( vel[bN][bX], vel[bN][bY] );
 		vel[bN][bX] = 0;
 		vel[bN][bY] = 0;
+		audio->PlayFile( HIT_AUDIO );
 	    }
 	}
     }
@@ -338,7 +381,16 @@ cBall::SetPosition( GLfloat x, GLfloat y )
 int
 cBall::SetNumber( int num )
 {
-    return (ballnum = num);
+    if ( num < 0 ) { 	// turn off ball
+	enabled = 0;
+	move = 0;
+    }
+    else {
+	enabled = 1;
+	ballnum = num;
+    }
+	
+    return ballnum ;
 }
 
 // ------------------------------------------------------------------

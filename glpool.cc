@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  1999/12/06 09:21:18  paulmcav
+ * added windos portability code/utils
+ *
  * Revision 1.12  1999/12/06 04:49:24  paulmcav
  * added pooltable model loading / rendering.
  * Cue stick hit now works.  Timing is a bit better
@@ -130,7 +133,7 @@ init ( void )
     if (count) {
     	glutIdleFunc( NULL );	// 2'nd pass. everything else to start
 	texList->Init2();
-    	wMain->stat_message("Ready:");
+    	wMain->stat_message("Welcome:");
 	wMain->Display();
     }
     else {

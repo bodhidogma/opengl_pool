@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.16 $
+// $Revision: 1.17 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.16  1999/12/06 09:21:18  paulmcav
+ * added windos portability code/utils
+ *
  * Revision 1.15  1999/12/06 04:49:24  paulmcav
  * added pooltable model loading / rendering.
  * Cue stick hit now works.  Timing is a bit better
@@ -126,6 +129,8 @@ public:
     int StickRot( int deg );
     int StickTr( int dx );
     int StickToggle( int val );
+    
+    int Reset( void );
 };
 
 #endif
