@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  1999/12/03 21:57:34  paulmcav
+ * Added que stick action to game
+ *
  * Revision 1.13  1999/12/01 21:06:11  paulmcav
  * *** empty log message ***
  *
@@ -105,8 +108,8 @@ public:
 
     int help_message( float x, float y, float w, float h );
 
-    int Help( void ){ return iHelpWin ^= 1; }
-    int Intro( void ){ return iIntroWin ^= 1; }
+    int Help( int flag =-1 );
+    int Intro( int flag =-1 );
     
     int Animate( void );
     int Wire( int flag =-1 );

@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  1999/12/03 21:57:34  paulmcav
+ * Added que stick action to game
+ *
  * Revision 1.10  1999/11/24 18:58:48  paulmcav
  * more manipulations for ball movement.
  *
@@ -161,20 +164,23 @@ int
 cBallList::Move()
 {
     int bc;
+    int anim = 0;
 
     for ( bc=0; bc< b_count; bc++ ) {
 	if ( balls[ bc ].move ) {
 	    balls[ bc ].MoveWall( xMax, yMax );
-	    balls[ bc ].MoveBall();
+	    anim |= balls[ bc ].MoveBall();
 	}
     }
     
 //    cout << "tick: " << tick << endl;
     
-    if ( tick++ > 500 )
+/*    if ( tick++ > 50 )
 	tick = 0;
-	
-    return !tick;
+    anim = tick;
+*/
+    
+    return !anim;
 }
 
 int
@@ -184,6 +190,15 @@ cBallList::MoveToBall( int num )
 	    balls[num].pos[bN][bX],
 	    balls[num].pos[bN][bY],
 	    balls[num].pos[bN][bZ] );
+    
+    return 0;
+}
+
+int
+cBallList::HitBall( int num, float x, float y )
+{
+    balls[num].vel[bN][bX] = x;
+    balls[num].vel[bN][bY] = y;
     
     return 0;
 }

@@ -1,0 +1,101 @@
+# 
+# Wavefront material file
+# Converted by the 3D Exploration 1.2 BETA
+# XDimension Software
+# http://www.xdsoft.com/explorer/
+# 
+newmtl MAT_7D83C4
+	 Ka 0.117647 0.117647 0.117647
+	 Kd 0.752941 0.752941 0.752941
+	 Ks 0.752941 0.752941 0.752941
+	 illum 0
+newmtl COPCOR1 light s
+	 Ka 0.8 0.560784 0.227451
+	 Kd 0.8 0.560784 0.227451
+	 Ks 1 0.870588 0.701961
+	 illum 0
+newmtl PANIER1 black 1
+	 Ka 0 0 0
+	 Kd 0 0 0
+	 Ks 1 1 1
+	 illum 0
+newmtl COPCOR1.1 light
+	 Ka 0.8 0.560784 0.227451
+	 Kd 0.8 0.560784 0.227451
+	 Ks 1 0.870588 0.701961
+	 illum 0
+newmtl PANIER1.1 black
+	 Ka 0 0 0
+	 Kd 0 0 0
+	 Ks 1 1 1
+	 illum 0
+newmtl COPCOR1.2 light
+	 Ka 0.8 0.560784 0.227451
+	 Kd 0.8 0.560784 0.227451
+	 Ks 1 0.870588 0.701961
+	 illum 0
+newmtl PANIER1.2 black
+	 Ka 0 0 0
+	 Kd 0 0 0
+	 Ks 1 1 1
+	 illum 0
+newmtl BRASCOR1.3 ligh
+	 Ka 0.8 0.560784 0.227451
+	 Kd 0.8 0.560784 0.227451
+	 Ks 1 0.870588 0.701961
+	 illum 0
+newmtl BRASCOR1.2 ligh
+	 Ka 0.8 0.560784 0.227451
+	 Kd 0.8 0.560784 0.227451
+	 Ks 1 0.870588 0.701961
+	 illum 0
+newmtl BRASCOR1.1 blac
+	 Ka 0.8 0.560784 0.227451
+	 Kd 0.8 0.560784 0.227451
+	 Ks 1 0.870588 0.701961
+	 illum 0
+newmtl BRASCOR1.1 light 
+	 Ka 0.8 0.560784 0.227451
+	 Kd 0.8 0.560784 0.227451
+	 Ks 1 0.870588 0.701961
+	 illum 0
+newmtl BRASCOR1 light 
+	 Ka 0.8 0.560784 0.227451
+	 Kd 0.8 0.560784 0.227451
+	 Ks 1 0.870588 0.701961
+	 illum 0
+newmtl COPSIDE2 light 
+	 Ka 0.8 0.560784 0.227451
+	 Kd 0.8 0.560784 0.227451
+	 Ks 1 0.870588 0.701961
+	 illum 0
+newmtl COPSIDE1 light 
+	 Ka 0.8 0.560784 0.227451
+	 Kd 0.8 0.560784 0.227451
+	 Ks 1 0.870588 0.701961
+	 illum 0
+newmtl WOOD4 light ora
+	 Ka 0.74902 0.376471 0
+	 Kd 0.74902 0.376471 0
+	 Ks 0.74902 0.376471 0
+	 illum 0
+newmtl WOOD3 light ora
+	 Ka 0.74902 0.376471 0
+	 Kd 0.74902 0.376471 0
+	 Ks 0.74902 0.376471 0
+	 illum 0
+newmtl WOOD2 light ora
+	 Ka 0.74902 0.376471 0
+	 Kd 0.74902 0.376471 0
+	 Ks 0.74902 0.376471 0
+	 illum 0
+newmtl WOOD1 light ora
+	 Ka 0.74902 0.376471 0
+	 Kd 0.74902 0.376471 0
+	 Ks 0.74902 0.376471 0
+	 illum 0
+newmtl FELT medium gre
+	 Ka 0 0.560784 0
+	 Kd 0 0.560784 0
+	 Ks 0 0 0
+	 illum 0

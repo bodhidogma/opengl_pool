@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.23 $
+// $Revision: 1.24 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.23  1999/12/03 21:57:34  paulmcav
+ * Added que stick action to game
+ *
  * Revision 1.22  1999/12/01 21:06:11  paulmcav
  * *** empty log message ***
  *
@@ -406,14 +409,33 @@ cVmain::help_message( float x, float y, float w, float h )
 }
 
 int
+cVmain::Help( int flag )
+{
+    if ( flag >= 0 )
+	iHelpWin = flag;
+    else 
+	iHelpWin ^= 1;
+    
+    return iHelpWin;
+}
+
+int
+cVmain::Intro( int flag )
+{
+    if ( flag >= 0 )
+	iIntroWin = flag;
+    else 
+	iIntroWin ^= 1;
+    
+    return iIntroWin;
+}
+
+int
 cVmain::Animate( void )
 {
     
     iHelpWin = 0;	// turns off these displays
     iIntroWin = 0;
-    
-//    cout << "mwA" << endl;
-
     
     return (table->Move()) ;
 }
@@ -465,18 +487,18 @@ cVmain::Yrot( int deg )
 int
 cVmain::StickRot( int deg )
 {
-    return table->StickRot( deg );
+    return (table->StickRot( deg ));
 }
 
 int
 cVmain::StickTr( int dx )
 {
-    return table->StickTr( dx );
+    return (table->StickTr( dx ));
 }
 
 int
 cVmain::StickToggle( int val )
 {
-    return table->StickToggle( val );
+    return (table->StickToggle( val ));
 }
 

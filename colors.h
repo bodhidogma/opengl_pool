@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.6 $
+// $Revision: 1.7 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  1999/11/20 07:53:57  paulmcav
+ * added texmap support, some more menu options, lighting, cleanup, etc.
+ *
  * Revision 1.5  1999/11/18 02:02:23  paulmcav
  * added pool table drawing
  *
@@ -30,7 +33,7 @@
 #ifndef _COLORS_H_
 #define _COLORS_H_
 
-#define DEF_WIRE 0
+#define DEF_WIRE 0 
 #define DEF_TEX  1
 
 /*

@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  1999/11/24 19:32:06  paulmcav
+ * adde profiling / drawing routines
+ *
  * Revision 1.10  1999/11/24 18:58:48  paulmcav
  * more manipulations for ball movement.
  *
@@ -42,6 +45,8 @@
 #include <iostream.h>
 #include <assert.h>
 #include <string.h>
+
+#define BUMPER_AUDIO	"data/bumper.au"
 
 // ------------------------------------------------------------------
 //  Func: 
@@ -168,7 +173,12 @@ audio->PlayFile( "data/bumper.au" );
 int
 cBall::MoveBall( void )
 {
-    return 0;
+    vel[bN][bX] -= (K_FRICTION*vel[bN][bX]);
+    vel[bN][bY] -= (K_FRICTION*vel[bN][bY]);
+    
+//    cout << "x: " << vel[bN][bX] << " y: " << vel[bN][bY] << endl;
+    
+    return (fabs(vel[bN][bX])+fabs(vel[bN][bY]) > .5);
 }
 
 int
@@ -240,11 +250,11 @@ cBall::SetPosition( float x, float y )
 int
 cBall::SetNumber( int num )
 {
-    if ( !num ){
+/*    if ( !num ){
 	vel[bN][bX] = 1;	// cue ball x velocity now
 	vel[bN][bY] = 2;	// cue ball y velocity now
     }
-
+*/
     return (ballnum = num);
 }
 

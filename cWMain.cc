@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.13 $
+// $Revision: 1.14 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  1999/12/03 21:57:34  paulmcav
+ * Added que stick action to game
+ *
  * Revision 1.12  1999/11/24 18:58:48  paulmcav
  * more manipulations for ball movement.
  *
@@ -56,8 +59,15 @@
 #include "cVstatus.h"
 
 #include <iostream.h>
+#include <sys/time.h>
+#include <unistd.h>
 
+extern float fFrameRate;
 
+#define TValDiff( f, t ) \
+	(t.tv_sec-f.tv_sec) + \
+	fabs( (t.tv_usec-f.tv_usec)/1000000.0 )
+	
 // ------------------------------------------------------------------
 //  Func: cWMain( title, w,h, mode )
 //  Desc: setup child viewports, and any window setup stuff.
@@ -71,7 +81,8 @@ cWMain::cWMain( char *title, int w, int h, unsigned int mode, int cb ) :
 	iAnim(0),
 	pX(0), pY(0),
 	MMove(0),
-	StMove(0), StHit(0)
+	StMove(0), StHit(0),
+	elapsed(0), frames(0)
 {
     views = new glcViewport *[ mw_count ];
     assert( views );
@@ -207,6 +218,8 @@ cWMain::Keys( unsigned char key, int mx, int my )
 	    StMove ^= 1;
 	    StHit = 0;
     	    ((cVmain*)views[ mw_main ])->StickToggle( StMove );
+ 	    ((cVmain*)views[ mw_main ])->Intro(0);
+    	    ((cVmain*)views[ mw_main ])->Help(0);
 	    Display();
 	    break;
 	    
@@ -214,6 +227,8 @@ cWMain::Keys( unsigned char key, int mx, int my )
 	    StHit ^= 1;
 	    StMove = 1;  
     	    ((cVmain*)views[ mw_main ])->StickToggle( StMove );
+ 	    ((cVmain*)views[ mw_main ])->Intro(0);
+    	    ((cVmain*)views[ mw_main ])->Help(0);
 	    Display();
 	    break;
 	  
@@ -275,10 +290,13 @@ cWMain::Menu( int opt )
 	    break;
     }
     
-    if ( iAnim )
-	UseCallBack( WCB_IDLE );
-    else
+    if ( iAnim ) {
+//	UseCallBack( WCB_IDLE );
+        Animate();
+    }
+    else {
 	UseCallBack( WCB_IDLE, 0 );	// turns off idle
+    }
 
     return 0;
 }
@@ -302,13 +320,24 @@ cWMain::MouseClk( int button, int state, int x, int y )
 int
 cWMain::MouseMove( int x, int y )
 {
+    int ret;
+
     if ( MMove ) {			// mouse is moving in window
 
 	if ( StHit ) {
-	    if ( y-pY )
-	       ((cVmain*)views[ mw_main ])->StickTr( -(y-pY) );
-	}
+	    if ( y-pY ) {
+	 	ret = ((cVmain*)views[ mw_main ])->StickTr( -(y-pY) );
+	      	if ( ret ) {		// ball was hit
+		    StHit  = 0;
+		    StMove = 0;  
+		    MMove  = 0;
+		    iAnim  = 1;
+		    Animate();
+	        }
+	    }
+/*	}
 	else if (StMove ) {
+*/	    
 	    if ( x-pX )
 	       ((cVmain*)views[ mw_main ])->StickRot( (x-pX) );
 	}
@@ -356,16 +385,51 @@ cWMain::Init( void )
 int
 cWMain::Idle( void )
 {
-    int ret;
-
-    ret = ((cVmain*)views[ mw_main ])->Animate();
-    Display();
+//    cout << "idle: " << iAnim << endl;
     
-    if ( ret ) {
+    if ( !iAnim ) {
 	UseCallBack( WCB_IDLE, 0 );	// turns off idle
-        iAnim = 0;
+    
+	gettimeofday( &tEnd, NULL );
+
+	elapsed += TValDiff( tStart, tEnd );
+	
+	fFrameRate = frames/elapsed;
+	
+	cout << "F: " << frames << " T: " << elapsed
+	     << " fps: " << fFrameRate <<endl;
     }
     
+    return 0;
+}
+
+int
+cWMain::Animate( void )
+{
+    int ret;
+    long dly;
+//    struct timeval s,e;
+
+    iAnim = 1;
+    
+    dly = (long)( .444 * 1000 );
+    
+    UseCallBack( WCB_IDLE );
+    
+    gettimeofday( &tStart, NULL );			    // start timer
+    do {
+// gettimeofday( &s, NULL );			    // start timer
+	ret = ((cVmain*)views[ mw_main ])->Animate();	// do animation
+	Display();
+// gettimeofday( &e, NULL );			    // start timer
+	frames ++;
+	iAnim = 0;
+
+// cout << "+" << TValDiff( s, e );
+	usleep( 500 );
+    }
+    while ( !ret );
+
     return 0;
 }
 

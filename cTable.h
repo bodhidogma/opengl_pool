@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  1999/12/03 21:57:34  paulmcav
+ * Added que stick action to game
+ *
  * Revision 1.4  1999/12/01 21:06:11  paulmcav
  * *** empty log message ***
  *
@@ -44,9 +47,11 @@ private:
     cBallList *lBalls;				// table balls
     float xMin, xMax, yMin, yMax;
     int   iWire, iTex;
-    int   StickRotZ, StickTrY;
+    float StickRotZ, StickTrY, StickDY;
     int   iStick;				// draw stick
     int   dlist;
+    GLuint  plist;
+    GLfloat pHeight;
 
 protected:
     int  make_table( int wire, int lnum );

@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.8 $
+// $Revision: 1.9 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  1999/11/24 18:58:48  paulmcav
+ * more manipulations for ball movement.
+ *
  * Revision 1.7  1999/11/22 22:17:08  paulmcav
  * enabled ball bouncing
  *
@@ -37,6 +40,9 @@
 
 #define BALL_R		1.125
 #define BALL_NORMAL	1,0,0		// normal vector
+
+#define K_FRICTION	.1
+#define S_FRICTION	.2
 
 #include <GL/glut.h>
 

@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.9 $
+// $Revision: 1.10 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  1999/12/03 21:57:34  paulmcav
+ * Added que stick action to game
+ *
  * Revision 1.8  1999/12/01 21:06:11  paulmcav
  * *** empty log message ***
  *
@@ -39,6 +42,9 @@
 
 #ifndef _CWMAIN_H_
 #define _CWMAIN_H_
+
+#include <sys/time.h>
+#include <unistd.h>
 
 enum mw_views {
     mw_main,
@@ -84,8 +90,12 @@ private:
     int pX, pY;
     int MMove; 			// mouse move
     int StMove, StHit;
+    double elapsed;
+    long frames;
     int iTmp;
 
+    struct timeval tStart, tEnd;
+    
 protected:
     
 public:
@@ -103,6 +113,8 @@ public:
     
     int Init( void );
     int Idle( void );
+
+    int Animate( void );
 
     int stat_message( char *msg );
 };

@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  1999/11/17 21:05:56  paulmcav
+ * added mouse movement support
+ *
  * Revision 1.3  1999/11/02 08:47:04  paulmcav
  * added menu / kb callback support; & help window
  *
@@ -267,6 +270,14 @@ glcWindow::cbIdle( void )
 }
 
 // ------------------------------------------------------------------
+
+void 
+glcWindow::cbTimer( int v )
+{
+    glWinList[ glutGetWindow() ]->Timer( v );
+}
+
+// ------------------------------------------------------------------
 //  Func: rescale()
 //  Desc: resize window appropriately if scaling info is used
 //        NOTE: really only called for child windows
@@ -332,7 +343,7 @@ glcWindow::newchild( int winnum )
 }
 
 int
-glcWindow::UseCallBack( int cb, int use, int opt )
+glcWindow::UseCallBack( int cb, int use, int opt, int opt1 )
 {
     int r = 0; 
 
@@ -351,6 +362,8 @@ glcWindow::UseCallBack( int cb, int use, int opt )
 	    r = glutCreateMenu( cbMenu );
 	if ( cb & WCB_IDLE )
 	    glutIdleFunc( cbIdle );
+	if ( cb & WCB_TIMER )
+	    glutTimerFunc(opt1, cbTimer, opt );
     }
     else {
 	if ( cb & WCB_KEYS )
@@ -365,6 +378,8 @@ glcWindow::UseCallBack( int cb, int use, int opt )
 	    glutDestroyMenu( opt );
 	if ( cb & WCB_IDLE )
 	    glutIdleFunc( NULL );
+	if ( cb & WCB_TIMER )
+	    glutTimerFunc(opt1, cbTimer, opt );
     }
     
     return r;

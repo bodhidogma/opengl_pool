@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  1999/11/17 21:05:56  paulmcav
+ * added mouse movement support
+ *
  * Revision 1.3  1999/11/02 08:47:04  paulmcav
  * added menu / kb callback support; & help window
  *
@@ -39,6 +42,7 @@
 #define WCB_MOUSEMOVE	0x10
 #define WCB_MENU	0x20
 #define WCB_IDLE	0x40
+#define WCB_TIMER	0x80
 
 #include <GL/glut.h>
 
@@ -104,6 +108,7 @@ static    void cbMouseEnter( int s );
 static    void cbMouseMove( int x, int y );
 static    void cbMenu( int v );
 static    void cbIdle( void );
+static    void cbTimer( int v );
 
     // derived class implementations of call backs.  A per window basis.
     virtual int Display( void ) { return 0; }
@@ -115,6 +120,7 @@ static    void cbIdle( void );
     virtual int MouseMove( int x, int y ) { return 0; }
     virtual int Menu( int v ) { return 0; }
     virtual int Idle( void ) { return 0; }
+    virtual int Timer( int v ) { return 0; }
 
     // return window information
     int iHeight(void) { return (int)wHeight; }
@@ -123,7 +129,7 @@ static    void cbIdle( void );
     int iYpos(void) { return (int)wYpos; }
     
     // use callbacks
-    int UseCallBack( int cb, int use=1, int opt=0 );
+    int UseCallBack( int cb, int use=1, int opt=0, int opt1=1000 );
     
     // get / set window visibility
     int Visible( int vis );

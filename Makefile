@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.15 1999-11-24 19:32:06 paulmcav Exp $
+# $Id: Makefile,v 1.16 1999-12-06 04:49:24 paulmcav Exp $
 #
 ##### MACROS #####
 
@@ -74,6 +74,7 @@ GLPOOL	= glpool.o \
 	  glcViewport.o \
 	  glUtil.o \
 	  glpng.o \
+	  glm.o \
 	  cAudio.o \
 	  cTexMaps.o \
 	  cWMain.o \
@@ -85,7 +86,7 @@ GLPOOL	= glpool.o \
 
 SOUDI	= soudi.o
 
-TEST	= test.o
+TEST	= test.o glm.o
 
 SCOTT	= scott.o 
 

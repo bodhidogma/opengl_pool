@@ -7,11 +7,18 @@
 #include <assert.h>
 #include <math.h>
 
+#include "glm.h"
 
 //#include "box.h"
 #include "pooltable.h"
 #include "models.h"
 //#include "box_obj.h"
+
+
+char    pooldata[] = "data/pooltable.obj";
+GLuint	poollist = 0;
+GLMmodel *model;
+GLfloat scale;
 
 int spin =0, move=0;
 int beginx, beginy;
@@ -125,7 +132,7 @@ void init(void)
     
 //    glCullFace( GL_BACK );
 //    glFrontFace( GL_CCW );
-//    glEnable( GL_CULL_FACE );
+    glEnable( GL_CULL_FACE );
     
     glEnable( GL_COLOR_MATERIAL );
 //    glColorMaterial( GL_FRONT, GL_AMBIENT_AND_DIFFUSE );
@@ -145,10 +152,19 @@ void init(void)
 //    glLightfv( GL_LIGHT0, GL_DIFFUSE, white_light );
 //    glLightfv( GL_LIGHT0, GL_SPECULAR, white_light );
 
+
+    model = glmReadOBJ( pooldata );
+    scale = glmUnitize( model );
+    glmFacetNormals( model );
+    glmVertexNormals( model, 90.0 );
+
+    poollist = glmList( model, GLM_SMOOTH | GLM_MATERIAL ); 
+    
+    
+#if 0    
     dlist = glGenLists(1);
     
     glNewList( dlist, GL_COMPILE );
-    
     glColor3ub( 180,40,100 );
     glutWireSphere( 1, 20, 16 );
     
@@ -197,8 +213,8 @@ void init(void)
 	glBegin( GL_TRIANGLES );
             draw_raw();
 	glEnd();
-		
     glEndList();
+#endif		
 		
     
 //    glDrawArrays( GL_QUADS, 0, 4 );
@@ -245,9 +261,10 @@ void display(void)
 
     glEnable( GL_NORMALIZE );
 //    glScalef( 4, 4, 4 );
-    glScalef( .002, .002, .002 );
+//    glScalef( .002, .002, .002 );
     
-    glCallList( dlist );
+//    glCallList( dlist );
+    glCallList( poollist );
 
     glPopMatrix();
 

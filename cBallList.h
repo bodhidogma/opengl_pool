@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.10 $
+// $Revision: 1.11 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  1999/12/03 21:57:34  paulmcav
+ * Added que stick action to game
+ *
  * Revision 1.9  1999/11/24 19:32:06  paulmcav
  * adde profiling / drawing routines
  *
@@ -85,6 +88,7 @@ public:
     int Move();
     
     int MoveToBall( int num );
+    int HitBall( int num, float x, float y );
     
     int Resize( float x, float y, float w, float h );
     

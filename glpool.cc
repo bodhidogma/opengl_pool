@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.11 $
+// $Revision: 1.12 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  1999/11/24 18:58:48  paulmcav
+ * more manipulations for ball movement.
+ *
  * Revision 1.10  1999/11/22 22:17:08  paulmcav
  * enabled ball bouncing
  *
@@ -69,6 +72,8 @@ void real_exit( int , void * );
 cWMain	 *wMain;
 cTexMaps *texList;
 cAudio	 *audio;
+
+float	fFrameRate = 15.0;
     
 int
 main( int argc, char *argv[] )
