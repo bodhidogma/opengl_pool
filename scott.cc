@@ -21,13 +21,14 @@ DATE:	   11/22/99
 #include "models.h"
 //#include "box_obj.h"
 
-int spin =0, move=0;
+int move=0;	// tracking mouse movement
 int beginx, beginy;
-int dx = 0, dy = 0;
-int stickflag = 0;
-int stickspin=0, stickmove=0;
-int stickbx, stickby, stickbz;
-int stickdx = 0, stickdy = 0, stickdz = 0;
+
+int dx = 0, dy = 0;			// table
+int stickdx = 0, stickdy = 0;		// stick
+
+int stickflag = 0, stickhit = 0;
+
 
 GLuint dlist;
 GLuint sticklist;
@@ -162,8 +163,11 @@ void init(void)
     
     glNewList( dlist, GL_COMPILE );
     
-    glColor3ub( 180,40,100 );
-    glutWireSphere( 1, 20, 16 );
+//    glColor3ub( 180,40,100 );
+//    glutWireSphere( 1, 20, 16 );
+
+    glScalef( .002, .002, .002 );
+
     
         glColor3f( 1,1,1 );
 
@@ -225,7 +229,7 @@ void init(void)
 
     sticklist = glGenLists (1);
     glNewList (sticklist, GL_COMPILE);
-         glRotatef(130.0, 1.0, 0, 0);
+         glRotatef(265.0, 1.0, 0, 0);
          glTranslatef( 0, 0, -600);
          glutSolidCone(10, 600, 20, 16);
     glEndList ();
@@ -238,7 +242,7 @@ void display(void)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
    
     
-    glPushMatrix();
+    glPushMatrix();		// identity matrix
     
     glTranslatef( L_POS );
     glColor3f( 1,1,1 );
@@ -264,22 +268,18 @@ void display(void)
 
     glEnable( GL_NORMALIZE );
 //  glScalef( 4, 4, 4 );
-    glScalef( .002, .002, .002 );
     
     glCallList( dlist );
-    if( stickflag )
-    {
-	glPushMatrix();
     
-        glRotatef(stickdx, 1, 0, 0);
-	glRotatef(stickdy, 0, 1, 0);
-	glTranslatef(0, 0, stickdz);
-	
-    	glCallList( sticklist );
-        
-	glPopMatrix();
-    }
+//    glPopMatrix();
+//    glPushMatrix();
 
+//    glRotatef(stickdx, 1, 0, 0);
+    glTranslatef(0, 0, 20);
+    glRotatef(stickdy, 0, 0, 1);
+    glTranslatef(0, 2*stickdx, 0);
+    
+    glCallList( sticklist );
       
     glPopMatrix();
     
@@ -300,15 +300,6 @@ void reshape(int w, int h)
 }
 
 
-void drawstick( void )
-//Draws cue stick to screen
-{
-     if( stickflag )
-        stickflag = 0;
-     else
-        stickflag = 1;
-}
-
 
 /* ARGSUSED1 */
 void keyboard (unsigned char key, int x, int y)
@@ -321,8 +312,13 @@ void keyboard (unsigned char key, int x, int y)
          break;
 	 
       case ' ':
-	 drawstick();
-	 glutPostRedisplay();
+         stickflag ^= 1;
+	 stickhit = 0;
+	 break;
+	 
+      case '1':
+         stickhit ^= 1;
+	 stickflag = 1;
 	 break;
 	 
       default:
@@ -337,44 +333,16 @@ void mouse( int button, int state, int x, int y )
     switch( button )
     {
 	case GLUT_LEFT_BUTTON:
-	    if ( state == GLUT_DOWN && stickflag == 0 ) 
+	    if ( state == GLUT_DOWN )
 	    {
-	        glutIdleFunc( NULL );
-	        spin = 0;
-	        move = 1;
-	        beginx = x;
+//	        glutIdleFunc( NULL );
+	        move = 1;		// movement is being tracked
+	        beginx = x;		// remember starting position
 	        beginy = y;
     	    }
 	    else
 	    {
-		move = 0;
-	    }
-	    if( state == GLUT_DOWN && stickflag != 0 )
-	    {
-                 glutIdleFunc( NULL );
-	         stickspin = 0;
-	         stickmove = 1;
-	         stickbx = x;
-	         stickby = y;
-	    }
-	    else
-	    {	// GLUT_UP 
-	        stickmove = 0;
-	    }
-	    break;
-	    
-	case GLUT_RIGHT_BUTTON:
-    	    if( state == GLUT_DOWN && stickflag != 0 )
-	    {	
-		 glutIdleFunc( NULL );
-	         stickspin = 0;
-	         stickmove = 1;
-	         stickbx = x;
-	         stickby = y;
-    	    }
-            else 
-	    {	// GLUT_UP 
-	         stickmove = 0;
+		move = 0;		// no more movement tracking
 	    }
 	
     }
@@ -382,12 +350,24 @@ void mouse( int button, int state, int x, int y )
 
 void mousemove( int x, int y )
 {
+    int mdx, mdy;
+    
     if ( move ) {
-	if ( y-beginy )
-	    dx -= (y-beginy);
-	
-	if ( x-beginx )
-	    dy += (x-beginx);
+	if ( stickhit ){
+	    if ( y-beginy )
+		stickdx -= (y-beginy);
+	}
+	else if ( stickflag ) {		// track stick movement
+	    if ( x-beginx )
+		stickdy += (x-beginx);
+	}
+	else {				// track table movement
+	    if ( y-beginy )
+		dx -= (y-beginy);
+	    
+	    if ( x-beginx )
+		dy += (x-beginx);
+	}
 	
 /*	if ( dx < -15 )
 	    dx = -15;
@@ -402,28 +382,6 @@ void mousemove( int x, int y )
 
 //	glutIdleFunc( idle );
     }
-    if( stickmove )
-    {
-	if ( y-stickby )
-	    stickdx -= (y-stickby);
-	
-	if ( x-stickbx )
-	    stickdy += (x-stickbx);
-	
-/*	if ( stickdx < -15 )
-	    stickdx = -15;
-	if ( stickdx > 90 )
-	    stickdx = 90;
-	cout << "stickdx: " << stickdx << " stickdy: " << stickdy << endl;
-*/	
-	stickbx = x;
-	stickby = y;
-	
-	glutPostRedisplay();
-
-//	glutIdleFunc( idle );
-    }
-	
 }
 
 void idle( void )
