@@ -3,41 +3,37 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1999/10/13 05:22:43  paulmcav
+ * template files for future classes
+ *
  */
 
-#include <GL/glut.h>
 #include <stdlib.h>
 #include <iostream.h>
 
+#include <unistd.h>
+
+#include "glpool.h"
+
+// so we can define all globals here, but leave them as externs for others
+#define __CH_EXTERNS__
+
 #include "common.h"
-#include "readtex.h"
-
-void init ( void );
-void idle ( void );
-void display ( void );
-void reshape ( int w, int h );
-void keypress ( unsigned char key, int x, int y );
-void specialkeys ( int key, int x, int y );
-void mouseclick ( int b, int s, int mx, int my );
-
-int  glputs( GLfloat x, GLfloat y, char *buff );
-
 
 // ------------------------------------------------------------------
 
-int help = 0;
-
 // ------------------------------------------------------------------
-//  Func: 
-//  Desc: 
+//  Func: main( argc, argv )
+//  Desc: main function
 //
-//  Ret:  
+//  Ret:  0
 // ------------------------------------------------------------------
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
     // init GL stuff
     glutInit( &argc, argv );
@@ -46,7 +42,7 @@ int main( int argc, char *argv[] )
     glutInitWindowSize( 340, 340 );
     
     // configure GL callabcks for win0
-    glutCreateWindow( argv[0] );
+    glutCreateWindow( "MESH - GLPool v.01" );
     glutDisplayFunc( display );
     glutReshapeFunc( reshape );
     glutKeyboardFunc( keypress );
@@ -56,13 +52,23 @@ int main( int argc, char *argv[] )
     // init program (after creating our windows)
     init();
     
+    glutIdleFunc( idle );
+    
+    // get it goin'
     glutMainLoop();
-    	
     
     return 0;
 }
 
-void init ( void )
+// ------------------------------------------------------------------
+//  Func: init()
+//  Desc: init our gl application settings
+//
+//  Ret:  -
+// ------------------------------------------------------------------
+
+void
+init ( void )
 {
     // GL options
     glEnable( GL_COLOR_MATERIAL );
@@ -95,13 +101,42 @@ void init ( void )
 
     // try setting our mouse cursor
     glutSetCursor( GLUT_CURSOR_CROSSHAIR );
+
+    // other misc stuff
+    init_menus();
 }
 
-void idle ( void )
+// ------------------------------------------------------------------
+//  Func: idle()
+//  Desc: idle gl function loop
+//
+//  Ret:  -
+// ------------------------------------------------------------------
+
+void
+idle ( void )
 {
+    GLubyte *image;
+    GLenum fmt;
+    int w,h;
+
+    image = LoadRGBImage( "data/intro.rgb", &w, &h, &fmt ); 
+
+    glBitmap( w,h, 1,1, 0,0, image );
+    
+    sleep(1);
+    glutIdleFunc( NULL );
 }
 
-void display ( void )
+// ------------------------------------------------------------------
+//  Func: display()
+//  Desc: manage a re-draw/display of selected viewport
+//
+//  Ret:  -
+// ------------------------------------------------------------------
+
+void
+display ( void )
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
@@ -109,7 +144,7 @@ void display ( void )
 
     // object
     glColorMaterial( GL_FRONT_AND_BACK, GL_AMBIENT );
-    glColor4f( 1.0, 0.9, 0.2, 1 );
+    glColor4f( 1.0, 0.9, 0.6, 1 );
     glutWireSphere( 15.0, 20, 16 );
 
 //    glTranslatef( 0.0, 0.0, -1.0 );
@@ -122,7 +157,15 @@ void display ( void )
     glutSwapBuffers();
 }
 
-void reshape ( int iWidth, int iHeight )
+// ------------------------------------------------------------------
+//  Func: reshape( width, height )
+//  Desc: reconfigure viewport when window resizes
+//
+//  Ret:  -
+// ------------------------------------------------------------------
+
+void
+reshape ( int iWidth, int iHeight )
 {
     GLfloat wh = (GLfloat) iWidth/ (GLfloat) iHeight;
     
@@ -143,10 +186,16 @@ void reshape ( int iWidth, int iHeight )
     
 }
 
-void keypress ( unsigned char cKey, int ikX, int ikY )
-{
-    GLfloat pos[4];
+// ------------------------------------------------------------------
+//  Func: keypress( key, x,y )
+//  Desc: handle normal ascii keypress'
+//
+//  Ret:  -
+// ------------------------------------------------------------------
 
+void
+keypress ( unsigned char cKey, int ikX, int ikY )
+{
     switch( cKey ){
 	case 27:
 	case 'q':
@@ -156,26 +205,52 @@ void keypress ( unsigned char cKey, int ikX, int ikY )
 	case 'h':
 	    help ^= 1;
 	    if ( help ) {
-		glputs( 10,10, "this is a test string!" );
-	    	glutSwapBuffers();
+		menuHelp( help );
 	    }
 	    else {
-		glutPostRedisplay();
+		glEnable( GL_DEPTH_TEST );
+		glutDisplayFunc( display );
+		glutReshapeFunc( reshape );
 	    }
+	    glutPostRedisplay();
 	    break;
     }
 
 }
 
-void specialkeys ( int cKep, int ikX, int ikY )
+// ------------------------------------------------------------------
+//  Func: specialkeys( key, x,y )
+//  Desc: handle extended type keypresses
+//
+//  Ret:  -
+// ------------------------------------------------------------------
+
+void
+specialkeys ( int cKep, int ikX, int ikY )
 {
 }
 
-void mouseclick ( int b, int s, int imX, int imY )
+// ------------------------------------------------------------------
+//  Func: mouseclick( button, state, x, y )
+//  Desc: handle a mous button click
+//
+//  Ret:  -
+// ------------------------------------------------------------------
+
+void
+mouseclick ( int b, int s, int imX, int imY )
 {
 }
 
-int glputs( GLfloat x, GLfloat y, char *buff )
+// ------------------------------------------------------------------
+//  Func: glputs( x,y, buffer )
+//  Desc: put a string to the display at x,y
+//
+//  Ret:  # chars displayed
+// ------------------------------------------------------------------
+
+int
+glputs( GLfloat x, GLfloat y, char *buff )
 {
     char *ptr;
     GLfloat pos[4];
@@ -186,18 +261,30 @@ int glputs( GLfloat x, GLfloat y, char *buff )
     glPushMatrix();
 //    glTranslatef( x,y, 0 );
     glGetFloatv( GL_VIEWPORT, pos );
-    cout << "Pos: " << pos[2] <<" "<< pos[3] << endl; 
+//    cout << "Pos: " << pos[2] <<" "<< pos[3] << endl; 
 
     glGetFloatv( GL_CURRENT_RASTER_POSITION, pos );
-    cout << "Pos: " << pos[0] <<" "<< pos[1] <<" "  << pos[2] << endl; 
+//   cout << "Pos: " << pos[0] <<" "<< pos[1] <<" "  << pos[2] << endl; 
     
     glRasterPos2f( x,y );
     
     for ( ptr=buff; *ptr; ptr++ ) {
-	glutBitmapCharacter( GLUT_BITMAP_TIMES_ROMAN_10, *ptr );
+	glutBitmapCharacter( GLUT_BITMAP_9_BY_15, *ptr );
     }
 
     glPopMatrix();
     return (ptr-buff);
 }
 
+// ------------------------------------------------------------------
+//  Func: quit()
+//  Desc: exit application cleanly
+//
+//  Ret:  -
+// ------------------------------------------------------------------
+
+void
+quit_game( void )
+{
+    exit(1);
+}

@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.2 1999-10-13 05:22:43 paulmcav Exp $
+# $Id: Makefile,v 1.3 1999-10-13 16:13:11 paulmcav Exp $
 #
 ##### MACROS #####
 
@@ -58,7 +58,10 @@ endif
 
 sources	=$(wildcard *.cc)
 
-GLPOOL	= glpool.o readtex.o
+GLPOOL	= glpool.o \
+	  cMenu.o \
+	  cHelp.o \
+	  readtex.o
 
 TEST	= test.o
 

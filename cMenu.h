@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.1 $
+// $Revision: 1.2 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  1999/10/13 05:22:43  paulmcav
+ * template files for future classes
+ *
  * 
 */
 
@@ -16,6 +19,9 @@
 
 /*
 */
+
+void init_menus( void );
+void menuMain( int );
 
 #endif
 

@@ -5,8 +5,6 @@
  * Much of this code was borrowed from SGI's tk OpenGL toolkit.
  */
 
-
-
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <stdio.h>
