@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.14 $
+// $Revision: 1.15 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  1999/11/18 01:12:19  paulmcav
+ * added help menu again, intro win, got correct fovy
+ *
  * Revision 1.13  1999/11/17 21:05:56  paulmcav
  * added mouse movement support
  *
@@ -77,7 +80,7 @@ cVmain::cVmain( int x, int y, int w, int h ) :
 	iHelpWin(0),
 	Xdeg(0), Ydeg(0)
 {
-    table = new cTable( 100,100, 20,20 );
+    table = new cTable( 0,0, 48,96 );
     assert( table );
     
     tmp = 0;
@@ -345,6 +348,8 @@ cVmain::Animate( void )
 {
     iHelpWin = 0;	// turns off these displays
     iIntroWin = 0;
+    
+//    cout << "mwA" << endl;
     
     return (table->Move()) ;
 }

@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.5 $
+// $Revision: 1.6 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  1999/11/11 20:38:31  paulmcav
+ * working on perspective use
+ *
  * Revision 1.4  1999/11/10 20:04:49  paulmcav
  * updated project for use with animation
  *
@@ -68,15 +71,27 @@ cBallList::~cBallList()
 int
 cBallList::Draw()
 {
-    int bc;
+    glColor3f( GREEN );
+    glBegin( GL_QUADS );
+    {
+	glVertex3f( 0, 0, 0 );
+	glVertex3f( xMax, 0, 0 );
+	glVertex3f( xMax, yMax, 0 );
+	glVertex3f( 0, yMax, 0 );
+    }
+    glEnd();
+    
+/*    int bc;
 
+    cout << "blD" << endl;
+    
     // move to table origin
     glTranslatef( xMin, yMin, 0.0 );
     
     for ( bc=0; bc< b_count; bc++ ) {
 	balls[ bc ].Draw();
     }
-    
+*/    
     return 0;
 }
 

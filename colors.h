@@ -4,10 +4,13 @@
 // Desc:        
 //              
 // 
-// $Revision: 1.4 $
+// $Revision: 1.5 $
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  1999/11/10 08:19:19  paulmcav
+ * added updates to ball management classes
+ *
  * Revision 1.3  1999/11/04 02:21:43  paulmcav
  * fixed texmap problem, added colors to out of play balls.
  *
@@ -28,10 +31,13 @@
 	list of floating pt color values
 */
 
+// glColor?f( )
+
 #define WHITE	1.0,  1.0,  1.0
 #define BLACK   0.0,  0.0,  0.0
 #define GRAY	0.75, 0.75, 0.75
 #define GRAY44	0.44, 0.44, 0.44
+#define GRAY66  0.66, 0.66, 0.66
 #define GRAY90	0.90, 0.90, 0.90
 
 #define RED	1.0,  0.0,  0.0

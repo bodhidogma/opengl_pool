@@ -79,7 +79,6 @@ void display(void)
     
     glColor3ub( 100,40,180 );
     
-    
     glPushMatrix();
        	
     glRotatef( dx, 1, 0, 0 );
@@ -87,14 +86,14 @@ void display(void)
     
 //    glRotatef(-45, 1, 0, 0 );
     
-//    glInterleavedArrays( GL_V3F, 0, verticies );
+    glInterleavedArrays( GL_V3F, 0, verticies );
 //    glDrawArrays( GL_QUADS, 0, 4 );
 //    glDrawElements( GL_QUADS, 4, GL_UNSIGNED_INT, vlist );
 
 //    glInterleavedArrays( GL_V3F, 0, (GLvoid *)(&rawobj__iii[2]) );
 //    glDrawArrays( GL_LINES, 0, 576 );
 	    
-    glInterleavedArrays( GL_V3F, 0, rawobj____i );
+//    glInterleavedArrays( GL_V3F, 0, rawobj____i );
 //    glInterleavedArrays( GL_V3F, 0, Box01_vertex );
 //    glInterleavedArrays( GL_V3F, 0, Torus01_vertex );
 
@@ -106,12 +105,12 @@ void display(void)
     glRotatef( -90, 1, 0, 0 );
     glTranslatef( -225, 0, 0 );
 
-    draw_raw();
+//    draw_raw();
 
-/*    glDrawElements( GL_LINE_STRIP,
-	    sizeof(Box01_face)/sizeof(long),
-	    GL_UNSIGNED_INT, Box01_face );
-*/
+    glDrawElements( GL_LINE_STRIP,
+	    sizeof(vlist)/sizeof(long),
+	    GL_UNSIGNED_INT, vlist );
+
 /*    glDrawElements(
 	    GL_LINE_STRIP,
 //	    GL_TRIANGLE_STRIP,
