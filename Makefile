@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.3 1999-10-13 16:13:11 paulmcav Exp $
+# $Id: Makefile,v 1.4 1999-10-19 08:01:10 paulmcav Exp $
 #
 ##### MACROS #####
 
@@ -12,8 +12,8 @@ LIBDIR	= -L/usr/X11R6/lib
 XLIBS	= -lX11 -lXext -lXi -lXmu
 
 # glx / mesagl
-#GL	= GL
 GL	= MesaGL
+#GL	= GL
 
 GL_LIBS	= $(LIBDIR) -lglut -lMesaGLU -l$(GL) -lm $(XLIBS)
 

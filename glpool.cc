@@ -3,9 +3,12 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.2 $
+// $Revision: 1.3 $
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  1999/10/13 16:13:11  paulmcav
+ * state of project for turn in (proj2a)
+ *
  * Revision 1.1  1999/10/13 05:22:43  paulmcav
  * template files for future classes
  *
@@ -16,7 +19,13 @@
 
 #include <unistd.h>
 
+#include "string.h"
 #include "glpool.h"
+
+static int width = 340;
+static int height = 340;
+
+GLuint texIntro;
 
 // so we can define all globals here, but leave them as externs for others
 #define __CH_EXTERNS__
@@ -37,7 +46,7 @@ main( int argc, char *argv[] )
 {
     // init GL stuff
     glutInit( &argc, argv );
-    glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
+//    glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
     glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB );
     glutInitWindowSize( 340, 340 );
     
@@ -49,10 +58,11 @@ main( int argc, char *argv[] )
     glutSpecialFunc( specialkeys );
     glutMouseFunc( mouseclick );
 
+    glShadeModel( GL_FLAT );
     // init program (after creating our windows)
     init();
     
-    glutIdleFunc( idle );
+//    glutIdleFunc( idle );
     
     // get it goin'
     glutMainLoop();
@@ -72,7 +82,7 @@ init ( void )
 {
     // GL options
     glEnable( GL_COLOR_MATERIAL );
-    glEnable( GL_CULL_FACE );
+//    glEnable( GL_CULL_FACE );
     glEnable( GL_DEPTH_TEST );
 
     glClearColor( 0.0, 0.0, 0.0, 1.0 );
@@ -104,6 +114,20 @@ init ( void )
 
     // other misc stuff
     init_menus();
+
+    glGenTextures( 1, &texIntro );
+    glBindTexture( GL_TEXTURE_2D, texIntro );
+
+//    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+//    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+    
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+    
+    if ( !LoadRGBMipmaps( "data/intro.rgb", GL_RGB )) {
+	cerr << "Error: couldn't load texture image!" << endl;
+	exit(1);
+    }
 }
 
 // ------------------------------------------------------------------
@@ -120,7 +144,7 @@ idle ( void )
     GLenum fmt;
     int w,h;
 
-    image = LoadRGBImage( "data/intro.rgb", &w, &h, &fmt ); 
+    image = LoadRGBImage( "sun.rgb", &w, &h, &fmt ); 
 
     glBitmap( w,h, 1,1, 0,0, image );
     
@@ -138,23 +162,83 @@ idle ( void )
 void
 display ( void )
 {
+    GLubyte screen[1024];
+
+    memset( screen, 0xAA, 1024 );
+
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    
+    // Status bar
+    glViewport( 0,322, 340, 18 );
+    glMatrixMode( GL_PROJECTION );
+    glLoadIdentity();
+    glOrtho( 0.0, 322, 0.0,18, -1.0,1.0 );
+    
+    glColor3ub( 53,184,66 );
 
-    glPushMatrix();
+    glputs( 20,4, "this is a test string!" );
+    glutWireSphere( 10.0, 20, 16 );
 
-    // object
-    glColorMaterial( GL_FRONT_AND_BACK, GL_AMBIENT );
-    glColor4f( 1.0, 0.9, 0.6, 1 );
-    glutWireSphere( 15.0, 20, 16 );
+    // Game board
+    glViewport( 0,0, 340, 315 );
+    glMatrixMode( GL_PROJECTION );
+    glLoadIdentity();
+    gluPerspective( 135, 1, (315.0/340.0), 10.0 );
 
-//    glTranslatef( 0.0, 0.0, -1.0 );
+    glMatrixMode( GL_MODELVIEW );
+    glLoadIdentity();
+    glTranslatef( 0.0, 0.0, -5.0 );
+    
+    glColor3ub( 153,184,166 );
+    glutWireSphere( 4.8, 20, 16 );
 
-//    glLoadIdentity();
-    glputs( 5,5, "this is a test string!" );
+    glputs( 0,2, "this is a test string!" );
+    
+    // texture map our intro screen
+    glEnable( GL_TEXTURE_2D );
+    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
+    glBindTexture( GL_TEXTURE_2D, texIntro );
+    
+    glBegin( GL_QUADS );
+    {
+	glTexCoord2f( 0.0, 0.0 ); glVertex3f( -9.0, -8.0, 0.0 );
+	glTexCoord2f( 0.0, 1.0 ); glVertex3f( -9.0, 8.0, 0.0 );
+	glTexCoord2f( 1.0, 1.0 ); glVertex3f( 9.0, 8.0, 0.0 );
+	glTexCoord2f( 1.0, 0.0 ); glVertex3f( 9.0, -8.0, 0.0 );
+    }
+    glEnd();
 
-    glPopMatrix();
+    glDisable( GL_TEXTURE_2D );
+    
 
+    // try a blend / stipple / fog
+    glColor4f( 0.0, 0.0, 0.0, 0.35 );
+    glEnable( GL_BLEND );
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+    glRectf( -7.0, -7.0, 7.0, 7.0 );
+    glDisable( GL_BLEND );
+    
+//    glPolygonStipple( screen );
+//    glEnable( GL_POLYGON_STIPPLE );
+//    glRectf( -7.0, -7.0, 7.0, 7.0 );
+//    glDisable( GL_POLYGON_STIPPLE );
+	    
+    // fog .. not working!
+/*    glEnable( GL_FOG );
+    {
+	GLfloat fcolor[4] = { 0.5, 0.5, 0.5, 1.0 };
+	glFogi( GL_FOG_MODE, GL_LINEAR );
+        glFogf( GL_FOG_DENSITY, 0.35 );
+	glFogfv( GL_FOG_COLOR, fcolor );
+        glHint( GL_FOG_HINT, GL_DONT_CARE );
+        glFogf( GL_FOG_START, -1.0 );
+        glFogf( GL_FOG_END, 5.0 );
+    }
+    glDisable( GL_FOG );
+*/    
+    
     glutSwapBuffers();
+    
 }
 
 // ------------------------------------------------------------------
@@ -167,8 +251,8 @@ display ( void )
 void
 reshape ( int iWidth, int iHeight )
 {
-    GLfloat wh = (GLfloat) iWidth/ (GLfloat) iHeight;
-    
+//    GLfloat wh = (GLfloat) iWidth/ (GLfloat) iHeight;
+/*    
     glViewport( 0,0, iWidth, iHeight );
 
     // configure our viewport
@@ -183,7 +267,7 @@ reshape ( int iWidth, int iHeight )
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
     glTranslatef( 1.0, 0.0, -40.0 );
-    
+*/    
 }
 
 // ------------------------------------------------------------------
