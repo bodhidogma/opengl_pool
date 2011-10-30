@@ -7,7 +7,10 @@
 // $Revision: 1.4 $
 
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: glUtil.h,v $
+ * Revision 1.4  1999/12/06 09:21:18  paulmcav
+ * added windos portability code/utils
+ *
  * Revision 1.3  1999/11/18 01:12:19  paulmcav
  * added help menu again, intro win, got correct fovy
  *

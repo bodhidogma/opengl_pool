@@ -3,9 +3,9 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.20 $
+// $Revision: 1.19 $
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: cWMain.cc,v $
  * Revision 1.19  1999/12/17 19:36:39  paulmcav
  * added glXWaitGlx command to sync with display under linux
  *
@@ -78,7 +78,6 @@
 #include "cVmain.h"
 #include "cVstatus.h"
 
-#include <math.h>
 #include <iostream.h>
 #ifdef _WIN32
 #  include <windows.h>
@@ -428,6 +427,10 @@ cWMain::Init( void )
     
     return 0;
 }
+
+#ifndef _USE_OLD_IOSTREAMS
+using namespace std;
+#endif
 
 int
 cWMain::Idle( void )

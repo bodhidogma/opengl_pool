@@ -7,7 +7,10 @@
 // $Revision: 1.5 $
 
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: cVstatus.h,v $
+ * Revision 1.5  1999/12/08 01:08:17  paulmcav
+ * added more stuff!
+ *
  * Revision 1.4  1999/11/20 07:53:57  paulmcav
  * added texmap support, some more menu options, lighting, cleanup, etc.
  *

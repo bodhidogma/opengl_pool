@@ -7,7 +7,10 @@
 // $Revision: 1.17 $
 
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: cVmain.h,v $
+ * Revision 1.17  1999/12/08 01:08:17  paulmcav
+ * added more stuff!
+ *
  * Revision 1.16  1999/12/06 09:21:18  paulmcav
  * added windos portability code/utils
  *

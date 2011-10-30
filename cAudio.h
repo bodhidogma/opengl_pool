@@ -7,7 +7,10 @@
 // $Revision: 1.4 $
 
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: cAudio.h,v $
+ * Revision 1.4  1999/12/08 07:05:25  paulmcav
+ * added sound / timing support for windos version
+ *
  * Revision 1.3  1999/12/08 01:08:16  paulmcav
  * added more stuff!
  *

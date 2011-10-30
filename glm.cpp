@@ -11,6 +11,7 @@
 
  */
 
+#define _CRT_SECURE_NO_WARNINGS
 
 #include <math.h>
 #include <stdio.h>
@@ -19,6 +20,9 @@
 #include <assert.h>
 #include "glm.h"
 
+#ifdef _WIN32
+#define strdup _strdup
+#endif
 
 #define T(x) (model->triangles[(x)])
 

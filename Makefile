@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.17 2002-02-18 22:05:31 paulmcav Exp $
+# $Id: Makefile,v 1.16 1999/12/06 04:49:24 paulmcav Exp $
 #
 ##### MACROS #####
 
@@ -6,7 +6,7 @@
 LIBDIR	= -L/usr/X11R6/lib
 
 # sfsu settings
-INCDIR = -I/usr/local/include
+INCDIR = -I/usr/local/include -I.
 #LIBDIR = -L$(HOME)/lib -L/usr/openwin/lib
 
 XLIBS	= -lX11 -lXext -lXi -lXmu
@@ -34,13 +34,13 @@ VPATH	= .:$(OBJ)
 
 .SUFFIXES:
 
-$(OBJ)%.o: %.cc
+$(OBJ)%.o: %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ)%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ)%.d: %.cc
+$(OBJ)%.d: %.cpp
 	@rm -f $@
 	@$(SHELL) -ec '$(CC) -MM $(CPPFLAGS) $< | \
 	sed -e "1s|^|$(OBJ)|" -e "s|:| $@:|" \
@@ -123,6 +123,6 @@ realclean: semiclean
 	rm -f $(TARGETS)
 
 archive	: semiclean
-	-strip $(TARGETS)
+	strip $(TARGETS)
 	tar -cvf - * | gzip -c > ../glpool.tar.gz
 	

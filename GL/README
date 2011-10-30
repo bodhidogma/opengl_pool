@@ -1,0 +1,8 @@
+
+External libraries / header files
+..
+glpng.h
+glpng.lib
+glut.h
+glut32.dll - copy to directory with EXE file in it (win32)
+glut32.lib

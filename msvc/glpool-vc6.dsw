@@ -3,7 +3,19 @@ Microsoft Developer Studio Workspace File, Format Version 6.00
 
 ###############################################################################
 
-Project: "glpool"=.\glpool.dsp - Package Owner=<4>
+Project: "glpng_lib"="..\GLPNG-V1.40\glpng_lib.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "glpool"=.\glpool-vc6.dsp - Package Owner=<4>
 
 Package=<5>
 {{{

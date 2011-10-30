@@ -7,7 +7,10 @@
 // $Revision: 1.3 $
 
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: glpool.h,v $
+ * Revision 1.3  1999/11/02 08:47:04  paulmcav
+ * added menu / kb callback support; & help window
+ *
  * Revision 1.2  1999/10/25 06:33:22  paulmcav
  * working project with fancy windowing class for GL.
  * Tex maps sorta working, looks sharp though!

@@ -5,7 +5,10 @@
 // 
 // $Revision: 1.7 $
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: glUtil.cc,v $
+ * Revision 1.7  1999/12/06 09:21:18  paulmcav
+ * added windos portability code/utils
+ *
  * Revision 1.6  1999/11/18 01:12:19  paulmcav
  * added help menu again, intro win, got correct fovy
  *
@@ -169,7 +172,7 @@ calcangle( GLfloat size, GLfloat dist )
 {
     GLfloat radtheta, degtheta;
     
-    radtheta = 2.0 * atan2( size/2.0, dist );
+    radtheta = 2.0 * atan2( (float)(size/2.0), dist );
     degtheta = (180.0 * radtheta) / 3.1415926535;
     
     return degtheta;

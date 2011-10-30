@@ -5,7 +5,10 @@
 // 
 // $Revision: 1.5 $
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: cAudio.cc,v $
+ * Revision 1.5  1999/12/08 07:05:25  paulmcav
+ * added sound / timing support for windos version
+ *
  * Revision 1.4  1999/12/06 09:21:17  paulmcav
  * added windos portability code/utils
  *
@@ -21,6 +24,7 @@
  */
 
 #include "cAudio.h"
+#define _CRT_SECURE_NO_WARNINGS
 
 #include <stdlib.h>
 #ifdef _WIN32
@@ -39,6 +43,14 @@
 #include <string.h>
 
 #include <iostream.h>
+
+#ifdef _WIN32
+#define fdopen _fdopen
+#define open _open
+#define read _read
+#define write _write
+#define close _close
+#endif
 
 // ------------------------------------------------------------------
 //  Func: 

@@ -5,7 +5,10 @@
 // 
 // $Revision: 1.6 $
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: cTexMaps.cc,v $
+ * Revision 1.6  1999/11/20 07:53:57  paulmcav
+ * added texmap support, some more menu options, lighting, cleanup, etc.
+ *
  * Revision 1.5  1999/11/10 19:47:18  paulmcav
  * fixed erro message on RH6.0
  *
@@ -47,6 +50,10 @@ cTexMaps::cTexMaps( void )
 cTexMaps::~cTexMaps()
 {
 }
+
+#ifndef _USE_OLD_IOSTREAMS
+using namespace std;
+#endif
 
 int
 cTexMaps::Init( void )

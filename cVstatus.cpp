@@ -5,7 +5,10 @@
 // 
 // $Revision: 1.7 $
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: cVstatus.cc,v $
+ * Revision 1.7  1999/12/08 01:08:17  paulmcav
+ * added more stuff!
+ *
  * Revision 1.6  1999/12/06 09:40:36  paulmcav
  * final changes to ensure portability for windos version
  *
@@ -26,6 +29,8 @@
  * Also enabled texture mapping class!
  *
  */
+
+#define _CRT_SECURE_NO_WARNINGS
 
 #include "cVstatus.h"
 #include "colors.h"

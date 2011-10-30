@@ -5,7 +5,10 @@
 // 
 // $Revision: 1.2 $
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: glcViewport.cc,v $
+ * Revision 1.2  1999/10/29 07:12:22  paulmcav
+ * added some more documentation to the class
+ *
  * Revision 1.1  1999/10/29 04:31:21  paulmcav
  * added viewport class to manage glviewports in a window.
  * Also enabled texture mapping class!
@@ -46,6 +49,10 @@ glcViewport::~glcViewport( void )
 //
 //  Ret:  n/a
 // ------------------------------------------------------------------
+
+#ifndef _USE_OLD_IOSTREAMS
+using namespace std;
+#endif
 
 void
 glcViewport::dump( void )

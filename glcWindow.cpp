@@ -5,7 +5,10 @@
 // 
 // $Revision: 1.6 $
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: glcWindow.cc,v $
+ * Revision 1.6  1999/12/06 09:21:18  paulmcav
+ * added windos portability code/utils
+ *
  * Revision 1.5  1999/12/06 04:49:24  paulmcav
  * added pooltable model loading / rendering.
  * Cue stick hit now works.  Timing is a bit better

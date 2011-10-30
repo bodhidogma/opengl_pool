@@ -7,7 +7,10 @@
 // $Revision: 1.12 $
 
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: cWMain.h,v $
+ * Revision 1.12  1999/12/08 07:05:25  paulmcav
+ * added sound / timing support for windos version
+ *
  * Revision 1.11  1999/12/06 09:21:18  paulmcav
  * added windos portability code/utils
  *

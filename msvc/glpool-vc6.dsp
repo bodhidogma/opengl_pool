@@ -42,7 +42,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
+# ADD CPP /nologo /W3 /GX /O2 /I "." /I ".." /I "..\GL" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -50,7 +50,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib opengl32.lib glut32.lib glu32.lib glpng.lib winmm.lib /nologo /subsystem:console /machine:I386
+# ADD LINK32 libcd.lib libcid.lib kernel32.lib opengl32.lib glu32.lib glut32.lib glpng.lib /nologo /subsystem:console /machine:I386 /out:"..\glpool.exe" /libpath:"GL" /libpath:"..\GL"
 
 !ELSEIF  "$(CFG)" == "glpool - Win32 Debug"
 
@@ -66,7 +66,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /GZ /c
-# ADD CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /GZ /c
+# ADD CPP /nologo /W3 /Gm /GX /ZI /Od /I ".." /I "..\GL" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /GZ /c
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -74,8 +74,8 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib opengl32.lib glut32.lib glu32.lib glpng.lib winmm.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept /verbose:lib
-# SUBTRACT LINK32 /pdb:none
+# ADD LINK32 libcd.lib libcid.lib kernel32.lib opengl32.lib glu32.lib glut32.lib glpng.lib /nologo /subsystem:console /debug /machine:I386 /out:"..\glpool.exe" /pdbtype:sept /libpath:"..\GL"
+# SUBTRACT LINK32 /map /nodefaultlib
 
 !ENDIF 
 
@@ -88,55 +88,55 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=.\cAudio.cpp
+SOURCE=..\cAudio.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\cBall.cpp
+SOURCE=..\cBall.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\cBallList.cpp
+SOURCE=..\cBallList.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\cTable.cpp
+SOURCE=..\cTable.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\cTexMaps.cpp
+SOURCE=..\cTexMaps.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\cVmain.cpp
+SOURCE=..\cVmain.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\cVstatus.cpp
+SOURCE=..\cVstatus.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\cWMain.cpp
+SOURCE=..\cWMain.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\glcViewport.cpp
+SOURCE=..\glcViewport.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\glcWindow.cpp
+SOURCE=..\glcWindow.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\glm.cpp
+SOURCE=..\glm.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\GLPOOL.cpp
+SOURCE=..\GLPOOL.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\glUtil.cpp
+SOURCE=..\glUtil.cpp
 # End Source File
 # End Group
 # Begin Group "Header Files"
@@ -144,71 +144,71 @@ SOURCE=.\glUtil.cpp
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
-SOURCE=.\cAudio.h
+SOURCE=..\cAudio.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\cBall.h
+SOURCE=..\cBall.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\cBallList.h
+SOURCE=..\cBallList.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Colors.h
+SOURCE=..\Colors.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Common.h
+SOURCE=..\Common.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\cTable.h
+SOURCE=..\cTable.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\cTexMaps.h
+SOURCE=..\cTexMaps.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Cuestick.h
+SOURCE=..\Cuestick.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\cVmain.h
+SOURCE=..\cVmain.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\cVstatus.h
+SOURCE=..\cVstatus.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\cWMain.h
+SOURCE=..\cWMain.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\glcViewport.h
+SOURCE=..\glcViewport.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\glcWindow.h
+SOURCE=..\glcWindow.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Glm.h
+SOURCE=..\Glm.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Glpng.h
+SOURCE=..\Glpng.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Glpool.h
+SOURCE=..\Glpool.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\glUtil.h
+SOURCE=..\glUtil.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"

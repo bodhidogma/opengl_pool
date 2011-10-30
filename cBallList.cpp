@@ -5,7 +5,10 @@
 // 
 // $Revision: 1.16 $
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: cBallList.cc,v $
+ * Revision 1.16  1999/12/08 08:27:00  paulmcav
+ * balls now fall into pockets.  Works pretty good!
+ *
  * Revision 1.15  1999/12/08 01:08:16  paulmcav
  * added more stuff!
  *

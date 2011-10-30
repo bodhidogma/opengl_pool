@@ -5,7 +5,10 @@
 // 
 // $Revision: 1.15 $
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: glpool.cc,v $
+ * Revision 1.15  1999/12/17 19:36:39  paulmcav
+ * added glXWaitGlx command to sync with display under linux
+ *
  * Revision 1.14  1999/12/08 01:08:17  paulmcav
  * added more stuff!
  *

@@ -7,7 +7,10 @@
 // $Revision: 1.2 $
 
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: cTexMaps.h,v $
+ * Revision 1.2  1999/11/20 07:53:57  paulmcav
+ * added texmap support, some more menu options, lighting, cleanup, etc.
+ *
  * Revision 1.1  1999/10/25 06:33:21  paulmcav
  * working project with fancy windowing class for GL.
  * Tex maps sorta working, looks sharp though!

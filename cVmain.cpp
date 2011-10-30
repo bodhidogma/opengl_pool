@@ -5,7 +5,10 @@
 // 
 // $Revision: 1.28 $
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: cVmain.cc,v $
+ * Revision 1.28  1999/12/17 19:36:39  paulmcav
+ * added glXWaitGlx command to sync with display under linux
+ *
  * Revision 1.27  1999/12/08 21:58:10  scott
  * updated help screen
  *

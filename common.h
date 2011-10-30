@@ -7,7 +7,10 @@
 // $Revision: 1.5 $
 
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: common.h,v $
+ * Revision 1.5  1999/12/17 19:36:39  paulmcav
+ * added glXWaitGlx command to sync with display under linux
+ *
  * Revision 1.4  1999/11/02 08:47:04  paulmcav
  * added menu / kb callback support; & help window
  *

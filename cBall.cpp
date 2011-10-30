@@ -5,7 +5,10 @@
 // 
 // $Revision: 1.17 $
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: cBall.cc,v $
+ * Revision 1.17  1999/12/17 19:36:39  paulmcav
+ * added glXWaitGlx command to sync with display under linux
+ *
  * Revision 1.16  1999/12/08 08:27:00  paulmcav
  * balls now fall into pockets.  Works pretty good!
  *

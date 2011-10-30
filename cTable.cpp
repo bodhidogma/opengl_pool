@@ -3,9 +3,9 @@
 // Org:
 // Desc:        
 // 
-// $Revision: 1.11 $
+// $Revision: 1.10 $
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: cTable.cc,v $
  * Revision 1.10  1999/12/08 01:08:16  paulmcav
  * added more stuff!
  *
@@ -46,7 +46,7 @@
 #include <iostream.h>
 #include <assert.h>
 #include <math.h>
-#include <string.h>
+#include <memory.h>
 
 #include "cTable.h"
 #include "colors.h"

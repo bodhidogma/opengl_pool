@@ -7,7 +7,10 @@
 // $Revision: 1.3 $
 
 /*
- * $Log: not supported by cvs2svn $
+ * $Log: glcViewport.h,v $
+ * Revision 1.3  1999/11/12 21:05:40  paulmcav
+ * more perspective work
+ *
  * Revision 1.2  1999/10/29 07:12:22  paulmcav
  * added some more documentation to the class
  *
